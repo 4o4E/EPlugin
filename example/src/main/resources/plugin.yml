@@ -1,0 +1,14 @@
+name: TestPlugin
+api-version: 1.18
+author: 404E
+main: top.e404.testplugin.TestPlugin
+version: "${version}"
+commands:
+  testplugin:
+    description: 插件指令
+    aliases:
+      - test
+permissions:
+  testplugin.admin:
+    default: op
+    description: admin指令

@@ -1,9 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.7.0"
-    `maven-publish`
-    `java-library`
+    kotlin("jvm")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
 group = "top.e404"
@@ -20,36 +19,15 @@ repositories {
 dependencies {
     // spigot
     compileOnly("org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT")
-    // bstats
-    implementation("org.bstats:bstats-bukkit:3.0.0")
-
     // eplugin
-    testImplementation("top.e404:EPlugin:1.0.0")
-    // spigot
-    testImplementation("org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT")
+    implementation("top.e404:eplugin:1.0.0")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
-afterEvaluate {
-    publishing.publications.create<MavenPublication>("java") {
-        from(components["kotlin"])
-        artifact(tasks.getByName("sourcesJar"))
-        artifact(tasks.getByName("javadocJar"))
-        artifactId = "eplugin"
-        groupId = project.group.toString()
-        version = project.version.toString()
-    }
-}
-
-tasks.jar {
+tasks.shadowJar {
     doLast {
         println("==== copy ====")
         for (file in File("build/libs").listFiles() ?: emptyArray()) {

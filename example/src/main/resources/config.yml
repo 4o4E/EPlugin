@@ -1,0 +1,5 @@
+debug: true
+
+other:
+  a: "a"
+  b: "b"
