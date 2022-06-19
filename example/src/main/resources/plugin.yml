@@ -11,4 +11,4 @@ commands:
 permissions:
   testplugin.admin:
     default: op
-    description: admin指令
+    description: 插件权限
