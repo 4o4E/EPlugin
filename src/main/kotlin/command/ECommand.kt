@@ -13,11 +13,12 @@ import top.e404.eplugin.EPlugin
  * @since 1.0.0
  */
 @Suppress("UNUSED")
-abstract class AbstractCommand(
-    val plugin: EPlugin,
-    val name: String,
-    val mustByPlayer: Boolean,
-    private vararg val permission: String,
+abstract class ECommand(
+    open val plugin: EPlugin,
+    open val name: String,
+    open val regex: Regex,
+    open val mustByPlayer: Boolean,
+    open vararg val permission: String,
 ) {
     companion object {
         fun MutableList<String>.addOnlinePlayers() = Bukkit.getOnlinePlayers().forEach { add(it.name) }
@@ -70,6 +71,6 @@ abstract class AbstractCommand(
      * @since 1.0.0
      */
     fun matchHead(head: String): Boolean {
-        return head.equals(name, true)
+        return regex.matches(head)
     }
 }

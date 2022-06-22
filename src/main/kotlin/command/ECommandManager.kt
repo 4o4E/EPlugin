@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.command
 
 import org.bukkit.command.Command
@@ -14,16 +16,15 @@ import top.e404.eplugin.EPlugin.Companion.color
  * @property commands 指令列表
  * @since 1.0.0
  */
-@Suppress("UNUSED")
-abstract class AbstractCommandManager(
+abstract class ECommandManager(
     val plugin: EPlugin,
     val name: String,
-    val commands: MutableList<AbstractCommand>,
+    val commands: MutableList<ECommand>,
 ) : TabExecutor {
     constructor(
         plugin: EPlugin,
         name: String,
-        vararg commands: AbstractCommand
+        vararg commands: ECommand
     ) : this(
         plugin,
         name,
@@ -33,7 +34,7 @@ abstract class AbstractCommandManager(
     fun register() = plugin.getCommand(name)?.also {
         it.setExecutor(this)
         it.tabCompleter = this
-        plugin.debug("成功注册指令${name}")
+        plugin.debug { "成功注册指令${name}" }
     } ?: plugin.warn("跳过未注册的指令${name}")
 
     override fun onCommand(
@@ -47,11 +48,11 @@ abstract class AbstractCommandManager(
             return true
         }
         val head = args[0].lowercase()
-        if (head == "help") {
+        if (head.equals("help", true)) {
             sender.sendHelp()
             return true
         }
-        val c = commands.firstOrNull { it.name.equals(head, true) }
+        val c = commands.firstOrNull { it.matchHead(head) }
         if (c == null) {
             plugin.sendUnknown(sender)
             return true
@@ -59,12 +60,15 @@ abstract class AbstractCommandManager(
         // 无权限
         if (!c.hasPerm(sender)) {
             plugin.sendNoperm(sender)
+            plugin.info(
+                """玩家${sender.name}尝试使用指令${command.name} ${args.joinToString(" ")}
+                    由于缺少权限${c.permission.joinToString(", ")}而被阻止
+                """.trimIndent()
+            )
             return true
         }
         // 此指令只能由玩家执行 && 执行者不是玩家
-        if (c.mustByPlayer
-            && !plugin.isPlayer(sender)
-        ) return true
+        if (c.mustByPlayer && !plugin.isPlayer(sender)) return true
         c.onCommand(sender, args)
         return true
     }
@@ -84,10 +88,7 @@ abstract class AbstractCommandManager(
         val head = args[0]
         // 匹配指令头
         val c = canUse.firstOrNull { it.matchHead(head) }
-        if (
-            c == null
-            || c.mustByPlayer && sender !is Player
-        ) return list
+        if (c == null || c.mustByPlayer && sender !is Player) return list
         // 传递给指令
         c.onTabComplete(sender, args, list)
         val last = args.last()
@@ -100,8 +101,9 @@ abstract class AbstractCommandManager(
             .joinToString("\n") { it.usage }
         plugin.run {
             description.run {
-                val author = if (authors.size == 1) authors.first()
-                else authors.toString()
+                val author =
+                    if (authors.size == 1) authors.first()
+                    else authors.toString()
                 sendMessage("&7-=[ &6$name V$version&b by $author &7]=-\n${help}".color())
             }
         }
