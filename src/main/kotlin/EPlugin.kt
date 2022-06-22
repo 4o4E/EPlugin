@@ -7,16 +7,10 @@ import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
-import java.util.logging.Level
-import java.util.logging.Logger
+import top.e404.eplugin.config.ELangManager
 
 abstract class EPlugin : JavaPlugin() {
     companion object {
-        private const val noperm = "&c无权限"
-        private const val notPlayer = "&c仅玩家可用"
-        private const val unknown = "&c未知指令"
-        private const val invalidArgs = "&c无效参数"
-
         fun String.color() = replace("&", "§")
 
         // placeholder
@@ -50,9 +44,15 @@ abstract class EPlugin : JavaPlugin() {
         private val scheduler by lazy { Bukkit.getScheduler() }
     }
 
+    private fun noperm() = langManager.getOrSelf("message.noperm")
+    private fun notPlayer() = langManager.getOrSelf("message.non_player")
+    private fun unknown() = langManager.getOrSelf("message.unknown_command")
+    private fun invalidArgs() = langManager.getOrSelf("message.invalid_args")
+
     abstract fun enableDebug(): Boolean
     abstract val prefix: String
     abstract val debugPrefix: String
+    abstract val langManager: ELangManager
 
     // bstats
 
@@ -78,24 +78,36 @@ abstract class EPlugin : JavaPlugin() {
     /**
      * 输出debug信息的logger
      */
-    private val debugLogger by lazy { Logger.getLogger(debugPrefix) }
+    private val console by lazy { Bukkit.getConsoleSender() }
 
     /**
      * 接受debug信息的玩家
      */
-    val debugUsers = mutableListOf<Player>()
+    val debuggers = mutableSetOf<String>()
 
-    fun debug(msg: String) = "&b$msg".color().let { str ->
-        debugUsers.forEach { sendMsgWithPrefix(it, str) }
-        if (enableDebug()) debugLogger.info(str)
+    private fun sendDebugMessage(str: String) {
+        val msg = "$debugPrefix &b${str}".color()
+        if (enableDebug()) console.sendMessage(msg)
+        debuggers.forEach { Bukkit.getPlayer(it)?.sendMessage(msg) }
+    }
+
+    fun debug(msg: () -> String) {
+        if (!enableDebug() && debuggers.isEmpty()) return
+        sendDebugMessage(msg())
+    }
+
+    fun debug(path: String, vararg placeholder: Pair<String, Any>) {
+        langManager.config.getString(path)?.let {
+            sendDebugMessage(it.placeholder(*placeholder))
+        } ?: sendDebugMessage(path)
     }
 
     fun info(msg: String) =
-        logger.info(msg.color())
+        sendMsgWithPrefix(console, "&f$msg".color())
 
     fun warn(msg: String, throwable: Throwable? = null) =
-        if (throwable == null) logger.warning(msg.color())
-        else logger.log(Level.WARNING, msg.color(), throwable)
+        if (throwable == null) sendMsgWithPrefix(console, "&e$msg".color())
+        else sendMsgWithPrefix(console, "&e$msg\n&e${throwable.stackTraceToString()}".color())
 
     fun sendAndWarn(sender: CommandSender?, msg: String, t: Throwable? = null) {
         if (sender is Player) sendMsgWithPrefix(sender, msg)
@@ -110,26 +122,27 @@ abstract class EPlugin : JavaPlugin() {
     /**
      * 发送无权限的消息
      */
-    fun sendNoperm(sender: CommandSender) =
-        sendMsgWithPrefix(sender, noperm)
+    fun sendNoperm(sender: CommandSender) {
+        sendMsgWithPrefix(sender, noperm())
+    }
 
     /**
      * 发送仅玩家可用的消息
      */
     fun sendNotPlayer(sender: CommandSender) =
-        sendMsgWithPrefix(sender, notPlayer)
+        sendMsgWithPrefix(sender, notPlayer())
 
     /**
      * 发送未知指令的消息
      */
     fun sendUnknown(sender: CommandSender) =
-        sendMsgWithPrefix(sender, unknown)
+        sendMsgWithPrefix(sender, unknown())
 
     /**
      * 发送无效参数的消息
      */
     fun sendInvalidArgs(sender: CommandSender) =
-        sendMsgWithPrefix(sender, invalidArgs)
+        sendMsgWithPrefix(sender, invalidArgs())
 
     fun sendOrElse(sender: CommandSender?, msg: String, onElse: () -> Unit) {
         if (sender is Player) sendMsgWithPrefix(sender, msg)
@@ -150,7 +163,10 @@ abstract class EPlugin : JavaPlugin() {
 
     fun hasPerm(sender: CommandSender, perm: String, notice: Boolean = true): Boolean {
         if (sender.hasPermission(perm)) return true
-        if (notice) sendNoperm(sender)
+        if (notice) {
+            sendNoperm(sender)
+            info("${sender.name}缺少权限${perm}")
+        }
         return false
     }
 
@@ -164,4 +180,8 @@ abstract class EPlugin : JavaPlugin() {
     fun runTaskLaterAsync(delay: Long, task: () -> Unit) = scheduler.runTaskLaterAsynchronously(this, task, delay)
     fun runTaskTimerAsync(delay: Long, period: Long, task: () -> Unit) =
         scheduler.runTaskTimerAsynchronously(this, task, delay, period)
+
+    // cancel task
+    fun cancelAllTask() = scheduler.cancelTasks(this)
+    fun cancelTask(id: Int) = scheduler.cancelTask(id)
 }

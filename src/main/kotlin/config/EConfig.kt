@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.config
 
 import org.bukkit.command.CommandSender
@@ -15,29 +17,37 @@ import top.e404.eplugin.EPlugin
  * @property clearBeforeSave 在保存文件之前是否将[config]替换成新的[YamlConfiguration]
  * @since 1.0.0
  */
-@Suppress("UNUSED")
 abstract class EConfig(
-    val plugin: EPlugin,
-    val path: String,
-    val default: ConfigDefault? = null,
-    val clearBeforeSave: Boolean = false,
+    open val plugin: EPlugin,
+    open val path: String,
+    open val default: ConfigDefault = NoDefault,
+    open val clearBeforeSave: Boolean = false,
 ) {
     companion object {
         interface ConfigDefault {
-            fun getString(): String
+            val string: String
         }
 
         class JarConfig(val plugin: JavaPlugin, val path: String) : ConfigDefault {
-            override fun getString() = String(plugin.getResource(path)!!.readBytes())
+            override val string by lazy { String(plugin.getResource(path)!!.readBytes()) }
         }
 
-        class TextConfig(val text: String) : ConfigDefault {
-            override fun getString() = text
+        class TextConfig(override val string: String) : ConfigDefault
+
+        object NoDefault : ConfigDefault {
+            override val string = throw RuntimeException("NoDefault")
         }
     }
 
     val file by lazy { plugin.dataFolder.resolve(path) }
-    lateinit var config: YamlConfiguration
+    var config: YamlConfiguration = YamlConfiguration()
+
+    open operator fun get(path: String) = config.getString(path)
+    operator fun set(path: String, value: Any?) = config.set(path, value)
+
+    fun getOrDefault(path: String, default: String) = config.getString(path) ?: default
+    fun getOrSelf(path: String) = getOrDefault(path, path)
+    fun getOrElse(path: String, block: () -> String) = config.getString(path) ?: block()
 
     /**
      * 保存默认的配置文件
@@ -54,8 +64,8 @@ abstract class EConfig(
                 plugin.sendOrElse(sender, s) { plugin.warn(s) }
                 return
             }
-            if (default == null) createNewFile()
-            else writeText(default.getString())
+            if (default is NoDefault) createNewFile()
+            else writeText(default.string)
         }.onFailure {
             val s = "保存默认配置文件`${path}`时出现异常"
             plugin.sendOrElse(sender, s) { plugin.warn(s, it) }
@@ -74,15 +84,13 @@ abstract class EConfig(
         try {
             nc.load(file)
         } catch (e: InvalidConfigurationException) {
-            val s = "配置文件`${path}`格式错误, 请检查配置文件, 此文件内容将不会重载"
-            plugin.sendOrElse(sender, s) { plugin.warn(s, e) }
-            plugin.sendAndWarn(sender, s, e)
+            plugin.sendAndWarn(sender, "配置文件`${path}`格式错误, 请检查配置文件, 此文件内容将不会重载", e)
             return
         } catch (t: Throwable) {
-            val s = "加载配置文件`${path}`时出现异常, 此文件内容将不会重载"
-            plugin.sendOrElse(sender, s) { plugin.warn(s, t) }
+            plugin.sendAndWarn(sender, "加载配置文件`${path}`时出现异常, 此文件内容将不会重载", t)
             return
         }
+        default
         nc.onLoad()
         config = nc
     }
