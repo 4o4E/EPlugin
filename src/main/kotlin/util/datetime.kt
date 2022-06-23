@@ -45,12 +45,12 @@ fun String.parseAsDuration(): Int {
     }
     var result = 0 //结果 单位秒
     //天
-    result += m.group("d").toInt() * 86400
+    result += m.group("d")?.let { it.toInt() * 86400 } ?: 0
     //时
-    result += m.group("h").toInt() * 3600
+    result += m.group("h")?.let { it.toInt() * 3600 } ?: 0
     //分
-    result += m.group("m").toInt() * 60
+    result += m.group("m")?.let { it.toInt() * 60 } ?: 0
     //秒
-    result += m.group("s").toInt()
+    result += m.group("s")?.toInt() ?: 0
     return result
 }
