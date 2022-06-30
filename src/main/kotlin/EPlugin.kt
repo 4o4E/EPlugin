@@ -20,7 +20,7 @@ abstract class EPlugin : JavaPlugin() {
          * @param placeholder 占位符 格式为 <"world", world> 将会替换字符串中的 {world} 为 world
          * @return 经过替换的字符串
          */
-        fun String.placeholder(placeholder: Map<String, Any>): String {
+        fun String.placeholder(placeholder: Map<String, Any?>): String {
             var s = this
             for ((k, v) in placeholder.entries) s = s.replace("{$k}", v.toString())
             return s.color()
@@ -32,7 +32,7 @@ abstract class EPlugin : JavaPlugin() {
          * @param placeholder 占位符 格式为 <"world", world> 将会替换字符串中的 {world} 为 world
          * @return 经过替换的字符串
          */
-        fun String.placeholder(vararg placeholder: Pair<String, Any>): String {
+        fun String.placeholder(vararg placeholder: Pair<String, Any?>): String {
             var s = this
             for ((k, v) in placeholder) s = s.replace("{$k}", v.toString())
             return s.color()
