@@ -5,7 +5,7 @@ package top.e404.eplugin.config
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.scheduler.BukkitTask
 import top.e404.eplugin.EPlugin
 
 /**
@@ -20,25 +20,9 @@ import top.e404.eplugin.EPlugin
 abstract class EConfig(
     open val plugin: EPlugin,
     open val path: String,
-    open val default: ConfigDefault = NoDefault,
+    open val default: ConfigDefault = EmptyConfig,
     open val clearBeforeSave: Boolean = false,
 ) {
-    companion object {
-        interface ConfigDefault {
-            val string: String
-        }
-
-        class JarConfig(val plugin: JavaPlugin, val path: String) : ConfigDefault {
-            override val string by lazy { String(plugin.getResource(path)!!.readBytes()) }
-        }
-
-        class TextConfig(override val string: String) : ConfigDefault
-
-        object NoDefault : ConfigDefault {
-            override val string = throw RuntimeException("NoDefault")
-        }
-    }
-
     val file by lazy { plugin.dataFolder.resolve(path) }
     var config: YamlConfiguration = YamlConfiguration()
 
@@ -64,7 +48,7 @@ abstract class EConfig(
                 plugin.sendOrElse(sender, s) { plugin.warn(s) }
                 return
             }
-            if (default is NoDefault) createNewFile()
+            if (default is EmptyConfig) createNewFile()
             else writeText(default.string)
         }.onFailure {
             val s = "保存默认配置文件`${path}`时出现异常"
@@ -90,7 +74,6 @@ abstract class EConfig(
             plugin.sendAndWarn(sender, "加载配置文件`${path}`时出现异常, 此文件内容将不会重载", t)
             return
         }
-        default
         nc.onLoad()
         config = nc
     }
@@ -114,6 +97,17 @@ abstract class EConfig(
         } catch (t: Throwable) {
             val s = "保存配置文件`${path}`时出现异常"
             plugin.sendOrElse(sender, s) { plugin.warn(s, t) }
+        }
+    }
+
+    var saveTask: BukkitTask? = null
+    open val saveDurationTick: Long = 10 * 60 * 20
+
+    fun scheduleSave() {
+        if (saveTask != null) return
+        saveTask = plugin.runTaskLater(saveDurationTick) {
+            save(null)
+            saveTask = null
         }
     }
 }
