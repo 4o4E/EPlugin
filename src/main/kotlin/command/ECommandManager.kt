@@ -19,7 +19,7 @@ import top.e404.eplugin.EPlugin.Companion.color
 abstract class ECommandManager(
     val plugin: EPlugin,
     val name: String,
-    val commands: MutableList<ECommand>,
+    val commands: MutableSet<ECommand>,
 ) : TabExecutor {
     constructor(
         plugin: EPlugin,
@@ -28,7 +28,7 @@ abstract class ECommandManager(
     ) : this(
         plugin,
         name,
-        commands.toMutableList()
+        commands.toMutableSet()
     )
 
     fun register() = plugin.getCommand(name)?.also {
