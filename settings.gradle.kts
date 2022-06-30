@@ -1,2 +1,2 @@
 rootProject.name = "EPlugin"
-include(":example")
+include(":example", ":eplugin-serialization")
