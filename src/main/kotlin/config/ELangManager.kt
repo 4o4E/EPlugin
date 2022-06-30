@@ -10,10 +10,10 @@ abstract class ELangManager(
 ) : EConfig(
     plugin = plugin,
     path = "lang.yml",
-    default = Companion.JarConfig(plugin, "lang.yml"),
+    default = JarConfig(plugin, "lang.yml"),
     clearBeforeSave = false
 ) {
     override operator fun get(path: String) = getOrSelf(path)
-    operator fun get(path: String, vararg placeholder: Pair<String, Any>) =
+    operator fun get(path: String, vararg placeholder: Pair<String, Any?>) =
         config.getString(path)?.placeholder(*placeholder) ?: path
 }
