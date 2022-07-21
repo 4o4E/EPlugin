@@ -95,7 +95,7 @@ abstract class ECommandManager(
         return list.filter { it.contains(last, true) }.toMutableList()
     }
 
-    private fun CommandSender.sendHelp() {
+    protected fun CommandSender.sendHelp() {
         val help = commands
             .filter { it.hasPerm(this) && (!it.mustByPlayer || this is Player) }
             .joinToString("\n") { it.usage }
