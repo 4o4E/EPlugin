@@ -5,7 +5,6 @@ package top.e404.eplugin.config
 import org.bukkit.command.CommandSender
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.scheduler.BukkitTask
 import top.e404.eplugin.EPlugin
 
 /**
@@ -18,12 +17,11 @@ import top.e404.eplugin.EPlugin
  * @since 1.0.0
  */
 abstract class EConfig(
-    open val plugin: EPlugin,
-    open val path: String,
-    open val default: ConfigDefault = EmptyConfig,
+    override val plugin: EPlugin,
+    override val path: String,
+    override val default: ConfigDefault = EmptyConfig,
     open val clearBeforeSave: Boolean = false,
-) {
-    val file by lazy { plugin.dataFolder.resolve(path) }
+) : AbstractEConfig(plugin, path, default) {
     var config: YamlConfiguration = YamlConfiguration()
 
     open operator fun get(path: String) = config.getString(path)
@@ -39,7 +37,7 @@ abstract class EConfig(
      * @param sender 出现异常时的接收者
      * @since 1.0.0
      */
-    fun saveDefault(sender: CommandSender?) {
+    override fun saveDefault(sender: CommandSender?) {
         if (file.exists()) return
         file.runCatching {
             if (!parentFile.exists()) parentFile.mkdirs()
@@ -62,7 +60,7 @@ abstract class EConfig(
      * @param sender 出现异常时的通知接收者
      * @since 1.0.0
      */
-    fun load(sender: CommandSender?) {
+    override fun load(sender: CommandSender?) {
         saveDefault(sender)
         val nc = YamlConfiguration()
         try {
@@ -87,7 +85,7 @@ abstract class EConfig(
      * @param sender 出现异常时的通知接收者
      * @since 1.0.0
      */
-    fun save(sender: CommandSender?) {
+    override fun save(sender: CommandSender?) {
         if (clearBeforeSave) config = YamlConfiguration()
         try {
             config.apply {
@@ -97,17 +95,6 @@ abstract class EConfig(
         } catch (t: Throwable) {
             val s = "保存配置文件`${path}`时出现异常"
             plugin.sendOrElse(sender, s) { plugin.warn(s, t) }
-        }
-    }
-
-    var saveTask: BukkitTask? = null
-    open val saveDurationTick: Long = 10 * 60 * 20
-
-    fun scheduleSave() {
-        if (saveTask != null) return
-        saveTask = plugin.runTaskLater(saveDurationTick) {
-            save(null)
-            saveTask = null
         }
     }
 }
