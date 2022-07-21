@@ -6,7 +6,6 @@ import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.StringFormat
 import org.bukkit.command.CommandSender
-import org.bukkit.scheduler.BukkitTask
 import top.e404.eplugin.EPlugin
 
 /**
@@ -18,13 +17,12 @@ import top.e404.eplugin.EPlugin
  * @since 1.0.0
  */
 abstract class ESerializationConfig<T : Any>(
-    open val plugin: EPlugin,
-    open val path: String,
-    open val default: ConfigDefault = EmptyConfig,
+    override val plugin: EPlugin,
+    override val path: String,
+    override val default: ConfigDefault = EmptyConfig,
     open val serializer: KSerializer<in T>,
     open val format: StringFormat = Yaml.default
-) {
-    val file by lazy { plugin.dataFolder.resolve(path) }
+) : AbstractEConfig(plugin, path, default) {
     lateinit var config: T
 
     /**
@@ -33,7 +31,7 @@ abstract class ESerializationConfig<T : Any>(
      * @param sender 出现异常时的接收者
      * @since 1.0.0
      */
-    fun saveDefault(sender: CommandSender?) {
+    override fun saveDefault(sender: CommandSender?) {
         if (file.exists()) return
         file.runCatching {
             if (!parentFile.exists()) parentFile.mkdirs()
@@ -55,7 +53,7 @@ abstract class ESerializationConfig<T : Any>(
      * @param sender 出现异常时的通知接收者
      * @since 1.0.0
      */
-    fun load(sender: CommandSender?) {
+    override fun load(sender: CommandSender?) {
         saveDefault(sender)
         @Suppress("UNCHECKED_CAST")
         config = format.decodeFromString(serializer, file.readText()) as T
@@ -71,23 +69,12 @@ abstract class ESerializationConfig<T : Any>(
      * @param sender 出现异常时的通知接收者
      * @since 1.0.0
      */
-    fun save(sender: CommandSender?) {
+    override fun save(sender: CommandSender?) {
         try {
             file.writeText(onSave())
         } catch (t: Throwable) {
             val s = "保存配置文件`${path}`时出现异常"
             plugin.sendOrElse(sender, s) { plugin.warn(s, t) }
-        }
-    }
-
-    var saveTask: BukkitTask? = null
-    open val saveDurationTick: Long = 10 * 60 * 20
-
-    fun scheduleSave() {
-        if (saveTask != null) return
-        saveTask = plugin.runTaskLater(saveDurationTick) {
-            save(null)
-            saveTask = null
         }
     }
 }

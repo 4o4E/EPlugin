@@ -7,6 +7,8 @@ import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
+import top.e404.eplugin.EPlugin.Companion.formatAsConst
 
 /**
  * Example
@@ -72,5 +74,15 @@ object LocationBlockSerialization : KSerializer<Location> {
             }
             Location(Bukkit.getWorld(world), x.toDouble(), y.toDouble(), z.toDouble())
         }
+}
+
+object MaterialSerializer : KSerializer<Material> {
+    override val descriptor = PrimitiveSerialDescriptor("BukkitMaterial", PrimitiveKind.STRING)
+
+    override fun deserialize(decoder: Decoder) = Material.valueOf(decoder.decodeString().formatAsConst())
+
+    override fun serialize(encoder: Encoder, value: Material) {
+        encoder.encodeString(value.name)
+    }
 }
 
