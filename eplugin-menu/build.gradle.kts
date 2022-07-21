@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version Versions.kotlin
+    kotlin("jvm")
     `maven-publish`
     `java-library`
 }
@@ -10,23 +10,16 @@ group = Versions.group
 version = Versions.version
 
 repositories {
-    // spigot
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/groups/public/")
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
     // spigot
     compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
-    // bstats
-    implementation("org.bstats:bstats-bukkit:3.0.0")
-
     // eplugin
-    testImplementation(rootProject)
-    // spigot
-    testImplementation("org.spigotmc:spigot-api:${Versions.spigot}")
+    implementation(rootProject)
 }
 
 tasks.withType<KotlinCompile> {
@@ -43,18 +36,8 @@ afterEvaluate {
         from(components["kotlin"])
         artifact(tasks.getByName("sourcesJar"))
         artifact(tasks.getByName("javadocJar"))
-        artifactId = "eplugin"
+        artifactId = "eplugin-menu"
         groupId = Versions.group
         version = Versions.version
-    }
-}
-
-tasks.jar {
-    doLast {
-        println("==== copy ====")
-        for (file in File("build/libs").listFiles() ?: emptyArray()) {
-            println("正在复制`${file.path}`")
-            file.copyTo(File("jar/${file.name}"), true)
-        }
     }
 }

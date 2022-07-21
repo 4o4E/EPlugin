@@ -43,7 +43,7 @@ afterEvaluate {
         artifact(tasks.getByName("sourcesJar"))
         artifact(tasks.getByName("javadocJar"))
         artifactId = "eplugin-serialization"
-        groupId = project.group.toString()
-        version = project.version.toString()
+        groupId = Versions.group
+        version = Versions.version
     }
 }
