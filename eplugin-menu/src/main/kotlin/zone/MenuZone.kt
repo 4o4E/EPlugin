@@ -1,14 +1,9 @@
 package top.e404.eplugin.menu.zone
 
-import org.bukkit.Material
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.inventory.ItemStack
-import top.e404.eplugin.EPlugin.Companion.color
 import top.e404.eplugin.menu.Displayable
 import top.e404.eplugin.menu.InventoryClickHandler
 import top.e404.eplugin.menu.getSubZone
 import top.e404.eplugin.menu.menu.Menu
-import top.e404.eplugin.util.editItemMeta
 import top.e404.eplugin.util.emptyItem
 import top.e404.eplugin.util.getPageCount
 import top.e404.eplugin.util.splitByPage
@@ -36,8 +31,6 @@ abstract class MenuZone<T : Displayable>(
      * 内部坐标列表
      */
     val indexes = getSubZone(x, y, w, h)
-
-    var page = 0
 
     /**
      * 分页大小
@@ -75,7 +68,7 @@ abstract class MenuZone<T : Displayable>(
     /**
      * 当前页数
      */
-    var currentPage = 0
+    var page = 0
 
     /**
      * 最大页数
@@ -93,7 +86,7 @@ abstract class MenuZone<T : Displayable>(
      * 判断此区域是否有下一页
      */
     val hasNext: Boolean
-        get() = currentPage < maxPage
+        get() = page < maxPage - 1
 
     /**
      * 翻到上一页(若存在)
@@ -162,61 +155,4 @@ abstract class MenuZone<T : Displayable>(
      * @param slot 菜单下标
      */
     operator fun contains(slot: Int) = mapMenu2zone.containsKey(slot)
-}
-
-data class Prefix(
-    val id: String,
-    val display: String,
-    val desc: String,
-) : Displayable {
-    override var item = emptyItem
-    override var needUpdate = false
-
-    override fun update() {
-        item = ItemStack(Material.PAPER).editItemMeta {
-            setDisplayName(display.color())
-            lore = listOf(desc.color())
-        }
-    }
-}
-
-class ZoneImpl(menu: Menu) : MenuZone<Prefix>(
-    menu = menu,
-    x = 1,
-    y = 1,
-    w = 7,
-    h = 3,
-    data = mutableListOf(
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-        Prefix("op", "op", "op"),
-    )
-) {
-
-    override fun onClick(slot: Int, event: InventoryClickEvent): Boolean? {
-        val zoneIndex = menu2zone(slot) ?: return true
-        val index = page * pageSize + zoneIndex
-        val prefix = data[index]
-        // TODO
-        return true
-    }
-
-    override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent) =
-        onClick(slot, event)
-
-    override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent) =
-        onClick(slot, event)
-
-    override fun onSwitch(clicked: ItemStack, cursor: ItemStack, slot: Int, event: InventoryClickEvent) =
-        onClick(slot, event)
-
 }
