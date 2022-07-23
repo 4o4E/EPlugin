@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import top.e404.eplugin.config.ELangManager
+import java.util.logging.Level
 
 abstract class EPlugin : JavaPlugin() {
     companion object {
@@ -106,8 +107,8 @@ abstract class EPlugin : JavaPlugin() {
         sendMsgWithPrefix(console, "&f$msg".color())
 
     fun warn(msg: String, throwable: Throwable? = null) =
-        if (throwable == null) sendMsgWithPrefix(console, "&e$msg".color())
-        else sendMsgWithPrefix(console, "&e$msg\n&e${throwable.stackTraceToString()}".color())
+        if (throwable == null) logger.log(Level.WARNING, msg)
+        else logger.log(Level.WARNING, msg, throwable)
 
     fun sendAndWarn(sender: CommandSender?, msg: String, t: Throwable? = null) {
         if (sender is Player) sendMsgWithPrefix(sender, msg)
