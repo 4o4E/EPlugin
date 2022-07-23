@@ -3,10 +3,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm")
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    `maven-publish`
+    `java-library`
 }
 
-group = "top.e404"
-version = "1.0.0"
+group = Versions.group
+version = Versions.version
 
 repositories {
     // spigot
@@ -20,9 +22,9 @@ repositories {
 
 dependencies {
     // spigot
-    compileOnly("org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
     // BentBox
-    compileOnly("world.bentobox:bentobox:1.20.1-SNAPSHOT")
+    compileOnly("world.bentobox:bentobox:${Hooks.bentobox}")
     // eplugin
     implementation(rootProject)
 }
@@ -31,12 +33,18 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
-tasks.shadowJar {
-    doLast {
-        println("==== copy ====")
-        for (file in File("build/libs").listFiles() ?: emptyArray()) {
-            println("正在复制`${file.path}`")
-            file.copyTo(File("jar/${file.name}"), true)
-        }
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+afterEvaluate {
+    publishing.publications.create<MavenPublication>("java") {
+        from(components["kotlin"])
+        artifact(tasks.getByName("sourcesJar"))
+        artifact(tasks.getByName("javadocJar"))
+        artifactId = "eplugin-hook-bentobox"
+        groupId = Versions.group
+        version = Versions.version
     }
 }
