@@ -13,15 +13,18 @@ abstract class EHook<T : Plugin>(
     lateinit var hookedPlugin: T
 
     fun checkHook() {
-        val plugin = Bukkit.getPluginManager().getPlugin(name)
-        if (plugin == null
-            || !plugin.isEnabled
+        val hookedPlugin = Bukkit.getPluginManager().getPlugin(name)
+        if (hookedPlugin == null
+            || !hookedPlugin.isEnabled
         ) {
+            plugin.info(plugin.langManager["hook.disable", "plugin" to name])
             enable = false
             return
         }
+        enable = true
+        plugin.info(plugin.langManager["hook.enable", "plugin" to name])
         @Suppress("UNCHECKED_CAST")
-        hookedPlugin = plugin as T
+        this.hookedPlugin = hookedPlugin as T
         afterHook()
     }
 
