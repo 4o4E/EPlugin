@@ -11,11 +11,11 @@ group = Versions.group
 version = Versions.version
 
 repositories {
-    // enginehub
-    maven("https://maven.enginehub.org/repo/")
     // spigot
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/groups/public/")
+    // enginehub
+    maven("https://maven.enginehub.org/repo/")
     mavenCentral()
     mavenLocal()
 }
