@@ -2,6 +2,7 @@
 
 package top.e404.eplugin.util
 
+import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.configuration.ConfigurationSection
@@ -22,14 +23,15 @@ fun ConfigurationSection.getSoundConfig(path: String) =
         SoundConfig(sound, volume, pitch)
     }
 
+@Serializable
 data class SoundConfig(
-    var sound: Sound,
+    var type: Sound,
     var volume: Float,
     var pitch: Float
 ) {
-    fun playAt(location: Location) = location.world?.playSound(location, sound, volume, pitch)
+    fun playAt(location: Location) = location.world?.playSound(location, type, volume, pitch)
 
-    fun playTo(p: Player) = p.playSound(p.location, sound, volume, pitch)
+    fun playTo(p: Player) = p.playSound(p.location, type, volume, pitch)
 }
 
 fun ConfigurationSection.getBooleanOrNull(path: String) = get(path)?.let { it as? Boolean }

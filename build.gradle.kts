@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version Versions.kotlin
+    kotlin("plugin.serialization") version Versions.kotlin
     `maven-publish`
     `java-library`
 }
@@ -22,6 +23,7 @@ dependencies {
     compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
     // bstats
     implementation("org.bstats:bstats-bukkit:3.0.0")
+    implementation(kotlinx("serialization-core-jvm", "1.3.3"))
 
     // eplugin
     testImplementation(rootProject)
