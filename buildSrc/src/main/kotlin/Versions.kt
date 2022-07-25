@@ -11,6 +11,7 @@ object Hooks {
     const val mythicLib = "1.3.1"
     const val worldguard = "7.0.8-SNAPSHOT"
     const val bentobox = "1.20.1-SNAPSHOT"
+    const val playerPoints = "3.2.4"
 }
 
 fun kotlinx(id: String, version: String) = "org.jetbrains.kotlinx:kotlinx-$id:$version"
