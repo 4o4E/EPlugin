@@ -13,6 +13,8 @@ import java.util.logging.Level
 abstract class EPlugin : JavaPlugin() {
     companion object {
         fun String.color() = replace("&", "§")
+        private val colorRegex = Regex("(?i)[§&][\\da-fk-orx]")
+        fun String.removeColor() = replace(colorRegex, "")
 
         // placeholder
         /**
