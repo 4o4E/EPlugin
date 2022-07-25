@@ -8,7 +8,7 @@ import top.e404.eplugin.hook.EHook
 import world.bentobox.bentobox.BentoBox
 import world.bentobox.bentobox.database.objects.Island
 
-class BentoboxHook(
+open class BentoboxHook(
     override val plugin: EPlugin,
 ) : EHook<BentoBox>(plugin, "BentoBox") {
     val bbox: BentoBox
