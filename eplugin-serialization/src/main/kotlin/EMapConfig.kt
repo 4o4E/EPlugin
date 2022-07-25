@@ -6,7 +6,9 @@ import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.MapSerializer
+import org.bukkit.command.CommandSender
 import top.e404.eplugin.EPlugin
+import java.util.*
 
 /**
  * 代表一个解析成文本的配置文件
@@ -22,7 +24,8 @@ abstract class EMapConfig<K : Any, V : Any>(
     default: ConfigDefault = EmptyConfig,
     kSerializer: KSerializer<K>,
     vSerializer: KSerializer<V>,
-    format: StringFormat = Yaml.default
+    format: StringFormat = Yaml.default,
+    val synchronized: Boolean = false
 ) : ESerializationConfig<MutableMap<K, V>>(
     plugin,
     path,
@@ -33,6 +36,14 @@ abstract class EMapConfig<K : Any, V : Any>(
     operator fun get(key: K) = config[key]
     operator fun set(key: K, value: V) {
         config[key] = value
+    }
+
+    override fun load(sender: CommandSender?) {
+        saveDefault(sender)
+        @Suppress("UNCHECKED_CAST")
+        config = format.decodeFromString(serializer, file.readText()) as MutableMap<K, V>
+        if (synchronized) config = Collections.synchronizedMap(config)
+        onLoad(config, sender)
     }
 
     fun getOrPut(key: K, defaultValue: () -> V) = config.getOrPut(key, defaultValue)
