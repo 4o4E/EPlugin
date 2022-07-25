@@ -8,4 +8,5 @@ include(
     ":eplugin-hook-slimefun",
     ":eplugin-hook-mmoitems",
     ":eplugin-hook-worldguard",
+    ":eplugin-hook-playerpoints",
 )
