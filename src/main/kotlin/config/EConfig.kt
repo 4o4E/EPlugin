@@ -92,6 +92,7 @@ abstract class EConfig(
                 onSave()
                 save(file)
             }
+            plugin.info("保存配置文件`${path}`完成")
         } catch (t: Throwable) {
             val s = "保存配置文件`${path}`时出现异常"
             plugin.sendOrElse(sender, s) { plugin.warn(s, t) }
