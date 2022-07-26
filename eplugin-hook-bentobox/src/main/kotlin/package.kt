@@ -1,2 +1,2 @@
-package top.e404.eplugin.hook.itemrepo
+package top.e404.eplugin.hook.bentobox
 
