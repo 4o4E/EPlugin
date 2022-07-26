@@ -1,4 +1,4 @@
-package top.e404.eplugin.hook.bentobox
+package top.e404.eplugin.hook.playerpoints
 
 import org.black_ixx.playerpoints.PlayerPoints
 import org.bukkit.entity.Player
