@@ -50,13 +50,3 @@ afterEvaluate {
         version = Versions.version
     }
 }
-
-tasks.jar {
-    doLast {
-        println("==== copy ====")
-        for (file in File("build/libs").listFiles() ?: emptyArray()) {
-            println("正在复制`${file.path}`")
-            file.copyTo(File("jar/${file.name}"), true)
-        }
-    }
-}
