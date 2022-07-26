@@ -9,4 +9,5 @@ include(
     ":eplugin-hook-mmoitems",
     ":eplugin-hook-worldguard",
     ":eplugin-hook-playerpoints",
+    ":eplugin-hook-itemrepo",
 )
