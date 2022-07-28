@@ -32,7 +32,7 @@ open class Menu(
     /**
      * 菜单中的子区域
      */
-    val zones: MutableSet<MenuZone<*>> = mutableSetOf()
+    val zones: MutableSet<MenuZone> = mutableSetOf()
 
     /**
      * 子区域之外的点击处理
@@ -105,15 +105,51 @@ open class Menu(
         return slots[slot]
     }
 
-    override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent) =
-        getHandler(slot)?.onPickup(clicked, slot, event) ?: true
+    override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent): Boolean {
+        plugin.debug {
+            plugin.langManager[
+                    "debug.menu.on_pickup",
+                    "slot" to slot,
+                    "clicked" to clicked.type.name,
+                    "player" to event.whoClicked.name,
+            ]
+        }
+        return getHandler(slot)?.onPickup(clicked, slot, event) ?: true
+    }
 
-    override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent) =
-        getHandler(slot)?.onPutin(cursor, slot, event) ?: true
+    override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent): Boolean {
+        plugin.debug {
+            plugin.langManager[
+                    "debug.menu.on_putin",
+                    "slot" to slot,
+                    "cursor" to cursor.type.name,
+                    "player" to event.whoClicked.name,
+            ]
+        }
+        return getHandler(slot)?.onPutin(cursor, slot, event) ?: true
+    }
 
-    override fun onSwitch(clicked: ItemStack, cursor: ItemStack, slot: Int, event: InventoryClickEvent) =
-        getHandler(slot)?.onSwitch(clicked, cursor, slot, event) ?: true
+    override fun onSwitch(clicked: ItemStack, cursor: ItemStack, slot: Int, event: InventoryClickEvent): Boolean {
+        plugin.debug {
+            plugin.langManager[
+                    "debug.menu.on_switch",
+                    "slot" to slot,
+                    "clicked" to clicked.type.name,
+                    "cursor" to cursor.type.name,
+                    "player" to event.whoClicked.name,
+            ]
+        }
+        return getHandler(slot)?.onSwitch(clicked, cursor, slot, event) ?: true
+    }
 
-    override fun onClick(slot: Int, event: InventoryClickEvent) =
-        getHandler(slot)?.onClick(slot, event) ?: true
+    override fun onClick(slot: Int, event: InventoryClickEvent): Boolean {
+        plugin.debug {
+            plugin.langManager[
+                    "debug.menu.on_click",
+                    "slot" to slot,
+                    "player" to event.whoClicked.name,
+            ]
+        }
+        return getHandler(slot)?.onClick(slot, event) ?: true
+    }
 }
