@@ -15,4 +15,5 @@ open class MmoitemsHook(
 
     fun getItem(type: String, id: String) = MMOItems.plugin.getMMOItem(Type.get(type), id)
     fun getNbtItem(itemStack: ItemStack) = NBTItem.get(itemStack)!!
+    fun NBTItem.getMiId() = getString("MMOITEMS_ITEM_ID")!!
 }
