@@ -2,6 +2,7 @@
 
 package top.e404.eplugin.menu
 
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -64,10 +65,12 @@ open class PluginMenuManager(override val plugin: EPlugin) : EListener(plugin) {
             menu.onClickBlank(this)
             return
         }
+        val cursorNotNull = cursor != null && cursor.type != Material.AIR
+        val clickedNotNull = clicked != null && clicked.type != Material.AIR
         val b = when {
-            cursor != null && clicked != null -> menu.onSwitch(clicked, cursor, slot, this)
-            cursor == null && clicked != null -> menu.onPickup(clicked, slot, this)
-            cursor != null && clicked == null -> menu.onPutin(cursor, slot, this)
+            cursorNotNull && clickedNotNull -> menu.onSwitch(clicked!!, cursor!!, slot, this)
+            !cursorNotNull && clickedNotNull -> menu.onPickup(clicked!!, slot, this)
+            cursorNotNull && !clickedNotNull -> menu.onPutin(cursor!!, slot, this)
             else -> menu.onClick(slot, this)
         }
         if (b) isCancelled = true
