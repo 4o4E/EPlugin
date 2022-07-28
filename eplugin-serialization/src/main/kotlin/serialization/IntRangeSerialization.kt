@@ -12,7 +12,9 @@ object IntRangeSerialization : KSerializer<IntRange> {
     override val descriptor =
         PrimitiveSerialDescriptor("top.e404.eplugin.config.serialization.IntRangeSerialization", PrimitiveKind.STRING)
 
-    override fun deserialize(decoder: Decoder) = decoder.decodeString().split("..").let { it[0].toInt()..it[1].toInt() }
+    override fun deserialize(decoder: Decoder) = decoder.decodeString().split("..").let { list ->
+        list[0].toInt()..list.getOrElse(1) { list[0] }.toInt()
+    }
 
     override fun serialize(encoder: Encoder, value: IntRange) = encoder.encodeString("${value.first}..${value.last}")
 }

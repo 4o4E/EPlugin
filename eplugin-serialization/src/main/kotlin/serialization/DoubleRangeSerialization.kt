@@ -13,7 +13,9 @@ object DoubleRangeSerialization : KSerializer<ClosedFloatingPointRange<Double>> 
         PrimitiveSerialDescriptor("top.e404.eplugin.config.serialization.IntRangeSerialization", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder) =
-        decoder.decodeString().split("..").let { it[0].toDouble()..it[1].toDouble() }
+        decoder.decodeString().split("..").let { list ->
+            list[0].toDouble()..list.getOrElse(1) { list[0] }.toDouble()
+        }
 
     override fun serialize(encoder: Encoder, value: ClosedFloatingPointRange<Double>) =
         encoder.encodeString("${value.start}..${value.endInclusive}")
