@@ -15,5 +15,4 @@
 - `eplugin-menu` 菜单相关
 - `eplugin-serialization` 使用kotlin serialization进行序列化和反序列化的配置文件
 - `eplugin-serialization-worldguard` 简单的 region-world-global 配置模板
-- `example` 测试
 - `src` 通用插件代码
