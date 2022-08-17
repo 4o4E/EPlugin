@@ -16,7 +16,7 @@ import top.e404.eplugin.EPlugin
 abstract class ECommand(
     open val plugin: EPlugin,
     open val name: String,
-    open val regex: Regex,
+    regex: String,
     open val mustByPlayer: Boolean,
     open vararg val permission: String,
 ) {
@@ -24,6 +24,8 @@ abstract class ECommand(
         fun MutableList<String>.addOnlinePlayers() = Bukkit.getOnlinePlayers().forEach { add(it.name) }
         fun MutableList<String>.addOnlineOps() = Bukkit.getOnlinePlayers().forEach { if (it.isOp) add(it.name) }
     }
+
+    val regex = Regex(regex)
 
     /**
      * 指令处理器

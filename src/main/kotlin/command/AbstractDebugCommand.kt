@@ -9,7 +9,13 @@ import top.e404.eplugin.EPlugin
 abstract class AbstractDebugCommand(
     override val plugin: EPlugin,
     override vararg val permission: String
-) : ECommand(plugin, "debug", Regex("(?i)debug"), false, *permission) {
+) : ECommand(
+    plugin = plugin,
+    name = "debug",
+    regex = "(?i)debug",
+    mustByPlayer = false,
+    permission = permission
+) {
     override fun onCommand(
         sender: CommandSender,
         args: Array<out String>
