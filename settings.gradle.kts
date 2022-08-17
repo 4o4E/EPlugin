@@ -9,4 +9,6 @@ include(
     ":eplugin-hook-worldguard",
     ":eplugin-hook-playerpoints",
     ":eplugin-hook-itemrepo",
+    ":eplugin-hook-placeholderapi",
+    ":eplugin-hook-psr",
 )
