@@ -11,4 +11,5 @@ include(
     ":eplugin-hook-itemrepo",
     ":eplugin-hook-placeholderapi",
     ":eplugin-hook-psr",
+    ":eplugin-channel",
 )
