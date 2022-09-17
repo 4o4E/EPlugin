@@ -11,19 +11,19 @@ group = Versions.group
 version = Versions.version
 
 repositories {
+    mavenLocal()
     // spigot
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     maven("https://oss.sonatype.org/content/groups/public/")
-    // BentBox
+    // BentoBox
     maven("https://repo.codemc.org/repository/maven-public/")
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
     // spigot
     compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
-    // BentBox
+    // BentoBox
     compileOnly("world.bentobox:bentobox:${Hooks.bentobox}")
     // eplugin
     implementation(rootProject)
