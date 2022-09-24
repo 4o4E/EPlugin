@@ -1,5 +1,6 @@
 package top.e404.eplugin.channel
 
+import com.google.common.io.ByteArrayDataInput
 import org.bukkit.entity.Player
 
 /**
@@ -9,9 +10,14 @@ import org.bukkit.entity.Player
  * @property name 子频道名字
  */
 abstract class ESubChannelHandler(
-    open val parent: EChannelHandler,
     open val name: String,
 ) {
+    lateinit var parent: EChannelHandler
+
+    fun parent(parent: EChannelHandler) {
+        this.parent = parent
+    }
+
     /**
      * 处理此子频道接收到的数据
      *
@@ -19,7 +25,7 @@ abstract class ESubChannelHandler(
      * @param player 玩家
      * @param message 数据
      */
-    abstract fun onPluginMessageReceived(channel: String, player: Player, message: ByteArray)
+    abstract fun onPluginMessageReceived(channel: String, player: Player, message: ByteArrayDataInput)
 
     /**
      * 发送数据

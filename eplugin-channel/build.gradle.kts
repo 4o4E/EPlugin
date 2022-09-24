@@ -21,8 +21,6 @@ repositories {
 dependencies {
     // spigot
     compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
-    // mysql
-    implementation("mysql:mysql-connector-java:8.0.30")
     // eplugin
     implementation(rootProject)
 }

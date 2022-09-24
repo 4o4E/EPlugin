@@ -1,5 +1,6 @@
 package top.e404.eplugin.channel
 
+import com.google.common.io.ByteArrayDataInput
 import com.google.common.io.ByteStreams
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -40,6 +41,12 @@ abstract class EChannelHandler(
         }
     }
 
+    fun parent() {
+        subHandlers.forEach {
+            it.parent(this)
+        }
+    }
+
     override fun onPluginMessageReceived(
         channel: String,
         player: Player,
@@ -49,10 +56,10 @@ abstract class EChannelHandler(
         val input = ByteStreams.newDataInput(message)
         val subChannel = input.readUTF()
         for (subHandler in subHandlers) if (subHandler.name == subChannel) {
-            subHandler.onPluginMessageReceived(channel, player, message)
+            subHandler.onPluginMessageReceived(channel, player, input)
             return
         }
-        onUnprocessedPluginMessageReceived(channel, player, message)
+        onUnprocessedPluginMessageReceived(channel, player, input)
     }
 
     /**
@@ -65,7 +72,7 @@ abstract class EChannelHandler(
     open fun onUnprocessedPluginMessageReceived(
         channel: String,
         player: Player,
-        message: ByteArray
+        message: ByteArrayDataInput
     ) {
         throw NoSubChannelHandlerMatchedException(channel, player, message)
     }

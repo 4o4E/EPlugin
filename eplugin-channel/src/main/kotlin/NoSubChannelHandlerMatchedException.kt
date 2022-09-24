@@ -1,5 +1,6 @@
 package top.e404.eplugin.channel
 
+import com.google.common.io.ByteArrayDataInput
 import org.bukkit.entity.Player
 
 /**
@@ -12,5 +13,5 @@ import org.bukkit.entity.Player
 class NoSubChannelHandlerMatchedException(
     val channel: String,
     val player: Player,
-    val data: ByteArray
+    val data: ByteArrayDataInput
 ) : Exception()
