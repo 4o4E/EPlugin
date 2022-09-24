@@ -45,7 +45,7 @@ afterEvaluate {
         from(components["kotlin"])
         artifact(tasks.getByName("sourcesJar"))
         artifact(tasks.getByName("javadocJar"))
-        artifactId = "eplugin"
+        artifactId = "eplugin-core"
         groupId = Versions.group
         version = Versions.version
     }
