@@ -12,4 +12,5 @@ include(
     ":eplugin-hook-placeholderapi",
     ":eplugin-hook-psr",
     ":eplugin-channel",
+    ":eplugin-mysql",
 )
