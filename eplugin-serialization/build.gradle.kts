@@ -20,7 +20,7 @@ dependencies {
     // spigot
     compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
     // serialization
     api(kotlinx("serialization-core-jvm", "1.3.3"))
     api(kotlinx("serialization-json", "1.3.3"))

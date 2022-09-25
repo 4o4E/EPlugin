@@ -32,7 +32,7 @@ dependencies {
     // jetbrains annotations
     compileOnly("org.jetbrains:annotations:23.0.0")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
 }
 
 tasks.withType<KotlinCompile> {

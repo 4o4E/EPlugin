@@ -22,7 +22,7 @@ dependencies {
     // spigot
     compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
     implementation(project(":eplugin-hook-worldguard"))
     implementation(project(":eplugin-serialization"))
     // worldguard

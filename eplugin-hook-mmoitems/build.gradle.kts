@@ -28,7 +28,7 @@ dependencies {
     // mythic lib
     compileOnly("io.lumine:MythicLib-dist:${Hooks.mythicLib}")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
 }
 
 tasks.withType<KotlinCompile> {

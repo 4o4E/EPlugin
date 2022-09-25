@@ -26,7 +26,7 @@ dependencies {
     // placeholderAPI
     compileOnly("me.clip:placeholderapi:2.11.1")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
 }
 
 tasks.withType<KotlinCompile> {

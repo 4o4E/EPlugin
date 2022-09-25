@@ -26,7 +26,7 @@ dependencies {
     // playerpoints
     compileOnly("org.black_ixx:playerpoints:${Hooks.playerPoints}")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
 }
 
 tasks.withType<KotlinCompile> {

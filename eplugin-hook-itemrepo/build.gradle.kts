@@ -24,7 +24,7 @@ dependencies {
     // itemrepo
     compileOnly("top.e404:item-repo:${Hooks.itemrepo}")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
 }
 
 tasks.withType<KotlinCompile> {

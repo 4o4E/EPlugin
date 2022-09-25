@@ -26,7 +26,7 @@ dependencies {
     // BentoBox
     compileOnly("world.bentobox:bentobox:${Hooks.bentobox}")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
 }
 
 tasks.withType<KotlinCompile> {

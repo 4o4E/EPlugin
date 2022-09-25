@@ -26,7 +26,7 @@ dependencies {
     // sf
     compileOnly("com.github.Slimefun:Slimefun4:${Hooks.slimefun}")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
 }
 
 tasks.withType<KotlinCompile> {

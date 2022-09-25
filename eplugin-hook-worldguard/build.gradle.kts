@@ -26,7 +26,7 @@ dependencies {
     // worldguard
     compileOnly("com.sk89q.worldguard:worldguard-bukkit:${Hooks.worldguard}")
     // eplugin
-    implementation(rootProject)
+    implementation(project(":eplugin-core"))
 }
 
 tasks.withType<KotlinCompile> {
