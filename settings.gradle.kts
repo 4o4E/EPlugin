@@ -1,5 +1,6 @@
 rootProject.name = "EPlugin"
 include(
+    ":eplugin-core",
     ":eplugin-serialization",
     ":eplugin-serialization-worldguard",
     ":eplugin-menu",

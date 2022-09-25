@@ -1,8 +1,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version Versions.kotlin
-    kotlin("plugin.serialization") version Versions.kotlin
+    kotlin("jvm")
+    kotlin("plugin.serialization")
     `maven-publish`
     `java-library`
 }
