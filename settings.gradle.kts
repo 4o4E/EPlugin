@@ -14,4 +14,7 @@ include(
     ":eplugin-hook-psr",
     ":eplugin-channel",
     ":eplugin-mysql",
+    // bungeecord
+    ":eplugin-bungeecord-core",
+    ":eplugin-bungeecord-serialization",
 )
