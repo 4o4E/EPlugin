@@ -24,11 +24,6 @@ dependencies {
     // bstats
     implementation("org.bstats:bstats-bukkit:3.0.0")
     implementation(kotlinx("serialization-core-jvm", "1.3.3"))
-
-    // eplugin
-    testImplementation(project(":eplugin-core"))
-    // spigot
-    testImplementation("org.spigotmc:spigot-api:${Versions.spigot}")
 }
 
 tasks.withType<KotlinCompile> {
