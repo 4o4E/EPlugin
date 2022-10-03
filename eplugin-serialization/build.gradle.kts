@@ -25,7 +25,7 @@ dependencies {
     api(kotlinx("serialization-core-jvm", "1.3.3"))
     api(kotlinx("serialization-json", "1.3.3"))
     // kaml
-    api("com.charleskorn.kaml:kaml:0.45.0")
+    api("com.charleskorn.kaml:kaml:${Versions.kaml}")
 }
 
 tasks.withType<KotlinCompile> {
