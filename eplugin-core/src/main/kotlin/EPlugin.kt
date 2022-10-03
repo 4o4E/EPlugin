@@ -52,7 +52,7 @@ abstract class EPlugin : JavaPlugin() {
     private fun unknown() = langManager.getOrSelf("message.unknown_command")
     private fun invalidArgs() = langManager.getOrSelf("message.invalid_args")
 
-    abstract fun enableDebug(): Boolean
+    abstract var debug: Boolean
     abstract val prefix: String
     abstract val debugPrefix: String
     abstract val langManager: ELangManager
@@ -90,12 +90,12 @@ abstract class EPlugin : JavaPlugin() {
 
     private fun sendDebugMessage(str: String) {
         val msg = "$debugPrefix &b${str}".color()
-        if (enableDebug()) console.sendMessage(msg)
+        if (debug) console.sendMessage(msg)
         debuggers.forEach { Bukkit.getPlayer(it)?.sendMessage(msg) }
     }
 
     fun debug(msg: () -> String) {
-        if (!enableDebug() && debuggers.isEmpty()) return
+        if (!debug && debuggers.isEmpty()) return
         sendDebugMessage(msg())
     }
 
