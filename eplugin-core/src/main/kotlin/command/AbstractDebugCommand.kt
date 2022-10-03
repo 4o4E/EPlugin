@@ -21,16 +21,24 @@ abstract class AbstractDebugCommand(
         args: Array<out String>
     ) {
         if (sender !is Player) {
+            plugin.debug = !plugin.debug
+            plugin.sendMsgWithPrefix(
+                sender,
+                plugin.langManager[
+                        if (plugin.debug) "debug.console_enable"
+                        else "debug.console_disable"
+                ]
+            )
             plugin.sendNotPlayer(sender)
             return
         }
         val senderName = sender.name
         if (senderName in plugin.debuggers) {
             plugin.debuggers.remove(senderName)
-            plugin.sendMsgWithPrefix(sender, "&f已&c禁用&bdebug&f, 你不会收到&bdebug&f消息, 再使用一次此指令以&a启用")
+            plugin.sendMsgWithPrefix(sender, plugin.langManager["debug.player_disable"])
         } else {
             plugin.debuggers.add(senderName)
-            plugin.sendMsgWithPrefix(sender, "&f已&a启用&bdebug&f, 你将会收到&bdebug&f消息, 再使用一次此指令以&c禁用")
+            plugin.sendMsgWithPrefix(sender, plugin.langManager["debug.player_enable"])
         }
     }
 }
