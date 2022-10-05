@@ -8,6 +8,7 @@ include(
     ":eplugin-hook-slimefun",
     ":eplugin-hook-mmoitems",
     ":eplugin-hook-worldguard",
+    ":eplugin-hook-worldedit",
     ":eplugin-hook-playerpoints",
     ":eplugin-hook-itemrepo",
     ":eplugin-hook-placeholderapi",
