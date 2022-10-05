@@ -11,6 +11,7 @@ import me.rothes.protocolstringreplacer.replacer.ReplaceMode
 import org.bukkit.configuration.file.YamlConfiguration
 import java.util.regex.Pattern
 
+@Suppress("UNUSED")
 class ProtocolStringReplacerConfig(
     val name: String,
     val instance: ProtocolStringReplacer,

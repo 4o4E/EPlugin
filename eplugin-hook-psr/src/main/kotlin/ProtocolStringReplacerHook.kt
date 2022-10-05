@@ -4,6 +4,7 @@ import me.rothes.protocolstringreplacer.ProtocolStringReplacer
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.hook.EHook
 
+@Suppress("UNUSED")
 open class ProtocolStringReplacerHook(
     override val plugin: EPlugin,
 ) : EHook<ProtocolStringReplacer>(plugin, "ProtocolStringReplacer") {

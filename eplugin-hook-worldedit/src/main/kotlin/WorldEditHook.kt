@@ -5,10 +5,10 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.hook.EHook
 
+@Suppress("UNUSED")
 open class WorldEditHook(
     override val plugin: EPlugin,
 ) : EHook<WorldEditPlugin>(plugin, "WorldEdit") {
     val we: WorldEdit
         get() = WorldEdit.getInstance()
-
 }
