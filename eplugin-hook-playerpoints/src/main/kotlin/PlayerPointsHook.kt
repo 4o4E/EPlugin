@@ -8,7 +8,7 @@ import top.e404.eplugin.hook.EHook
 @Suppress("UNUSED")
 open class PlayerPointsHook(
     override val plugin: EPlugin,
-) : EHook<PlayerPoints>(plugin, "PlayerPoints") {
+) : EHook(plugin, "PlayerPoints") {
     val pp: PlayerPoints
         get() = PlayerPoints.getInstance()!!
 

@@ -7,7 +7,7 @@ import top.e404.eplugin.hook.EHook
 @Suppress("UNUSED")
 open class ProtocolStringReplacerHook(
     override val plugin: EPlugin,
-) : EHook<ProtocolStringReplacer>(plugin, "ProtocolStringReplacer") {
+) : EHook(plugin, "ProtocolStringReplacer") {
     val psr: ProtocolStringReplacer
         get() = ProtocolStringReplacer.getInstance()!!
 }

@@ -4,8 +4,8 @@ import top.e404.eplugin.EPlugin
 
 open class EHookManager(
     val plugin: EPlugin,
-    vararg val hooks: EHook<*>,
-) : HashMap<String, EHook<*>>() {
+    vararg val hooks: EHook,
+) : HashMap<String, EHook>() {
     override val size: Int = hooks.size
 
     fun register() {
@@ -13,7 +13,7 @@ open class EHookManager(
         checkHooks()
     }
 
-    fun addHook(name: String, hook: EHook<*>): Boolean {
+    fun addHook(name: String, hook: EHook): Boolean {
         if (name in this) return false
         this[name] = hook
         return true

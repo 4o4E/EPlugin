@@ -11,7 +11,7 @@ import world.bentobox.bentobox.database.objects.Island
 @Suppress("UNUSED")
 open class BentoboxHook(
     override val plugin: EPlugin,
-) : EHook<BentoBox>(plugin, "BentoBox") {
+) : EHook(plugin, "BentoBox") {
     val bbox: BentoBox
         get() = BentoBox.getInstance()!!
 

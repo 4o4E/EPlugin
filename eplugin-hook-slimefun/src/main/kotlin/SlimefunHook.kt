@@ -9,7 +9,7 @@ import top.e404.eplugin.hook.EHook
 @Suppress("UNUSED")
 open class SlimefunHook(
     override val plugin: EPlugin,
-) : EHook<Slimefun>(plugin, "Slimefun") {
+) : EHook(plugin, "Slimefun") {
     val sf: Slimefun
         get() = Slimefun.instance()!!
 

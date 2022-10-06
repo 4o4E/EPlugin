@@ -10,7 +10,7 @@ import top.e404.eplugin.hook.EHook
 @Suppress("UNUSED")
 open class MmoitemsHook(
     override val plugin: EPlugin,
-) : EHook<MMOItems>(plugin, "MMOItems") {
+) : EHook(plugin, "MMOItems") {
     val mi: MMOItems
         get() = MMOItems.plugin!!
 

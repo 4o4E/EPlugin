@@ -7,7 +7,7 @@ import top.e404.eplugin.hook.EHook
 @Suppress("UNUSED")
 open class PlaceholderAPIHook(
     override val plugin: EPlugin,
-) : EHook<PlaceholderAPIPlugin>(plugin, "PlaceholderAPI") {
+) : EHook(plugin, "PlaceholderAPI") {
     val papi: PlaceholderAPIPlugin
         get() = PlaceholderAPIPlugin.getInstance()
 }

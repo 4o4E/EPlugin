@@ -11,7 +11,7 @@ import top.e404.eplugin.hook.EHook
 @Suppress("UNUSED")
 open class WorldGuardHook(
     override val plugin: EPlugin,
-) : EHook<WorldGuardPlugin>(plugin, "WorldGuard") {
+) : EHook(plugin, "WorldGuard") {
     val rg: WorldGuardPlugin
         get() = WorldGuardPlugin.inst()!!
 
