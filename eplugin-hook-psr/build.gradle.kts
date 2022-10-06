@@ -49,7 +49,7 @@ afterEvaluate {
         from(components["kotlin"])
         artifact(tasks.getByName("sourcesJar"))
         artifact(tasks.getByName("javadocJar"))
-        artifactId = "eplugin-hook-psr"
+        artifactId = project.name
         groupId = Versions.group
         version = Versions.version
     }

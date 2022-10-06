@@ -50,7 +50,7 @@ afterEvaluate {
         from(components["kotlin"])
         artifact(tasks.getByName("sourcesJar"))
         artifact(tasks.getByName("javadocJar"))
-        artifactId = "eplugin-mysql"
+        artifactId = project.name
         groupId = Versions.group
         version = Versions.version
     }
