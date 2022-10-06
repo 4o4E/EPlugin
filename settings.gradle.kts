@@ -11,6 +11,7 @@ include(
     ":eplugin-hook-worldedit",
     ":eplugin-hook-playerpoints",
     ":eplugin-hook-placeholderapi",
+    ":eplugin-hook-itemsadder",
     ":eplugin-hook-psr",
     ":eplugin-channel",
     ":eplugin-mysql",
