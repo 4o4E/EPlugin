@@ -4,6 +4,7 @@ import com.sk89q.worldedit.extent.clipboard.Clipboard
 import top.e404.eplugin.EPlugin
 import java.io.File
 
+@Suppress("UNUSED")
 open class EClipboardManager(
     open val plugin: EPlugin,
     open val folder: File,
