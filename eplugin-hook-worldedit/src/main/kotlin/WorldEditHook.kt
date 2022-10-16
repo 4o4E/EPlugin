@@ -52,9 +52,7 @@ open class WorldEditHook(
         z2: Int,
     ) {
         val weWorld = BukkitAdapter.adapt(world)
-        WorldEdit.getInstance().newEditSession(weWorld).apply {
-            blockChangeLimit = -1
-        }.use { session ->
+        WorldEdit.getInstance().newEditSession(weWorld).use { session ->
             session.setBlocks(
                 CuboidRegion(
                     weWorld,
