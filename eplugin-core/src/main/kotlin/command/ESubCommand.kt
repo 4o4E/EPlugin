@@ -10,9 +10,10 @@ import top.e404.eplugin.EPlugin
  *
  * @property plugin 指令所属于的插件实例
  * @property name 指令名字(补全时使用)
- * @property usage 使用方法
- * @property perms 所需权限
  * @param regex 匹配正则
+ * @property usage 使用方法
+ * @property mustByPlayer 是否只能由玩家使用
+ * @property perms 所需权限
  */
 abstract class ESubCommand(
     override val plugin: EPlugin,
