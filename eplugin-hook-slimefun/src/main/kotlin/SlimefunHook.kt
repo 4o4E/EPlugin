@@ -2,9 +2,11 @@ package top.e404.eplugin.hook.slimefun
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun
+import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.hook.EHook
+import top.e404.eplugin.inventory.take
 
 @Suppress("UNUSED")
 open class SlimefunHook(
@@ -15,4 +17,19 @@ open class SlimefunHook(
 
     fun getItem(id: String) = SlimefunItem.getById(id)
     fun getId(itemStack: ItemStack) = SlimefunItem.getByItem(itemStack)?.id
+
+    fun count(
+        inv: Inventory,
+        id: String,
+    ) = inv.count { item ->
+        getId(item) == id
+    }
+
+    fun take(
+        inv: Inventory,
+        id: String,
+        amount: Int
+    ) = inv.take(amount) { item ->
+        getId(item) == id
+    }
 }
