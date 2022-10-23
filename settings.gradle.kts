@@ -7,6 +7,7 @@ include(
     ":eplugin-hook-bentobox",
     ":eplugin-hook-slimefun",
     ":eplugin-hook-mmoitems",
+    ":eplugin-hook-mythicmobs",
     ":eplugin-hook-worldguard",
     ":eplugin-hook-worldedit",
     ":eplugin-hook-playerpoints",
