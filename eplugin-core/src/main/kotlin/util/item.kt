@@ -16,6 +16,8 @@ fun materialOf(type: String) = try {
     null
 }
 
+fun Material.toItemStack() = ItemStack(this)
+
 var ItemStack.lore
     get() = itemMeta?.lore ?: emptyList()
     set(lore) {
