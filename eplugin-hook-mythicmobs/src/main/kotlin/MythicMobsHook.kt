@@ -9,7 +9,7 @@ import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.hook.EHook
-import top.e404.eplugin.inventory.take
+import top.e404.eplugin.util.take
 import kotlin.jvm.optionals.getOrNull
 
 @Suppress("UNUSED")
