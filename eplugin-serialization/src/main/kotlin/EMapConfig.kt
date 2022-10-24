@@ -48,4 +48,5 @@ abstract class EMapConfig<K : Any, V : Any>(
 
     fun getOrPut(key: K, defaultValue: () -> V) = config.getOrPut(key, defaultValue)
     fun getOrDefault(key: K, value: () -> V) = config.getOrDefault(key, value)
+    fun getOrThrow(key: K) = config[key] ?: throw NoSuchElementException("cannot find element with key $key")
 }
