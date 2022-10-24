@@ -2,6 +2,7 @@ rootProject.name = "EPlugin"
 include(
     ":eplugin-core",
     ":eplugin-serialization",
+    ":eplugin-serialization-worldedit",
     ":eplugin-serialization-worldguard",
     ":eplugin-menu",
     ":eplugin-hook-bentobox",
