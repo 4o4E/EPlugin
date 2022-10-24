@@ -16,6 +16,8 @@ fun materialOf(type: String) = try {
     null
 }
 
+fun itemStackOf(type: String) = materialOf(type)?.toItemStack()
+
 fun Material.toItemStack() = ItemStack(this)
 
 var ItemStack.lore
