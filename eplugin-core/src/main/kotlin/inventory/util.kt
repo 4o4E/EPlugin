@@ -31,6 +31,7 @@ fun Inventory.take(amount: Int, condition: (ItemStack) -> Boolean): Boolean {
             return@forEachIndexed
         }
         item.amount -= tmp
+        setItem(index, item)
         return true
     }
     return true
