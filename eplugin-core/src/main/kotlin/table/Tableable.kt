@@ -23,11 +23,6 @@ fun <T> Collection<Tableable<T>>.choose(
     // 允许重复
     if (repeat) {
         while (collection.size < amount) {
-            //forEach {
-            //    if (Random.nextInt(all) < it.weight) collection.add(it.generator())
-            //    if (collection.size >= amount) return@forEach
-            //}
-            //return collection
             var t = Random.nextInt(all)
             for (item in this) {
                 t -= item.weight
