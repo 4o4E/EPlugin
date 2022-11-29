@@ -13,8 +13,18 @@ import top.e404.eplugin.menu.menu.Menu
  * @property index 在菜单中的下标
  */
 abstract class MenuButton(override var menu: Menu) : MenuSlot(menu) {
-    override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent) = onClick(slot, event)
-    override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent) = onClick(slot, event)
+    override fun onPickup(
+        clicked: ItemStack,
+        slot: Int,
+        event: InventoryClickEvent
+    ) = onClick(slot, event)
+
+    override fun onPutin(
+        cursor: ItemStack,
+        slot: Int,
+        event: InventoryClickEvent
+    ) = onClick(slot, event)
+
     override fun onSwitch(
         clicked: ItemStack,
         cursor: ItemStack,

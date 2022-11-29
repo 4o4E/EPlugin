@@ -26,9 +26,23 @@ abstract class MenuSlot(
      */
     abstract fun updateItem()
 
-    abstract override fun onClick(slot: Int, event: InventoryClickEvent): Boolean?
-    abstract override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent): Boolean?
-    abstract override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent): Boolean?
+    abstract override fun onClick(
+        slot: Int,
+        event: InventoryClickEvent
+    ): Boolean?
+
+    abstract override fun onPickup(
+        clicked: ItemStack,
+        slot: Int,
+        event: InventoryClickEvent
+    ): Boolean?
+
+    abstract override fun onPutin(
+        cursor: ItemStack,
+        slot: Int,
+        event: InventoryClickEvent
+    ): Boolean?
+
     abstract override fun onSwitch(
         clicked: ItemStack,
         cursor: ItemStack,
