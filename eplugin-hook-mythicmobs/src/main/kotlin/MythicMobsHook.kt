@@ -5,6 +5,7 @@ import io.lumine.mythic.api.volatilecode.handlers.VolatileItemHandler
 import io.lumine.mythic.bukkit.BukkitAPIHelper
 import io.lumine.mythic.bukkit.MythicBukkit
 import org.bukkit.Location
+import org.bukkit.entity.Entity
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.EPlugin
@@ -37,6 +38,8 @@ open class MythicMobsHook(
     }
 
     fun getMythicMob(type: String) = apiHelper.getMythicMob(type)
+
+    fun getMythicMobByEntity(entity: Entity) = apiHelper.getMythicMobInstance(entity)
 
     fun spawnMythicMob(type: String, location: Location) = apiHelper.spawnMythicMob(type, location)
 
