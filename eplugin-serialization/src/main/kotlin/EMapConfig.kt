@@ -9,6 +9,7 @@ import kotlinx.serialization.builtins.MapSerializer
 import org.bukkit.command.CommandSender
 import top.e404.eplugin.EPlugin
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * 代表一个解析成文本的配置文件
@@ -42,7 +43,7 @@ abstract class EMapConfig<K : Any, V : Any>(
         saveDefault(sender)
         @Suppress("UNCHECKED_CAST")
         config = format.decodeFromString(serializer, file.readText()) as MutableMap<K, V>
-        if (synchronized) config = Collections.synchronizedMap(config)
+        if (synchronized) config = ConcurrentHashMap(config)
         onLoad(config, sender)
     }
 
