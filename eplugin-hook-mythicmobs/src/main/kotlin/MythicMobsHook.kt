@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.hook.EHook
 import top.e404.eplugin.util.take
-import kotlin.jvm.optionals.getOrNull
 
 @Suppress("UNUSED")
 open class MythicMobsHook(
@@ -29,8 +28,7 @@ open class MythicMobsHook(
     val apiHelper: BukkitAPIHelper
         get() = mm.apiHelper
 
-    @ExperimentalStdlibApi
-    fun getItem(name: String) = itemManager.getItem(name).getOrNull()
+    fun getItem(name: String) = itemManager.getItem(name).let { if (it.isPresent) it.get() else null }
 
     fun getMmId(item: ItemStack) = itemHandler.getNBTData(item).let { tag ->
         if (tag.containsKey("MYTHIC_TYPE")) tag.getString("MYTHIC_TYPE")
