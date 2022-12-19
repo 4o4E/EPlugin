@@ -15,6 +15,7 @@ include(
     ":eplugin-hook-placeholderapi",
     ":eplugin-hook-itemsadder",
     ":eplugin-hook-psr",
+    ":eplugin-hook-nova",
     ":eplugin-channel",
     ":eplugin-mysql",
     // bungeecord
