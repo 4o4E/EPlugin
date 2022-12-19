@@ -2,6 +2,7 @@ package top.e404.eplugin.hook.slimefun
 
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun
+import org.bukkit.block.Block
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.EPlugin
@@ -17,6 +18,13 @@ open class SlimefunHook(
 
     fun getItem(id: String) = SlimefunItem.getById(id)
     fun getId(itemStack: ItemStack) = SlimefunItem.getByItem(itemStack)?.id
+    fun hasBlock(block: Block) = Slimefun.getBlockDataService()
+        .getBlockData(block)
+        .isPresent
+
+    fun getIdByBlock(block: Block) = Slimefun.getBlockDataService()
+        .getBlockData(block)
+        .let { if (it.isPresent) it.get() else null }
 
     fun count(
         inv: Inventory,
