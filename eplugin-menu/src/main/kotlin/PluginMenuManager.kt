@@ -36,6 +36,27 @@ open class PluginMenuManager(override val plugin: EPlugin) : EListener(plugin) {
         p.openInventory(m.inv)
     }
 
+    /**
+     * 若玩家打开了管理器管理的菜单, 则关闭菜单
+     *
+     * @param p 玩家
+     */
+    fun closeMenu(p: Player) {
+        if (menus.containsKey(p)) {
+            p.closeInventory()
+            menus.remove(p)
+        }
+    }
+
+    /**
+     * 插件卸载时应调用此指令关闭所有已打开的菜单
+     */
+    fun close() {
+        menus.keys.toList().forEach {
+            closeMenu(it)
+        }
+    }
+
     // 打开菜单
     @EventHandler
     fun InventoryOpenEvent.onEvent() {
