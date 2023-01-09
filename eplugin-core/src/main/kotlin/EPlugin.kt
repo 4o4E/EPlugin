@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import top.e404.eplugin.config.ELangManager
+import top.e404.eplugin.util.forEachOnline
 import java.util.logging.Level
 
 abstract class EPlugin : JavaPlugin() {
@@ -87,6 +88,16 @@ abstract class EPlugin : JavaPlugin() {
      * 接受debug信息的玩家
      */
     val debuggers = mutableSetOf<String>()
+
+    /**
+     * 广播消息(包括控制台和玩家)
+     *
+     * @param message 消息
+     */
+    fun broadcastMsg(message: String) {
+        info(message)
+        forEachOnline { sendMsgWithPrefix(it, message) }
+    }
 
     private fun sendDebugMessage(str: String) {
         val msg = "$debugPrefix &b${str}".color()
