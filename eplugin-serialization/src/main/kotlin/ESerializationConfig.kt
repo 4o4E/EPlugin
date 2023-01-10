@@ -3,6 +3,7 @@
 package top.e404.eplugin.config
 
 import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.YamlConfiguration
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.StringFormat
 import org.bukkit.command.CommandSender
@@ -21,7 +22,7 @@ abstract class ESerializationConfig<T : Any>(
     override val path: String,
     override val default: ConfigDefault = EmptyConfig,
     open val serializer: KSerializer<in T>,
-    open val format: StringFormat = Yaml.default
+    open val format: StringFormat = Yaml(configuration = YamlConfiguration(strictMode = false)),
 ) : AbstractEConfig(plugin, path, default) {
     lateinit var config: T
 
