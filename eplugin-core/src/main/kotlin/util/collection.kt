@@ -230,3 +230,27 @@ fun <K, V> Map<K, V>.selectByTo(
     }
     return list
 }
+
+fun <T> List<T>.asMutableList() = when (this) {
+    is MutableList<T> -> this
+    else -> ArrayList(this)
+}
+
+@Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
+fun <T, R> Iterable<T>.mapMutable(transform: (T) -> R): MutableList<R> {
+    return mapTo(ArrayList(collectionSizeOrDefault(10)), transform)
+}
+
+fun <T, R> Collection<T>.mapMutable(transform: (T) -> R): MutableList<R> {
+    if (this is MutableList) return mapMutable(transform)
+    return mapTo(ArrayList(size), transform)
+}
+
+@Suppress("UNCHECKED_CAST")
+fun <T, R> MutableList<T>.mapMutable(transform: (T) -> R): MutableList<R> {
+    val list = this as MutableList<R>
+    forEachIndexed { index, t ->
+        list[index] = transform(t)
+    }
+    return list
+}
