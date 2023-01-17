@@ -9,6 +9,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 import top.e404.eplugin.config.ELangManager
 import top.e404.eplugin.util.forEachOnline
+import top.e404.eplugin.util.forEachOp
 import java.util.logging.Level
 
 abstract class EPlugin : JavaPlugin() {
@@ -98,6 +99,13 @@ abstract class EPlugin : JavaPlugin() {
         info(message)
         forEachOnline { sendMsgWithPrefix(it, message) }
     }
+
+    /**
+     * 向在线的op发送消息
+     *
+     * @param message 消息
+     */
+    fun sendOpMsg(message: String) = forEachOp { sendMsgWithPrefix(it, message) }
 
     private fun sendDebugMessage(str: String) {
         val msg = "$debugPrefix &b${str}".color()
