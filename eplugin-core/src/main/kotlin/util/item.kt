@@ -2,6 +2,8 @@
 
 package top.e404.eplugin.util
 
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -132,3 +134,7 @@ fun Inventory.take(amount: Int, condition: (ItemStack) -> Boolean): Boolean {
     }
     return true
 }
+
+private val type by lazy { object : TypeToken<Map<String, Any>>() {}.type }
+fun serializeToJson(item: ItemStack, gson: Gson) = item.serialize().let { gson.toJson(it)!! }
+fun deserializeFromJson(json: String, g: Gson = gson) = g.fromJson<Map<String, Any>>(json, type)!!.let { ItemStack.deserialize(it) }
