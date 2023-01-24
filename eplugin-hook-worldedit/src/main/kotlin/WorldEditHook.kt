@@ -20,7 +20,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-
 @Suppress("UNUSED")
 open class WorldEditHook(
     override val plugin: EPlugin,
