@@ -22,7 +22,7 @@ import top.e404.eplugin.EPlugin.Companion.formatAsConst
  */
 
 object LocationMinSerialization : KSerializer<Location> {
-    override val descriptor = PrimitiveSerialDescriptor("BukkitLocationMin", PrimitiveKind.STRING)
+    override val descriptor = PrimitiveSerialDescriptor("top.e404.eplugin.config.serialization.LocationMinSerialization", PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder): Location {
         val split = decoder.decodeString().split(";")
@@ -41,9 +41,58 @@ object LocationMinSerialization : KSerializer<Location> {
     }
 }
 
+/**
+ * 位置序列化器
+ */
+object LocationSerialization : KSerializer<Location> {
+    override val descriptor: SerialDescriptor =
+        buildClassSerialDescriptor("top.e404.eplugin.config.serialization.LocationSerialization") {
+            element<String>("world")
+            element<Double>("x")
+            element<Double>("y")
+            element<Double>("z")
+            element<Float>("yaw")
+            element<Float>("pitch")
+        }
+
+    override fun serialize(encoder: Encoder, value: Location) =
+        encoder.encodeStructure(descriptor) {
+            encodeStringElement(descriptor, 0, value.world?.name ?: "null")
+            encodeDoubleElement(descriptor, 1, value.x)
+            encodeDoubleElement(descriptor, 2, value.y)
+            encodeDoubleElement(descriptor, 3, value.z)
+            encodeFloatElement(descriptor, 4, value.yaw)
+            encodeFloatElement(descriptor, 5, value.pitch)
+        }
+
+    override fun deserialize(decoder: Decoder): Location =
+        decoder.decodeStructure(descriptor) {
+            var world = ""
+            var x = 0.0
+            var y = 0.0
+            var z = 0.0
+            var yaw = 0F
+            var pitch = 0F
+            while (true) when (val index = decodeElementIndex(descriptor)) {
+                0 -> world = decodeStringElement(descriptor, index)
+                1 -> x = decodeDoubleElement(descriptor, index)
+                2 -> y = decodeDoubleElement(descriptor, index)
+                3 -> z = decodeDoubleElement(descriptor, index)
+                4 -> yaw = decodeFloatElement(descriptor, index)
+                5 -> pitch = decodeFloatElement(descriptor, index)
+                CompositeDecoder.DECODE_DONE -> break
+                else -> error("Unexpected index: $index")
+            }
+            Location(Bukkit.getWorld(world), x, y, z, yaw, pitch)
+        }
+}
+
+/**
+ * 方块位置序列化器(忽略pitch和yaw)
+ */
 object LocationBlockSerialization : KSerializer<Location> {
     override val descriptor: SerialDescriptor =
-        buildClassSerialDescriptor("Color") {
+        buildClassSerialDescriptor("top.e404.eplugin.config.serialization.LocationBlockSerialization") {
             element<String>("world")
             element<Int>("x")
             element<Int>("y")
