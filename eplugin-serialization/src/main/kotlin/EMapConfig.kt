@@ -2,7 +2,6 @@
 
 package top.e404.eplugin.config
 
-import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.StringFormat
 import kotlinx.serialization.builtins.MapSerializer
@@ -25,8 +24,8 @@ abstract class EMapConfig<K : Any, V : Any>(
     default: ConfigDefault = EmptyConfig,
     kSerializer: KSerializer<K>,
     vSerializer: KSerializer<V>,
-    format: StringFormat = Yaml.default,
-    val synchronized: Boolean = false
+    format: StringFormat = defaultYaml,
+    val synchronized: Boolean = false,
 ) : ESerializationConfig<MutableMap<K, V>>(
     plugin,
     path,

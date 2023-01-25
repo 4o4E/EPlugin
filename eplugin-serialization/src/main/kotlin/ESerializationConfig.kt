@@ -22,8 +22,12 @@ abstract class ESerializationConfig<T : Any>(
     override val path: String,
     override val default: ConfigDefault = EmptyConfig,
     open val serializer: KSerializer<in T>,
-    open val format: StringFormat = Yaml(configuration = YamlConfiguration(strictMode = false)),
+    open val format: StringFormat = defaultYaml,
 ) : AbstractEConfig(plugin, path, default) {
+    companion object {
+        val defaultYaml by lazy { Yaml(configuration = YamlConfiguration(strictMode = false)) }
+    }
+
     lateinit var config: T
 
     /**

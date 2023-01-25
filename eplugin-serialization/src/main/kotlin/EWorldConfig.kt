@@ -2,7 +2,6 @@
 
 package top.e404.eplugin.config
 
-import com.charleskorn.kaml.Yaml
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.StringFormat
 import top.e404.eplugin.EPlugin
@@ -20,7 +19,7 @@ abstract class EWorldConfig<F, T : WorldConfig<F>>(
     override val path: String,
     override val default: ConfigDefault = EmptyConfig,
     override val serializer: KSerializer<in T>,
-    override val format: StringFormat = Yaml.default
+    override val format: StringFormat = defaultYaml,
 ) : ESerializationConfig<T>(plugin, path, default, serializer, format) {
     fun <R> getConfig(world: String, block: F.() -> R): R {
         val wc = config.world[world] ?: config.global
