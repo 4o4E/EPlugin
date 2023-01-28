@@ -7,6 +7,7 @@ include(
     ":eplugin-menu",
     ":eplugin-hook-bentobox",
     ":eplugin-hook-slimefun",
+    ":eplugin-hook-mmocore",
     ":eplugin-hook-mmoitems",
     ":eplugin-hook-mythicmobs",
     ":eplugin-hook-worldguard",
@@ -16,6 +17,8 @@ include(
     ":eplugin-hook-itemsadder",
     ":eplugin-hook-psr",
     ":eplugin-hook-nova",
+    ":eplugin-hook-adyeshach",
+    ":eplugin-hook-orangeengine",
     ":eplugin-channel",
     ":eplugin-mysql",
     // bungeecord
