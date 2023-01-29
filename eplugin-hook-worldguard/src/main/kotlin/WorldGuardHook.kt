@@ -5,6 +5,7 @@ import com.sk89q.worldguard.WorldGuard
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin
 import com.sk89q.worldguard.protection.regions.RegionContainer
 import org.bukkit.Location
+import org.bukkit.World
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.hook.EHook
 
@@ -22,4 +23,8 @@ open class WorldGuardHook(
         container.createQuery()
             .getApplicableRegions(BukkitAdapter.adapt(location))
             .maxByOrNull { it.priority }
+
+    fun getRegion(world: World, name: String) =
+        container.get(BukkitAdapter.adapt(world))
+            ?.getRegion(name)
 }
