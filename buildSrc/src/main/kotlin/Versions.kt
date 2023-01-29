@@ -12,7 +12,7 @@ object Hooks {
     const val mmocore = "1.9.3"
     const val mythicLib = "1.4"
     const val mythicmobs = "5.1.4"
-    const val worldguard = "7.0.8-SNAPSHOT"
+    const val worldguard = "7.1.0-SNAPSHOT"
     const val worldedit = "7.2.7"
     const val bentobox = "1.20.1-SNAPSHOT"
     const val playerPoints = "3.2.4"
