@@ -1,6 +1,7 @@
 package top.e404.eplugin.hook.mmocore
 
 import net.Indyuce.mmocore.MMOCore
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.hook.EHook
@@ -12,5 +13,13 @@ open class MmocoreHook(
     val mmoCore: MMOCore
         get() = MMOCore.plugin!!
 
-    fun getLevel(p: Player) = mmoCore.dataProvider.dataManager.get(p.uniqueId).level
+    fun getPlayerData(p: OfflinePlayer) = mmoCore.dataProvider.dataManager.get(p.uniqueId)!!
+
+    fun getLevel(p: Player) = getPlayerData(p).level
+    fun getMana(p: Player) = getPlayerData(p).mana
+    fun setMana(p: Player, value: Double) {
+        getPlayerData(p).mana = value
+    }
+
+    fun getMaxMana(p: Player) = getPlayerData(p).stats.getStat("MAX_MANA")
 }
