@@ -17,7 +17,7 @@ open class MmoitemsHook(
         get() = MMOItems.plugin!!
 
     fun getMmoItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)
-    fun getItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)?.newBuilder()?.build(false)
+    fun getItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)?.newBuilder()?.build()
     fun getNbtItem(itemStack: ItemStack) = NBTItem.get(itemStack)!!
 
     /**
