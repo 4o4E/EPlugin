@@ -231,6 +231,32 @@ fun <K, V> Map<K, V>.selectByTo(
     return list
 }
 
+/**
+ * 判断列表t和r是否一一对应
+ *
+ * @param condition 判断t, r是否对应
+ */
+fun <T, R> matches(
+    tList: Collection<T>,
+    rList: Collection<R>,
+    condition: (T, R) -> Boolean,
+): Boolean {
+    if (tList.size != rList.size) return false
+    val tl = tList.toMutableList()
+    val rl = rList.toMutableList()
+    val ti = tl.iterator()
+    a@ for (t in ti) {
+        val ri = rl.iterator()
+        for (r in ri) if (condition(t, r)) {
+            ti.remove()
+            ri.remove()
+            continue@a
+        }
+        return false
+    }
+    return true
+}
+
 fun <T> List<T>.asMutableList() = when (this) {
     is MutableList<T> -> this
     else -> ArrayList(this)
