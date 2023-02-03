@@ -14,5 +14,9 @@ open class OrangeEngineHook(
     val modelManager: ModelManager
         get() = OrangeEngineAPI.getModelManager()!!
 
-    fun setModel(id: UUID, model: String, type: ModelType = ModelType.BLOCKBENCH) = modelManager.addModelEntity(id, model, type)!!
+    fun setModel(
+        id: UUID,
+        model: String,
+        type: ModelType = ModelType.BLOCKBENCH,
+    ) = modelManager.addModelEntity(id, model, type)!!
 }
