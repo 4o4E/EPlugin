@@ -19,8 +19,12 @@ open class MmoitemsHook(
     fun getMmoItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)
     fun getItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)?.newBuilder()?.build(false)
     fun getNbtItem(itemStack: ItemStack) = NBTItem.get(itemStack)!!
-    val NBTItem.id: String?
-        get() = getString("MMOITEMS_ITEM_ID")
+
+    /**
+     * 需要判断是否为""
+     */
+    val NBTItem.id: String
+        get() = getString("MMOITEMS_ITEM_ID")!!
 
     fun getId(itemStack: ItemStack) = getNbtItem(itemStack).id
     fun getType(itemStack: ItemStack) = getNbtItem(itemStack).type
