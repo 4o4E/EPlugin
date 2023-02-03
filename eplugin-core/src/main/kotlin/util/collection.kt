@@ -62,7 +62,7 @@ fun getPageCount(size: Int, pageSize: Int): Int {
 fun <T> Iterable<T>.select(
     amount: Int,
     repeat: Boolean,
-    getWeight: (T) -> Int
+    getWeight: (T) -> Int,
 ): MutableList<T> {
     val list = ArrayList<T>(amount)
     // 允许重复
@@ -107,7 +107,7 @@ fun <T> Iterable<T>.select(
 fun <K, V> Map<K, V>.select(
     amount: Int,
     repeat: Boolean,
-    getWeight: (K, V) -> Int
+    getWeight: (K, V) -> Int,
 ): MutableMap<K, V> {
     val map = HashMap<K, V>(amount)
     // 允许重复
@@ -152,7 +152,7 @@ fun <K, V> Map<K, V>.select(
 fun <K, V> Map<K, V>.selectWithTo(
     amount: Int,
     repeat: Boolean,
-    getWeight: (K, V) -> Int
+    getWeight: (K, V) -> Int,
 ): MutableList<V> {
     val list = ArrayList<V>(amount)
     // 允许重复
@@ -197,7 +197,7 @@ fun <K, V> Map<K, V>.selectWithTo(
 fun <K, V> Map<K, V>.selectByTo(
     amount: Int,
     repeat: Boolean,
-    getWeight: (K, V) -> Int
+    getWeight: (K, V) -> Int,
 ): MutableList<K> {
     val list = ArrayList<K>(amount)
     // 允许重复
@@ -255,6 +255,27 @@ fun <T, R> matches(
         return false
     }
     return true
+}
+
+fun <T : Any> Collection<T>.merge(
+    prefix: T?,
+    separator: T,
+    suffix: T?,
+): MutableList<T> {
+    val iterator = iterator()
+    var size = size * 2 - 1
+    prefix?.let { ++size }
+    suffix?.let { ++size }
+    val list = ArrayList<T>(size)
+    prefix?.let { list.add(it) }
+    while (true) {
+        val next = iterator.next()
+        list.add(next)
+        if (!iterator.hasNext()) break
+        list.add(separator)
+    }
+    suffix?.let { list.add(it) }
+    return list
 }
 
 fun <T> List<T>.asMutableList() = when (this) {
