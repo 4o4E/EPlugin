@@ -16,14 +16,20 @@ open class MmoitemsHook(
     val mi: MMOItems
         get() = MMOItems.plugin!!
 
-    fun getItem(type: String, id: String) = MMOItems.plugin.getMMOItem(Type.get(type), id)
+    fun getMmoItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)
+    fun getItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)?.newBuilder()?.build(false)
     fun getNbtItem(itemStack: ItemStack) = NBTItem.get(itemStack)!!
-    fun NBTItem.getMiId() = getString("MMOITEMS_ITEM_ID")!!
+    val NBTItem.id: String?
+        get() = getString("MMOITEMS_ITEM_ID")
+
+    fun getId(itemStack: ItemStack) = getNbtItem(itemStack).id
+    fun getType(itemStack: ItemStack) = getNbtItem(itemStack).type
+    fun NBTItem.equals(type: String, id: String) = id == this.id && type == this.type
 
     fun count(
         inv: Inventory,
         type: String,
-        id: String
+        id: String,
     ) = inv.count { item ->
         getNbtItem(item).let {
             it.type == type && it.getString("MMOITEMS_ITEM_ID") == id
