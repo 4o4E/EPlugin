@@ -5,5 +5,5 @@ import org.bukkit.event.Listener
 import top.e404.eplugin.EPlugin
 
 abstract class EListener(open val plugin: EPlugin) : Listener {
-    fun register() = Bukkit.getPluginManager().registerEvents(this, plugin)
+    open fun register() = Bukkit.getPluginManager().registerEvents(this, plugin)
 }
