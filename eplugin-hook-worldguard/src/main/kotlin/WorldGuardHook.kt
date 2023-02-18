@@ -19,9 +19,12 @@ open class WorldGuardHook(
     val container: RegionContainer
         get() = WorldGuard.getInstance().platform.regionContainer
 
-    fun getRegion(location: Location) =
+    fun getRegions(location: Location) =
         container.createQuery()
             .getApplicableRegions(BukkitAdapter.adapt(location))
+
+    fun getRegion(location: Location) =
+        getRegions(location)
             .maxByOrNull { it.priority }
 
     fun getRegion(world: World, name: String) =
