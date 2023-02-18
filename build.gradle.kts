@@ -53,3 +53,7 @@ subprojects {
         kotlinOptions.jvmTarget = "1.8"
     }
 }
+
+tasks.create("eplugin-publish") {
+    subprojects.forEach { dependsOn(it.tasks.publishToMavenLocal) }
+}
