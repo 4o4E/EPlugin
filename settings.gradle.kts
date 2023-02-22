@@ -19,6 +19,7 @@ include(
     ":eplugin-hook-nova",
     ":eplugin-hook-adyeshach",
     ":eplugin-hook-orangeengine",
+    ":eplugin-hook-vault",
     ":eplugin-channel",
     ":eplugin-mysql",
     // bungeecord
