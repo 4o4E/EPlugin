@@ -16,8 +16,7 @@ import top.e404.eplugin.util.take
 open class MythicMobsHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "MythicMobs") {
-    val mm: MythicBukkit
-        get() = MythicBukkit.inst()
+    val mm inline get() = MythicBukkit.inst()
 
     val itemManager: ItemManager
         get() = mm.itemManager

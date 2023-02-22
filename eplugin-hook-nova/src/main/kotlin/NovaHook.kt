@@ -9,8 +9,7 @@ import xyz.xenondevs.nova.api.Nova
 open class NovaHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "Nova") {
-    val nova: Nova
-        get() = Nova.getNova()
+    val nova inline get() = Nova.getNova()
 
     fun getNovaBlock(location: Location) = nova.blockManager.getBlock(location)
     fun hasNovaBlock(location: Location) = nova.blockManager.hasBlock(location)

@@ -13,8 +13,7 @@ import world.bentobox.bentobox.database.objects.Island
 open class BentoboxHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "BentoBox") {
-    val bbox: BentoBox
-        get() = BentoBox.getInstance()!!
+    val bbox inline get() = BentoBox.getInstance()!!
 
     fun getUser(p: OfflinePlayer) = bbox.playersManager.getUser(p.uniqueId)
     fun getUser(name: String) = bbox.playersManager.getUser(name)

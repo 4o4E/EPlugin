@@ -8,6 +8,5 @@ import top.e404.eplugin.hook.EHook
 open class ProtocolStringReplacerHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "ProtocolStringReplacer") {
-    val psr: ProtocolStringReplacer
-        get() = ProtocolStringReplacer.getInstance()!!
+    val psr inline get() = ProtocolStringReplacer.getInstance()!!
 }

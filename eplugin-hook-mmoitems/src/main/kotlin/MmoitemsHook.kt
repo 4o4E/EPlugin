@@ -13,8 +13,7 @@ import top.e404.eplugin.util.take
 open class MmoitemsHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "MMOItems") {
-    val mi: MMOItems
-        get() = MMOItems.plugin!!
+    val mi inline get() = MMOItems.plugin!!
 
     fun getMmoItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)
     fun getItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)?.newBuilder()?.build()

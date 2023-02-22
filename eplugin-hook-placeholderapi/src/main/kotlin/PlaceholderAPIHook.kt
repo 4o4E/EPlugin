@@ -10,8 +10,7 @@ import top.e404.eplugin.hook.EHook
 open class PlaceholderAPIHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "PlaceholderAPI") {
-    val papi: PlaceholderAPIPlugin
-        get() = PlaceholderAPIPlugin.getInstance()
+    val papi inline get() = PlaceholderAPIPlugin.getInstance()
 
     fun placeholder(src: String, p: Player) = PlaceholderAPI.setPlaceholders(p, src)
 }

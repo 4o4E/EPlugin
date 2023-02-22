@@ -10,8 +10,7 @@ import top.e404.eplugin.hook.EHook
 open class MmocoreHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "MMOCore") {
-    val mmoCore: MMOCore
-        get() = MMOCore.plugin!!
+    val mmoCore inline get() = MMOCore.plugin!!
 
     fun getPlayerData(p: OfflinePlayer) = mmoCore.dataProvider.dataManager.get(p.uniqueId)!!
 

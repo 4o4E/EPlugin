@@ -10,8 +10,7 @@ import top.e404.eplugin.hook.EHook
 open class AdyeshachHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "Adyeshach") {
-    val api: AdyeshachAPI
-        get() = Adyeshach.api()
+    val api inline get() = Adyeshach.api()
 
 
     /**

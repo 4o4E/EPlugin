@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.hook.worldedit
 
 import com.sk89q.worldedit.EditSession
@@ -20,12 +22,10 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-@Suppress("UNUSED")
 open class WorldEditHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "WorldEdit") {
-    val we: WorldEdit
-        get() = WorldEdit.getInstance()
+    val we inline get() = WorldEdit.getInstance()!!
 
     fun clear(
         world: World,

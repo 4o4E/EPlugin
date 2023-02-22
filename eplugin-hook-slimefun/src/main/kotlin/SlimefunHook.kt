@@ -13,8 +13,7 @@ import top.e404.eplugin.util.take
 open class SlimefunHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "Slimefun") {
-    val sf: Slimefun
-        get() = Slimefun.instance()!!
+    val sf inline get() = Slimefun.instance()!!
 
     fun getItem(id: String) = SlimefunItem.getById(id)
     fun getId(itemStack: ItemStack) = SlimefunItem.getByItem(itemStack)?.id
