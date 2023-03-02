@@ -1,6 +1,6 @@
 # EPlugin
 
-> 简单的 `paper`-`kotlin` 插件框架
+> 简单的 `spigot`-`kotlin` 插件框架
 
 抽象我常用的方法, 使代码复用
 
