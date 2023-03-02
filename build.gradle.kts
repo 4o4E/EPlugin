@@ -18,6 +18,11 @@ allprojects {
         mavenCentral()
         mavenLocal()
     }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.freeCompilerArgs.plus("-Xlint:-unused")
+    }
 }
 
 subprojects {
@@ -34,7 +39,6 @@ subprojects {
     }
 
     java {
-        withJavadocJar()
         withSourcesJar()
     }
 
@@ -42,15 +46,10 @@ subprojects {
         publishing.publications.create<MavenPublication>("java") {
             from(components["kotlin"])
             artifact(tasks.getByName("sourcesJar"))
-            artifact(tasks.getByName("javadocJar"))
             artifactId = project.name
             groupId = Versions.group
             version = Versions.version
         }
-    }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
     }
 }
 
