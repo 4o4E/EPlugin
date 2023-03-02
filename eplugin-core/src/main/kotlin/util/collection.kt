@@ -301,3 +301,25 @@ fun <T, R> MutableList<T>.mapMutable(transform: (T) -> R): MutableList<R> {
     }
     return list
 }
+
+inline fun <reified T> Iterable<Any>.firstIsInstance() = first { it is T } as T
+inline fun <reified T> Iterable<Any>.firstIsInstanceOrNull() = firstOrNull { it is T } as T?
+inline fun <reified T> Iterable<Any>.anyIsInstance() = any { it is T }
+
+fun <T> Iterable<T>.alsoRemove(vararg target: T) = run {
+    if (this is MutableCollection) {
+        target.forEach(::remove)
+        return@run this
+    }
+    toMutableList().also { target.forEach(it::remove) }
+}
+
+fun <T> Iterable<T>.alsoRemove(block: (T) -> Boolean) = run {
+    if (this is MutableCollection) {
+        this.removeIf(block)
+        return@run this
+    }
+    toMutableList().also { list ->
+        list.removeIf(block)
+    }
+}
