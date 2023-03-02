@@ -46,7 +46,7 @@ val emptyItem: ItemStack
 fun buildItemStack(
     type: Material,
     amount: Int = 1,
-    name: String?,
+    name: String? = null,
     lore: List<String>? = null,
     block: ItemMeta.() -> Unit = {}
 ) = ItemStack(type, amount).editItemMeta {
