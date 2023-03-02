@@ -200,8 +200,7 @@ abstract class EPlugin : JavaPlugin() {
     // async task
     fun runTaskAsync(task: () -> Unit) = scheduler.runTaskAsynchronously(this, task)
     fun runTaskLaterAsync(delay: Long, task: () -> Unit) = scheduler.runTaskLaterAsynchronously(this, task, delay)
-    fun runTaskTimerAsync(delay: Long, period: Long, task: () -> Unit) =
-        scheduler.runTaskTimerAsynchronously(this, task, delay, period)
+    fun runTaskTimerAsync(delay: Long, period: Long, task: () -> Unit) = scheduler.runTaskTimerAsynchronously(this, task, delay, period)
 
     // cancel task
     fun cancelAllTask() = scheduler.cancelTasks(this)
