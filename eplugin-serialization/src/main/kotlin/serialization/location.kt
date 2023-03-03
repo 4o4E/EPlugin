@@ -88,6 +88,27 @@ object LocationSerialization : KSerializer<Location> {
 }
 
 /**
+ * 简短的方块位置序列化器(忽略pitch和yaw)
+ */
+object LocationMinBlockSerialization : KSerializer<Location> {
+    override val descriptor = PrimitiveSerialDescriptor(this::class.java.name, PrimitiveKind.STRING)
+
+    override fun deserialize(decoder: Decoder): Location {
+        val split = decoder.decodeString().split(";")
+        return Location(
+            Bukkit.getWorld(split[0]),
+            split[1].toDouble(),
+            split[2].toDouble(),
+            split[3].toDouble(),
+        )
+    }
+
+    override fun serialize(encoder: Encoder, value: Location) {
+        encoder.encodeString("${value.world?.name};${value.x};${value.y};${value.z}")
+    }
+}
+
+/**
  * 方块位置序列化器(忽略pitch和yaw)
  */
 object LocationBlockSerialization : KSerializer<Location> {
