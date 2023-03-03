@@ -46,7 +46,7 @@ abstract class AbstractEConfig(
     abstract fun save(sender: CommandSender?)
 
     var saveTask: BukkitTask? = null
-    open val saveDurationTick: Long = 10 * 60 * 20
+    open val saveDurationTick = 60 * 20L
 
     /**
      * 计划一次保存, 在[saveDurationTick]刻后执行, 执行完成后移除task, 若在已有task则不处理, 否则创建task
