@@ -1,3 +1,7 @@
+plugins {
+    kotlin("plugin.serialization")
+}
+
 dependencies {
     // spigot
     compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")

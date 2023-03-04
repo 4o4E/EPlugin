@@ -1,3 +1,7 @@
+plugins {
+    kotlin("plugin.serialization")
+}
+
 repositories {
     // engine hub
     maven("https://maven.enginehub.org/repo/")
