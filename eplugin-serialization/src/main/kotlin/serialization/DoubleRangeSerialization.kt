@@ -9,8 +9,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 object DoubleRangeSerialization : KSerializer<ClosedFloatingPointRange<Double>> {
-    override val descriptor =
-        PrimitiveSerialDescriptor("top.e404.eplugin.config.serialization.IntRangeSerialization", PrimitiveKind.STRING)
+    override val descriptor = PrimitiveSerialDescriptor(this::class.java.name, PrimitiveKind.STRING)
 
     override fun deserialize(decoder: Decoder) =
         decoder.decodeString().split("..").let { list ->
