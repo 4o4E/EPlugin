@@ -54,8 +54,10 @@ subprojects {
 }
 
 tasks.create("eplugin-publish") {
-    subprojects.forEach {
-        dependsOn(it.tasks.clean)
-        dependsOn(it.tasks.publishToMavenLocal)
-    }
+    dependsOn(tasks.clean)
+    subprojects.forEach { dependsOn(it.tasks.publishToMavenLocal) }
+}
+
+tasks.clean {
+    subprojects.forEach { dependsOn(it.tasks.clean) }
 }
