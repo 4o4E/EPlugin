@@ -314,12 +314,24 @@ fun <T> Iterable<T>.alsoRemove(vararg target: T) = run {
     toMutableList().also { target.forEach(it::remove) }
 }
 
-fun <T> Iterable<T>.alsoRemove(block: (T) -> Boolean) = run {
+fun <T> Iterable<T>.alsoRemove(condition: (T) -> Boolean) = run {
     if (this is MutableCollection) {
-        this.removeIf(block)
+        this.removeIf(condition)
         return@run this
     }
     toMutableList().also { list ->
-        list.removeIf(block)
+        list.removeIf(condition)
     }
+}
+
+fun <T> MutableCollection<T>.removeFirst(condition: (T) -> Boolean): T? {
+    val iter = iterator()
+    while (iter.hasNext()) {
+        val next = iter.next()
+        if (condition(next)) {
+            iter.remove()
+            return next
+        }
+    }
+    return null
 }
