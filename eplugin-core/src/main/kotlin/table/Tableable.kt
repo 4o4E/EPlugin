@@ -50,3 +50,18 @@ fun <T> Collection<Tableable<T>>.choose(
     }
     return collection
 }
+
+
+/**
+ * 从列表按照权重随机挑选一个
+ *
+ * @return 选择的元素
+ */
+fun <T> Collection<Tableable<T>>.choose(): T {
+    var random = Random.nextInt(0, sumOf { it.weight })
+    for (t in this) {
+        random -= t.weight
+        if (random <= 0) return t.generator()
+    }
+    return last().generator()
+}
