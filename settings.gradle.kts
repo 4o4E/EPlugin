@@ -2,6 +2,8 @@ rootProject.name = "EPlugin"
 include(
     ":eplugin-core",
     ":eplugin-serialization",
+    ":eplugin-serialization-multitem",
+    ":eplugin-serialization-particle",
     ":eplugin-serialization-worldedit",
     ":eplugin-serialization-worldguard",
     ":eplugin-menu",
