@@ -8,7 +8,7 @@ open class EHookManager(
 ) : HashMap<String, EHook>() {
     override val size: Int = hooks.size
 
-    fun register() {
+    open fun register() {
         hooks.forEach { this[it.name] = it }
         checkHooks()
     }
