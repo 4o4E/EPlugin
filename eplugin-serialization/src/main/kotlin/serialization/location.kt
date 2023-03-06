@@ -7,8 +7,6 @@ import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Material
-import top.e404.eplugin.EPlugin.Companion.formatAsConst
 
 /**
  * Example
@@ -21,7 +19,7 @@ import top.e404.eplugin.EPlugin.Companion.formatAsConst
  * ```
  */
 object LocationMinSerialization : KSerializer<Location> {
-    override val descriptor = PrimitiveSerialDescriptor(this::class.java.name, PrimitiveKind.STRING)
+    override val descriptor = primitive()
 
     override fun deserialize(decoder: Decoder): Location {
         val split = decoder.decodeString().split(";")
@@ -87,7 +85,7 @@ object LocationSerialization : KSerializer<Location> {
  * 简短的方块位置序列化器(忽略pitch和yaw)
  */
 object LocationMinBlockSerialization : KSerializer<Location> {
-    override val descriptor = PrimitiveSerialDescriptor(this::class.java.name, PrimitiveKind.STRING)
+    override val descriptor = primitive()
 
     override fun deserialize(decoder: Decoder): Location {
         val split = decoder.decodeString().split(";")
@@ -134,16 +132,6 @@ object LocationBlockSerialization : KSerializer<Location> {
             else -> error("Unexpected index: $index")
         }
         Location(Bukkit.getWorld(world), x.toDouble(), y.toDouble(), z.toDouble())
-    }
-}
-
-object MaterialSerializer : KSerializer<Material> {
-    override val descriptor = PrimitiveSerialDescriptor(this::class.java.name, PrimitiveKind.STRING)
-
-    override fun deserialize(decoder: Decoder) = Material.valueOf(decoder.decodeString().formatAsConst())
-
-    override fun serialize(encoder: Encoder, value: Material) {
-        encoder.encodeString(value.name)
     }
 }
 

@@ -1,14 +1,12 @@
 package top.e404.eplugin.config.serialization
 
 import kotlinx.serialization.KSerializer
-import kotlinx.serialization.descriptors.PrimitiveKind
-import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.bukkit.NamespacedKey
 
 object NamespacedKeySerialization : KSerializer<NamespacedKey> {
-    override val descriptor = PrimitiveSerialDescriptor(this::class.java.name, PrimitiveKind.STRING)
+    override val descriptor = primitive()
 
     @Suppress("DEPRECATION")
     override fun deserialize(decoder: Decoder) = decoder.decodeString().let {
