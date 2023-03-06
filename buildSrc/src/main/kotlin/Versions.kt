@@ -1,10 +1,10 @@
 object Versions {
-    const val kotlin = "1.7.22"
-    const val spigot = "1.13.2-R0.1-SNAPSHOT"
     const val group = "top.e404"
     const val version = "1.0.5"
-    const val kaml = "0.49.0"
-    const val serialization = "1.4.0"
+    const val spigot = "1.13.2-R0.1-SNAPSHOT"
+    const val kotlin = "1.8.0"
+    const val serialization = "1.5.0"
+    const val kaml = "0.52.0"
 }
 
 object Hooks {
