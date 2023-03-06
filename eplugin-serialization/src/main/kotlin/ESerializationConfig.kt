@@ -2,6 +2,7 @@
 
 package top.e404.eplugin.config
 
+import com.charleskorn.kaml.PolymorphismStyle
 import com.charleskorn.kaml.Yaml
 import com.charleskorn.kaml.YamlConfiguration
 import kotlinx.serialization.KSerializer
@@ -25,7 +26,14 @@ abstract class ESerializationConfig<T : Any>(
     open val format: StringFormat = defaultYaml,
 ) : AbstractEConfig(plugin, path, default) {
     companion object {
-        val defaultYaml by lazy { Yaml(configuration = YamlConfiguration(strictMode = false)) }
+        val defaultYaml by lazy {
+            Yaml(
+                configuration = YamlConfiguration(
+                    strictMode = false,
+                    polymorphismStyle = PolymorphismStyle.Property
+                )
+            )
+        }
     }
 
     lateinit var config: T
