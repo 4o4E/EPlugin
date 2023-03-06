@@ -18,16 +18,8 @@ open class MmoitemsHook(
     fun getMmoItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)
     fun getItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)?.newBuilder()?.build()
     fun getNbtItem(itemStack: ItemStack) = NBTItem.get(itemStack)!!
-
-    /**
-     * 需要判断是否为""
-     */
-    val NBTItem.id: String
-        get() = getString("MMOITEMS_ITEM_ID")!!
-
     fun getId(itemStack: ItemStack) = getNbtItem(itemStack).id
     fun getType(itemStack: ItemStack) = getNbtItem(itemStack).type
-    fun NBTItem.equals(type: String, id: String) = id == this.id && type == this.type
 
     fun count(
         inv: Inventory,
@@ -50,3 +42,9 @@ open class MmoitemsHook(
         }
     }
 }
+
+/**
+ * 需要判断是否为""
+ */
+inline val NBTItem.id get() = getString("MMOITEMS_ITEM_ID")!!
+fun NBTItem.equals(type: String, id: String) = id == this.id && type == this.type
