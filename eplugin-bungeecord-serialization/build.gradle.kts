@@ -5,7 +5,7 @@ dependencies {
     implementation(project(":eplugin-bungeecord-core"))
     // serialization
     compileOnly(kotlinx("serialization-core-jvm", Versions.serialization))
-    compileOnly(kotlinx("serialization-json", "1.3.3"))
+    compileOnly(kotlinx("serialization-json", Versions.serialization))
     // kaml
     compileOnly("com.charleskorn.kaml:kaml:${Versions.kaml}")
 }
