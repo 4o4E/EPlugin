@@ -3,6 +3,7 @@
 package top.e404.eplugin.config.serialization
 
 import kotlinx.serialization.KSerializer
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 import org.bukkit.Bukkit
@@ -135,3 +136,17 @@ object LocationBlockSerialization : KSerializer<Location> {
     }
 }
 
+@Serializable
+data class ELocation(
+    val world: String,
+    val x: Double,
+    val y: Double,
+    val z: Double,
+    val yaw: Float = 0f,
+    val pitch: Float = 0f,
+) {
+    private val bkWorld get() = Bukkit.getWorld(world) ?: throw InvalidWorldException(world)
+    fun toLocation() = Location(bkWorld, x, y, z, yaw, pitch)
+}
+
+class InvalidWorldException(world: String) : RuntimeException("invalid world: $world")
