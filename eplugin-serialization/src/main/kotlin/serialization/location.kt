@@ -8,6 +8,7 @@ import kotlinx.serialization.descriptors.*
 import kotlinx.serialization.encoding.*
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import kotlin.math.floor
 
 /**
  * Example
@@ -145,8 +146,38 @@ data class ELocation(
     val yaw: Float = 0f,
     val pitch: Float = 0f,
 ) {
+    companion object {
+        fun Location.toELocation() = ELocation(world!!.name, x, y, z, yaw, pitch)
+    }
+
     private val bkWorld get() = Bukkit.getWorld(world) ?: throw InvalidWorldException(world)
     fun toLocation() = Location(bkWorld, x, y, z, yaw, pitch)
+    fun inSameBlock(location: Location) = floor(location.x) == floor(x) &&
+            floor(location.y) == floor(y) &&
+            floor(location.z) == floor(z)
 }
 
 class InvalidWorldException(world: String) : RuntimeException("invalid world: $world")
+
+object ELocationMinSerialization : KSerializer<ELocation> {
+    override val descriptor = primitive()
+
+    override fun deserialize(decoder: Decoder): ELocation {
+        val split = decoder.decodeString().split(";")
+        return ELocation(
+            split[0],
+            split[1].toDouble(),
+            split[2].toDouble(),
+            split[3].toDouble(),
+            split.getOrNull(4)?.toFloat() ?: 0F,
+            split.getOrNull(5)?.toFloat() ?: 0F,
+        )
+    }
+
+    override fun serialize(encoder: Encoder, value: ELocation) {
+        encoder.encodeString(
+            if (value.yaw == 0F && value.pitch == 0F) "${value.world};${value.x};${value.y};${value.z}"
+            else "${value.world};${value.x};${value.y};${value.z};${value.yaw};${value.pitch}"
+        )
+    }
+}
