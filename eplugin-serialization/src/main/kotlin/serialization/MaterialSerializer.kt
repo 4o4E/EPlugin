@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.config.serialization
 
 import kotlinx.serialization.KSerializer
