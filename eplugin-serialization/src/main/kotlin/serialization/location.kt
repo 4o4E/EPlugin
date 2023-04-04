@@ -4,23 +4,18 @@ package top.e404.eplugin.config.serialization
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.descriptors.*
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.descriptors.buildClassSerialDescriptor
+import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.*
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import kotlin.math.floor
 
 /**
- * Example
- * ```kotlin
- * @Serializable
- * data class A(
- *   @Serializable(LocationSerialization::class)
- *   val l: Location,
- * )
- * ```
+ * 将[Location]序列化成字符串
  */
-object LocationMinSerialization : KSerializer<Location> {
+object InlineLocationSerialization : KSerializer<Location> {
     override val descriptor = primitive()
 
     override fun deserialize(decoder: Decoder): Location {
@@ -30,20 +25,39 @@ object LocationMinSerialization : KSerializer<Location> {
             split[1].toDouble(),
             split[2].toDouble(),
             split[3].toDouble(),
-            split[4].toFloat(),
-            split[5].toFloat(),
+            split.getOrNull(4)?.toFloat() ?: 0f,
+            split.getOrNull(5)?.toFloat() ?: 0f,
         )
     }
 
-    override fun serialize(encoder: Encoder, value: Location) {
-        encoder.encodeString("${value.world?.name};${value.x};${value.y};${value.z};${value.yaw};${value.pitch}")
-    }
+    override fun serialize(encoder: Encoder, value: Location) = encoder.encodeString(buildString {
+        append(value.world?.name.toString())
+        append(";")
+        append(value.x)
+        append(";")
+        append(value.y)
+        append(";")
+        append(value.z)
+        if (value.yaw != 0F && value.pitch != 0F) {
+            append(";")
+            append(value.yaw)
+            append(";")
+            append(value.pitch)
+        }
+    })
 }
 
 /**
  * 位置序列化器
  */
 object LocationSerialization : KSerializer<Location> {
+    private const val worldIndex = 0
+    private const val xIndex = 1
+    private const val yIndex = 2
+    private const val zIndex = 3
+    private const val yawIndex = 4
+    private const val pitchIndex = 5
+
     override val descriptor: SerialDescriptor = buildClassSerialDescriptor(this::class.java.name) {
         element<String>("world")
         element<Double>("x")
@@ -54,12 +68,12 @@ object LocationSerialization : KSerializer<Location> {
     }
 
     override fun serialize(encoder: Encoder, value: Location) = encoder.encodeStructure(descriptor) {
-        encodeStringElement(descriptor, 0, value.world?.name ?: "null")
-        encodeDoubleElement(descriptor, 1, value.x)
-        encodeDoubleElement(descriptor, 2, value.y)
-        encodeDoubleElement(descriptor, 3, value.z)
-        encodeFloatElement(descriptor, 4, value.yaw)
-        encodeFloatElement(descriptor, 5, value.pitch)
+        encodeStringElement(descriptor, worldIndex, value.world?.name ?: "null")
+        encodeDoubleElement(descriptor, xIndex, value.x)
+        encodeDoubleElement(descriptor, yIndex, value.y)
+        encodeDoubleElement(descriptor, zIndex, value.z)
+        if (value.yaw != 0F) encodeFloatElement(descriptor, yawIndex, value.yaw)
+        if (value.pitch != 0F) encodeFloatElement(descriptor, pitchIndex, value.pitch)
     }
 
     override fun deserialize(decoder: Decoder): Location = decoder.decodeStructure(descriptor) {
@@ -70,70 +84,16 @@ object LocationSerialization : KSerializer<Location> {
         var yaw = 0F
         var pitch = 0F
         while (true) when (val index = decodeElementIndex(descriptor)) {
-            0 -> world = decodeStringElement(descriptor, index)
-            1 -> x = decodeDoubleElement(descriptor, index)
-            2 -> y = decodeDoubleElement(descriptor, index)
-            3 -> z = decodeDoubleElement(descriptor, index)
-            4 -> yaw = decodeFloatElement(descriptor, index)
-            5 -> pitch = decodeFloatElement(descriptor, index)
+            worldIndex -> world = decodeStringElement(descriptor, index)
+            xIndex -> x = decodeDoubleElement(descriptor, index)
+            yIndex -> y = decodeDoubleElement(descriptor, index)
+            zIndex -> z = decodeDoubleElement(descriptor, index)
+            yawIndex -> yaw = decodeFloatElement(descriptor, index)
+            pitchIndex -> pitch = decodeFloatElement(descriptor, index)
             CompositeDecoder.DECODE_DONE -> break
             else -> error("Unexpected index: $index")
         }
         Location(Bukkit.getWorld(world), x, y, z, yaw, pitch)
-    }
-}
-
-/**
- * 简短的方块位置序列化器(忽略pitch和yaw)
- */
-object LocationMinBlockSerialization : KSerializer<Location> {
-    override val descriptor = primitive()
-
-    override fun deserialize(decoder: Decoder): Location {
-        val split = decoder.decodeString().split(";")
-        return Location(
-            Bukkit.getWorld(split[0]),
-            split[1].toDouble(),
-            split[2].toDouble(),
-            split[3].toDouble(),
-        )
-    }
-
-    override fun serialize(encoder: Encoder, value: Location) = encoder.encodeString("${value.world?.name};${value.x};${value.y};${value.z}")
-}
-
-/**
- * 方块位置序列化器(忽略pitch和yaw)
- */
-object LocationBlockSerialization : KSerializer<Location> {
-    override val descriptor: SerialDescriptor = buildClassSerialDescriptor(this::class.java.name) {
-        element<String>("world")
-        element<Int>("x")
-        element<Int>("y")
-        element<Int>("z")
-    }
-
-    override fun serialize(encoder: Encoder, value: Location) = encoder.encodeStructure(descriptor) {
-        encodeStringElement(descriptor, 0, value.world?.name ?: "null")
-        encodeIntElement(descriptor, 1, value.blockX)
-        encodeIntElement(descriptor, 2, value.blockY)
-        encodeIntElement(descriptor, 3, value.blockZ)
-    }
-
-    override fun deserialize(decoder: Decoder) = decoder.decodeStructure(descriptor) {
-        var world = ""
-        var x = 0
-        var y = 0
-        var z = 0
-        while (true) when (val index = decodeElementIndex(descriptor)) {
-            0 -> world = decodeStringElement(descriptor, 0)
-            1 -> x = decodeIntElement(descriptor, 1)
-            2 -> y = decodeIntElement(descriptor, 2)
-            3 -> z = decodeIntElement(descriptor, 2)
-            CompositeDecoder.DECODE_DONE -> break
-            else -> error("Unexpected index: $index")
-        }
-        Location(Bukkit.getWorld(world), x.toDouble(), y.toDouble(), z.toDouble())
     }
 }
 
@@ -159,7 +119,7 @@ data class ELocation(
 
 class InvalidWorldException(world: String) : RuntimeException("invalid world: $world")
 
-object ELocationMinSerialization : KSerializer<ELocation> {
+object InlineELocationSerialization : KSerializer<ELocation> {
     override val descriptor = primitive()
 
     override fun deserialize(decoder: Decoder): ELocation {
@@ -174,10 +134,21 @@ object ELocationMinSerialization : KSerializer<ELocation> {
         )
     }
 
-    override fun serialize(encoder: Encoder, value: ELocation) {
-        encoder.encodeString(
-            if (value.yaw == 0F && value.pitch == 0F) "${value.world};${value.x};${value.y};${value.z}"
-            else "${value.world};${value.x};${value.y};${value.z};${value.yaw};${value.pitch}"
-        )
-    }
+    override fun serialize(encoder: Encoder, value: ELocation) = encoder.encodeString(buildString {
+        append(value.world)
+        append(";")
+        append(value.x)
+        append(";")
+        append(value.y)
+        append(";")
+        append(value.z)
+        if (value.yaw != 0F) {
+            append(";")
+            append(value.yaw)
+        }
+        if (value.pitch != 0F) {
+            append(";")
+            append(value.pitch)
+        }
+    })
 }
