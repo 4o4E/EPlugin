@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.config.serialization
 
 import com.google.gson.reflect.TypeToken
