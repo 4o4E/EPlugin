@@ -10,6 +10,7 @@ include(
     ":eplugin-hook-itemsadder",
     ":eplugin-hook-mmocore",
     ":eplugin-hook-mmoitems",
+    ":eplugin-hook-mythiclib",
     ":eplugin-hook-mythicmobs",
     ":eplugin-hook-nova",
     ":eplugin-hook-orangeengine",
