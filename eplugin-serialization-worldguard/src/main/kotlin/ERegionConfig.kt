@@ -24,7 +24,7 @@ abstract class ERegionConfig<F, T : RegionConfig<F>>(
     override val serializer: KSerializer<in T>,
     override val format: StringFormat = Yaml.default,
     val rgHook: WorldGuardHook
-) : ESerializationConfig<T>(plugin, path, default, serializer, format) {
+) : KtxConfig<T>(plugin, path, default, serializer, format) {
     fun <R> getConfig(location: Location, block: F.() -> R?): R? {
         if (rgHook.enable) rgHook.getRegion(location)?.let { region ->
             config.region[region.id]?.block()?.let { return it }
