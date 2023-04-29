@@ -1,6 +1,5 @@
 rootProject.name = "EPlugin"
 include(
-    // bungeecord
     ":eplugin-bungeecord-core",
     ":eplugin-bungeecord-serialization",
     ":eplugin-channel",
