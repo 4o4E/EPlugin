@@ -20,7 +20,7 @@ import top.e404.eplugin.hook.worldguard.WorldGuardHook
 abstract class ERegionConfig<F, T : RegionConfig<F>>(
     override val plugin: EPlugin,
     override val path: String,
-    override val default: ConfigDefault = EmptyConfig,
+    override val default: ConfigDefault = EmptyConfigDefault,
     override val serializer: KSerializer<in T>,
     override val format: StringFormat = Yaml.default,
     val rgHook: WorldGuardHook
