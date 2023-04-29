@@ -11,7 +11,5 @@ class YamlMultiFileConfig(
     override val dirPath: String,
 ) : AbstractMultiFileConfig<YamlConfiguration>() {
     override fun loadFromSingleFile(file: File) = YamlConfiguration().also { it.load(file) }
-
     override fun saveToSingleFile(file: File, data: YamlConfiguration) = data.save(file)
-
 }
