@@ -9,10 +9,10 @@ import top.e404.eplugin.EPlugin.Companion.placeholder
 
 abstract class ELangManager(
     override val plugin: EPlugin,
-) : EConfig(
+) : YamlConfig(
     plugin = plugin,
     path = "lang.yml",
-    default = JarConfig(plugin, "lang.yml"),
+    default = JarConfigDefault(plugin, "lang.yml"),
     clearBeforeSave = false
 ) {
     private var cache = mutableMapOf<String, String>()

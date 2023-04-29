@@ -17,7 +17,7 @@ import top.e404.eplugin.EPlugin
 abstract class AbstractEConfig(
     open val plugin: EPlugin,
     open val path: String,
-    open val default: ConfigDefault = EmptyConfig,
+    open val default: ConfigDefault = EmptyConfigDefault,
 ) {
     val file by lazy { plugin.dataFolder.resolve(path) }
 
