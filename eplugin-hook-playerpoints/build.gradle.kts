@@ -4,10 +4,8 @@ repositories {
 }
 
 dependencies {
-    // spigot
-    compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
+    spigot()
+    eplugin()
     // playerpoints
     compileOnly("org.black_ixx:playerpoints:${Hooks.playerPoints}")
-    // eplugin
-    implementation(project(":eplugin-core"))
 }

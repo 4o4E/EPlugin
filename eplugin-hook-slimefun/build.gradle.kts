@@ -1,13 +1,10 @@
 repositories {
-    // jitpack
-    maven("https://jitpack.io")
+    jitpack()
 }
 
 dependencies {
-    // spigot
-    compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
+    spigot()
+    eplugin()
     // slimefun
     compileOnly("com.github.Slimefun:Slimefun4:${Hooks.slimefun}")
-    // eplugin
-    implementation(project(":eplugin-core"))
 }

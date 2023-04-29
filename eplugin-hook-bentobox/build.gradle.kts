@@ -1,13 +1,10 @@
 repositories {
-    // BentoBox
-    maven("https://repo.codemc.org/repository/maven-public/")
+    codemc()
 }
 
 dependencies {
-    // spigot
-    compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
+    spigot()
+    eplugin()
     // BentoBox
     compileOnly("world.bentobox:bentobox:${Hooks.bentobox}")
-    // eplugin
-    implementation(project(":eplugin-core"))
 }

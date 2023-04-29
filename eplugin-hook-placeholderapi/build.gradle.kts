@@ -4,10 +4,8 @@ repositories {
 }
 
 dependencies {
-    // spigot
-    compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
+    spigot()
+    eplugin()
     // placeholderAPI
     compileOnly("me.clip:placeholderapi:2.11.1")
-    // eplugin
-    implementation(project(":eplugin-core"))
 }

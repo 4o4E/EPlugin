@@ -1,13 +1,10 @@
 repositories {
-    // vault
-    maven("https://jitpack.io")
+    jitpack()
 }
 
 dependencies {
-    // spigot
-    compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
+    spigot()
+    eplugin()
     // vault
     compileOnly("com.github.MilkBowl:VaultAPI:1.7")
-    // eplugin
-    implementation(project(":eplugin-core"))
 }

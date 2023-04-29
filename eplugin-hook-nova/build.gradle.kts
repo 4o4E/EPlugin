@@ -4,11 +4,9 @@ repositories {
 }
 
 dependencies {
-    // spigot
-    compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
+    spigot()
+    eplugin()
     // nova
     compileOnly("xyz.xenondevs.nova:nova-api:${Hooks.nova}")
     compileOnly("xyz.xenondevs.nova:nova:${Hooks.nova}")
-    // eplugin
-    implementation(project(":eplugin-core"))
 }

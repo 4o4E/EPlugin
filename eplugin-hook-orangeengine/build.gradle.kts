@@ -1,8 +1,6 @@
 dependencies {
-    // spigot
-    compileOnly("org.spigotmc:spigot-api:${Versions.spigot}")
+    spigot()
+    eplugin()
     // oe
     compileOnly(fileTree("libs"))
-    // eplugin
-    implementation(project(":eplugin-core"))
 }

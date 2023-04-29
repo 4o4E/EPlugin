@@ -1,17 +1,17 @@
 object Versions {
     const val group = "top.e404"
-    const val version = "1.0.5"
+    const val version = "1.1.0"
     const val spigot = "1.13.2-R0.1-SNAPSHOT"
     const val kotlin = "1.8.0"
     const val serialization = "1.5.0"
-    const val kaml = "0.52.0"
+    const val kaml = "0.53.0"
 }
 
 object Hooks {
     const val slimefun = "RC-30"
-    const val mmoitems = "6.7.3"
-    const val mmocore = "1.9.3"
-    const val mythicLib = "1.4"
+    const val mmoitems = "6.9.2-SNAPSHOT"
+    const val mmocore = "1.11.3-SNAPSHOT"
+    const val mythicLib = "1.5.1-SNAPSHOT"
     const val mythicmobs = "5.1.4"
     const val worldguard = "7.1.0-SNAPSHOT"
     const val worldedit = "7.2.7"
