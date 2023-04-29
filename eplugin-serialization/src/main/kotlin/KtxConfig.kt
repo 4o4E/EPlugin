@@ -18,10 +18,10 @@ import top.e404.eplugin.EPlugin
  * @property default 默认配置文件
  * @since 1.0.0
  */
-abstract class ESerializationConfig<T : Any>(
+abstract class KtxConfig<T : Any>(
     override val plugin: EPlugin,
     override val path: String,
-    override val default: ConfigDefault = EmptyConfig,
+    override val default: ConfigDefault = EmptyConfigDefault,
     open val serializer: KSerializer<in T>,
     open val format: StringFormat = defaultYaml,
 ) : AbstractEConfig(plugin, path, default) {

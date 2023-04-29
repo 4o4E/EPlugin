@@ -14,13 +14,13 @@ import top.e404.eplugin.EPlugin
  * @property default 默认配置文件
  * @since 1.0.0
  */
-abstract class EWorldConfig<F, T : WorldConfig<F>>(
+abstract class KtxWorldConfig<F, T : WorldConfig<F>>(
     override val plugin: EPlugin,
     override val path: String,
-    override val default: ConfigDefault = EmptyConfig,
+    override val default: ConfigDefault = EmptyConfigDefault,
     override val serializer: KSerializer<in T>,
     override val format: StringFormat = defaultYaml,
-) : ESerializationConfig<T>(plugin, path, default, serializer, format) {
+) : KtxConfig<T>(plugin, path, default, serializer, format) {
     fun <R> getConfig(world: String, block: F.() -> R): R {
         val wc = config.world[world] ?: config.global
         return wc!!.block()

@@ -18,15 +18,15 @@ import java.util.concurrent.ConcurrentHashMap
  * @property default 默认配置文件
  * @since 1.0.0
  */
-abstract class EMapConfig<K : Any, V : Any>(
+abstract class KtxMapConfig<K : Any, V : Any>(
     plugin: EPlugin,
     path: String,
-    default: ConfigDefault = EmptyConfig,
+    default: ConfigDefault = EmptyConfigDefault,
     kSerializer: KSerializer<K>,
     vSerializer: KSerializer<V>,
     format: StringFormat = defaultYaml,
     val synchronized: Boolean = false,
-) : ESerializationConfig<MutableMap<K, V>>(
+) : KtxConfig<MutableMap<K, V>>(
     plugin,
     path,
     default,
