@@ -13,7 +13,7 @@ abstract class AbstractMultiFileConfig<T: Any> {
     /**
      * 数据
      */
-    open val config = mutableMapOf<String, T>()
+    open val config = mutableListOf<Pair<File, T>>()
 
     /**
      * 属于的插件
@@ -87,13 +87,12 @@ abstract class AbstractMultiFileConfig<T: Any> {
      * 保存所有数据到对应的文件中
      */
     open fun save(sender: CommandSender?) {
-        config.forEach { (path, config) ->
-            val file = File(path)
+        config.forEach { (file, config) ->
             file.parentFile.mkdirs()
             try {
                 saveToSingleFile(file, config)
             } catch (e: Exception) {
-                plugin.sendAndWarn(sender, "保存数据到文件${path}时出现异常", e)
+                plugin.sendAndWarn(sender, "保存数据到文件${file.absolutePath}时出现异常", e)
                 return@forEach
             }
         }
