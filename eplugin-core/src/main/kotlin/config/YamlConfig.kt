@@ -16,10 +16,10 @@ import top.e404.eplugin.EPlugin
  * @property clearBeforeSave 在保存文件之前是否将[config]替换成新的[YamlConfiguration]
  * @since 1.0.0
  */
-abstract class EConfig(
+abstract class YamlConfig(
     override val plugin: EPlugin,
     override val path: String,
-    override val default: ConfigDefault = EmptyConfig,
+    override val default: ConfigDefault = EmptyConfigDefault,
     open val clearBeforeSave: Boolean = false,
 ) : AbstractEConfig(plugin, path, default) {
     var config: YamlConfiguration = YamlConfiguration()
@@ -46,7 +46,7 @@ abstract class EConfig(
                 plugin.sendOrElse(sender, s) { plugin.warn(s) }
                 return
             }
-            if (default is EmptyConfig) createNewFile()
+            if (default is EmptyConfigDefault) createNewFile()
             else writeText(default.string)
         }.onFailure {
             val s = "保存默认配置文件`${path}`时出现异常"
