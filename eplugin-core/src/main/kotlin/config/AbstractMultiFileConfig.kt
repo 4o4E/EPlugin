@@ -3,22 +3,24 @@
 package top.e404.eplugin.config
 
 import org.bukkit.command.CommandSender
+import org.bukkit.scheduler.BukkitTask
 import top.e404.eplugin.EPlugin
 import java.io.File
 
 /**
  * 代表一个多文件的配置文件
  */
-abstract class AbstractMultiFileConfig<T: Any> {
+abstract class AbstractMultiFileConfig<T : Any> : Savable {
     /**
      * 数据
      */
-    open val config = mutableListOf<Pair<File, T>>()
+    open var config = mutableMapOf<File, T>()
+        protected set
 
     /**
      * 属于的插件
      */
-    abstract val plugin: EPlugin
+    abstract override val plugin: EPlugin
 
     /**
      * 储存的文件位置
@@ -72,21 +74,22 @@ abstract class AbstractMultiFileConfig<T: Any> {
     open fun load(sender: CommandSender?) {
         saveDefault(sender)
         val files = buildMap { dir.files(this) }
-        val config = mutableMapOf<String, T>()
+        val config = mutableMapOf<File, T>()
         files.forEach { (path, file) ->
             try {
-                config[path] = loadFromSingleFile(file)
+                config[file] = loadFromSingleFile(file)
             } catch (e: Exception) {
                 plugin.sendAndWarn(sender, "文件${path}内容无效, 请检查文件, 此文件内容将跳过不加载", e)
                 return@forEach
             }
         }
+        this.config = config
     }
 
     /**
      * 保存所有数据到对应的文件中
      */
-    open fun save(sender: CommandSender?) {
+    override fun save(sender: CommandSender?) {
         config.forEach { (file, config) ->
             file.parentFile.mkdirs()
             try {
@@ -97,4 +100,7 @@ abstract class AbstractMultiFileConfig<T: Any> {
             }
         }
     }
+
+    override var saveTask: BukkitTask? = null
+    override val saveDurationTick = 60 * 20L
 }

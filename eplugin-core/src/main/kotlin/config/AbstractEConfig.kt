@@ -15,10 +15,10 @@ import top.e404.eplugin.EPlugin
  * @since 1.0.2
  */
 abstract class AbstractEConfig(
-    open val plugin: EPlugin,
+    override val plugin: EPlugin,
     open val path: String,
     open val default: ConfigDefault = EmptyConfigDefault,
-) {
+): Savable {
     val file by lazy { plugin.dataFolder.resolve(path) }
 
     /**
@@ -43,27 +43,8 @@ abstract class AbstractEConfig(
      * @param sender 出现异常时的通知接收者
      * @since 1.0.0
      */
-    abstract fun save(sender: CommandSender?)
+    abstract override fun save(sender: CommandSender?)
 
-    var saveTask: BukkitTask? = null
-    open val saveDurationTick = 60 * 20L
-
-    /**
-     * 计划一次保存, 在[saveDurationTick]刻后执行, 执行完成后移除task, 若在已有task则不处理, 否则创建task
-     */
-    fun scheduleSave() {
-        if (saveTask != null) return
-        saveTask = plugin.runTaskLater(saveDurationTick) {
-            save(null)
-            saveTask = null
-        }
-    }
-
-    /**
-     * 在需要立刻执行保存任务时调用
-     */
-    fun shutdown() {
-        saveTask?.cancel()
-        save(null)
-    }
+    override var saveTask: BukkitTask? = null
+    override val saveDurationTick = 60 * 20L
 }
