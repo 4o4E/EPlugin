@@ -59,7 +59,7 @@ fun getPageCount(size: Int, pageSize: Int): Int {
  * @param getWeight 获取权重
  * @return 包含选中对象的列表
  */
-fun <T> Iterable<T>.select(
+fun <T> Collection<T>.select(
     amount: Int,
     repeat: Boolean,
     getWeight: (T) -> Int,
@@ -81,14 +81,17 @@ fun <T> Iterable<T>.select(
         return list
     }
     // 不允许重复
-    val temp = toList()
-    repeat(amount) {
-        var r = Random.nextInt(temp.size)
-        for (t in temp) {
-            if (t in list) continue
+    if (size < amount) throw IllegalArgumentException("size($size) , amount($amount)")
+    val temp = toMutableList()
+    while (list.size < amount) {
+        var r = Random.nextInt(temp.sumOf { getWeight(it) })
+        val iter = temp.iterator()
+        while (iter.hasNext()) {
+            val t = iter.next()
             r -= getWeight(t)
             if (r <= 0) {
                 list.add(t)
+                iter.remove()
                 break
             }
         }
@@ -126,14 +129,17 @@ fun <K, V> Map<K, V>.select(
         return map
     }
     // 不允许重复
-    val temp = toList()
-    repeat(amount) {
-        var r = Random.nextInt(temp.size)
-        for ((k, v) in temp) {
-            if (v in map.values) continue
+    if (size < amount) throw IllegalArgumentException("size($size) , amount($amount)")
+    val temp = toList().asMutableList()
+    while (map.size < amount) {
+        var r = Random.nextInt(temp.sumOf { (k, v) -> getWeight(k, v) })
+        val iter = temp.iterator()
+        while (iter.hasNext()) {
+            val (k, v) = iter.next()
             r -= getWeight(k, v)
             if (r <= 0) {
                 map[k] = v
+                iter.remove()
                 break
             }
         }
@@ -171,14 +177,17 @@ fun <K, V> Map<K, V>.selectWithTo(
         return list
     }
     // 不允许重复
-    val temp = toList()
-    repeat(amount) {
-        var r = Random.nextInt(temp.size)
-        for ((k, v) in temp) {
-            if (v in list) continue
+    if (size < amount) throw IllegalArgumentException("size($size) , amount($amount)")
+    val temp = toList().asMutableList()
+    while (list.size < amount) {
+        var r = Random.nextInt(temp.sumOf { (k, v) -> getWeight(k, v) })
+        val iter = temp.iterator()
+        while (iter.hasNext()) {
+            val (k, v) = iter.next()
             r -= getWeight(k, v)
             if (r <= 0) {
                 list.add(v)
+                iter.remove()
                 break
             }
         }
@@ -216,14 +225,17 @@ fun <K, V> Map<K, V>.selectByTo(
         return list
     }
     // 不允许重复
-    val temp = toList()
-    repeat(amount) {
-        var r = Random.nextInt(temp.size)
-        for ((k, v) in temp) {
-            if (k in list) continue
+    if (size < amount) throw IllegalArgumentException("size($size) , amount($amount)")
+    val temp = toList().asMutableList()
+    while (list.size < amount) {
+        var r = Random.nextInt(temp.sumOf { (k, v) -> getWeight(k, v) })
+        val iter = temp.iterator()
+        while (iter.hasNext()) {
+            val (k, v) = iter.next()
             r -= getWeight(k, v)
             if (r <= 0) {
                 list.add(k)
+                iter.remove()
                 break
             }
         }
