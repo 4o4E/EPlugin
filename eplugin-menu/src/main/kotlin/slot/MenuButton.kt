@@ -4,7 +4,7 @@ package top.e404.eplugin.menu.slot
 
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
-import top.e404.eplugin.menu.menu.Menu
+import top.e404.eplugin.menu.menu.ChestMenu
 
 /**
  * 代表一个按钮, cancel所有点击
@@ -12,7 +12,7 @@ import top.e404.eplugin.menu.menu.Menu
  * @property menu 持有此格子的菜单
  * @property index 在菜单中的下标
  */
-abstract class MenuButton(override var menu: Menu) : MenuSlot(menu) {
+abstract class MenuButton(override var menu: ChestMenu) : MenuSlot(menu) {
     override fun onPickup(
         clicked: ItemStack,
         slot: Int,

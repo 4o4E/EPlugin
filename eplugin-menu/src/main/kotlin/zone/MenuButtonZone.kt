@@ -1,7 +1,7 @@
 package top.e404.eplugin.menu.zone
 
 import top.e404.eplugin.menu.Displayable
-import top.e404.eplugin.menu.menu.Menu
+import top.e404.eplugin.menu.menu.ChestMenu
 import top.e404.eplugin.util.emptyItem
 import top.e404.eplugin.util.getPageCount
 import top.e404.eplugin.util.splitByPage
@@ -16,7 +16,7 @@ import top.e404.eplugin.util.splitByPage
  * @property h 区域高度
  */
 abstract class MenuButtonZone<T : Displayable>(
-    menu: Menu,
+    menu: ChestMenu,
     x: Int,
     y: Int,
     w: Int,

@@ -2,7 +2,7 @@ package top.e404.eplugin.menu.zone
 
 import top.e404.eplugin.menu.InventoryClickHandler
 import top.e404.eplugin.menu.getSubZone
-import top.e404.eplugin.menu.menu.Menu
+import top.e404.eplugin.menu.menu.ChestMenu
 
 /**
  * 代表菜单中的一个区域
@@ -14,7 +14,7 @@ import top.e404.eplugin.menu.menu.Menu
  * @property h 区域高度
  */
 abstract class MenuZone(
-    val menu: Menu,
+    val menu: ChestMenu,
     val x: Int,
     val y: Int,
     val w: Int,

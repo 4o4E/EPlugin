@@ -2,8 +2,6 @@ package top.e404.eplugin.menu.menu
 
 import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryCloseEvent
-import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.menu.InventoryClickHandler
@@ -11,23 +9,22 @@ import top.e404.eplugin.menu.slot.MenuSlot
 import top.e404.eplugin.menu.zone.MenuZone
 
 /**
- * 代表一个菜单
+ * 代表一个箱子菜单
  *
  * @property plugin 注册菜单的插件
  * @property row 菜单行数
  * @property title 菜单标题
- * @property self 是否允许打开菜单的玩家交互自己的背包
  */
-open class Menu(
+open class ChestMenu(
     val plugin: EPlugin,
     val row: Int,
     val title: String,
-    var self: Boolean = false
-) : InventoryClickHandler {
+    override var allowSelf: Boolean = false
+) : InventoryMenu {
     /**
      * 菜单对应的背包
      */
-    val inv = Bukkit.createInventory(null, row.coerceIn(1, 6) * 9, title)
+    override val inv = Bukkit.createInventory(null, row.coerceIn(1, 6) * 9, title)
 
     /**
      * 菜单中的子区域
@@ -64,41 +61,7 @@ open class Menu(
     /**
      * 菜单初始化, 手动调用
      */
-    open fun onInit() {
-        updateIcon()
-    }
-
-    /**
-     * 菜单打开之前调用
-     *
-     * @param event 事件
-     */
-    open fun onOpen(event: InventoryOpenEvent) {
-    }
-
-    /**
-     * 菜单被关闭时调用
-     *
-     * @param event 事件
-     */
-    open fun onClose(event: InventoryCloseEvent) {
-    }
-
-    /**
-     * 玩家打开菜单后点击自己背包, 事件是否取消由[self]控制
-     *
-     * @param event 事件
-     */
-    open fun onClickSelfInv(event: InventoryClickEvent) {
-    }
-
-    /**
-     * 玩家打开菜单后点击菜单外的区域
-     *
-     * @param event 事件
-     */
-    open fun onClickBlank(event: InventoryClickEvent) {
-    }
+    override fun onInit() = updateIcon()
 
     fun getHandler(slot: Int): InventoryClickHandler? {
         for (zone in zones) if (slot in zone) return zone
@@ -151,5 +114,19 @@ open class Menu(
             ]
         }
         return getHandler(slot)?.onClick(slot, event) ?: true
+    }
+
+    override fun onHotbarAction(target: ItemStack?, hotbarItem: ItemStack?, slot: Int, hotbar: Int, event: InventoryClickEvent): Boolean{
+        plugin.debug {
+            plugin.langManager[
+                "debug.menu.on_hotbar",
+                "slot" to slot,
+                "slot_item" to target?.type,
+                "hotbar" to hotbar,
+                "hotbar_item" to hotbarItem?.type,
+                "player" to event.whoClicked.name,
+            ]
+        }
+        return true
     }
 }

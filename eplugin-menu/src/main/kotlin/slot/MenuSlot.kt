@@ -5,7 +5,7 @@ package top.e404.eplugin.menu.slot
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.menu.InventoryClickHandler
-import top.e404.eplugin.menu.menu.Menu
+import top.e404.eplugin.menu.menu.ChestMenu
 import top.e404.eplugin.util.emptyItem
 
 /**
@@ -14,7 +14,7 @@ import top.e404.eplugin.util.emptyItem
  * @property menu 属于的菜单
  */
 abstract class MenuSlot(
-    open val menu: Menu
+    open val menu: ChestMenu
 ) : InventoryClickHandler {
     /**
      * 对应在菜单中展示的物品
