@@ -3,7 +3,7 @@
 package top.e404.eplugin.menu
 
 import org.bukkit.Material
-import org.bukkit.entity.Player
+import org.bukkit.entity.HumanEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
@@ -19,7 +19,7 @@ import top.e404.eplugin.menu.menu.Menu
  */
 open class PluginMenuManager(override val plugin: EPlugin) : EListener(plugin) {
     // 正在处理中的菜单<玩家, 使用中的菜单>
-    val menus = HashMap<Player, Menu>()
+    val menus = HashMap<HumanEntity, InventoryMenu>()
 
     /**
      * 给玩家打开菜单, 只有通过此方法打开的菜单才能接入到
@@ -27,7 +27,7 @@ open class PluginMenuManager(override val plugin: EPlugin) : EListener(plugin) {
      * @param m 菜单
      * @param p 玩家
      */
-    fun openMenu(m: Menu, p: Player) {
+    fun openMenu(m: InventoryMenu, p: HumanEntity) {
         // 先关闭已打开的菜单, 确保正确触发 InventoryCloseEvent
         p.closeInventory()
         // 打开新菜单
@@ -41,7 +41,7 @@ open class PluginMenuManager(override val plugin: EPlugin) : EListener(plugin) {
      *
      * @param p 玩家
      */
-    fun closeMenu(p: Player) {
+    fun closeMenu(p: HumanEntity) {
         if (menus.containsKey(p)) {
             p.closeInventory()
             menus.remove(p)
