@@ -17,7 +17,7 @@ import top.e404.eplugin.menu.menu.InventoryMenu
  *
  * @property plugin 属于的插件
  */
-open class PluginMenuManager(override val plugin: EPlugin) : EListener(plugin) {
+open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
     // 正在处理中的菜单<玩家, 使用中的菜单>
     val menus = HashMap<HumanEntity, InventoryMenu>()
 
