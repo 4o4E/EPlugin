@@ -6,13 +6,24 @@ import org.bstats.bukkit.Metrics
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
+import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.plugin.java.JavaPluginLoader
 import top.e404.eplugin.config.ELangManager
 import top.e404.eplugin.util.forEachOnline
 import top.e404.eplugin.util.forEachOp
+import java.io.File
 import java.util.logging.Level
 
-abstract class EPlugin : JavaPlugin() {
+abstract class EPlugin : JavaPlugin {
+    constructor() : super()
+    constructor(
+        loader: JavaPluginLoader,
+        description: PluginDescriptionFile,
+        dataFolder: File,
+        file: File
+    ) : super(loader, description, dataFolder, file)
+
     companion object {
         fun String.color() = replace("&", "§")
         private val colorRegex = Regex("(?i)[§&][\\da-fk-orx]")
