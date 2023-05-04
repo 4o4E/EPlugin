@@ -88,6 +88,11 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
         }
         val cursorNotNull = cursor != null && cursor.type != Material.AIR
         val clickedNotNull = clicked != null && clicked.type != Material.AIR
+        if (hotbarButton != -1) {
+            val hotbarItem = whoClicked.inventory.getItem(hotbarButton)
+            if (menu.onHotbarAction(clicked, hotbarItem, slot, hotbarButton, this)) isCancelled = true
+            return
+        }
         val b = when {
             cursorNotNull && clickedNotNull -> menu.onSwitch(clicked!!, cursor!!, slot, this)
             !cursorNotNull && clickedNotNull -> menu.onPickup(clicked!!, slot, this)
