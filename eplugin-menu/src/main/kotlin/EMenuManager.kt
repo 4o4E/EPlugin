@@ -77,7 +77,7 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
         val clicked = currentItem
         // 打开菜单后点击了自己背包
         if (clickedInventory != menu.inv) {
-            if (!menu.self) isCancelled = true
+            if (!menu.allowSelf) isCancelled = true
             menu.onClickSelfInv(this)
             return
         }
