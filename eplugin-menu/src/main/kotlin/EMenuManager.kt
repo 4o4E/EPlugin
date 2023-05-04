@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.listener.EListener
-import top.e404.eplugin.menu.menu.Menu
+import top.e404.eplugin.menu.menu.InventoryMenu
 
 /**
  * 菜单管理器, 负责监听事件, 处理玩家打开/点击/关闭菜单
