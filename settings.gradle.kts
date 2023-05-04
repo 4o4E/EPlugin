@@ -24,6 +24,7 @@ include(
     ":eplugin-mysql",
     ":eplugin-reflect",
     ":eplugin-serialization",
+    ":eplugin-serialization-mmoitems",
     ":eplugin-serialization-multitem",
     ":eplugin-serialization-particle",
     ":eplugin-serialization-worldedit",
