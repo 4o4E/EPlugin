@@ -11,7 +11,7 @@ object Hooks {
     const val slimefun = "RC-30"
     const val mmoitems = "6.9.4-SNAPSHOT"
     const val mmocore = "1.11.3-SNAPSHOT"
-    const val mythicLib = "1.5.1-SNAPSHOT"
+    const val mythicLib = "1.6-SNAPSHOT"
     const val mythicmobs = "5.1.4"
     const val worldguard = "7.1.0-SNAPSHOT"
     const val worldedit = "7.2.7"
