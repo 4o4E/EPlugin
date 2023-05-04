@@ -9,7 +9,7 @@ object Versions {
 
 object Hooks {
     const val slimefun = "RC-30"
-    const val mmoitems = "6.9.2-SNAPSHOT"
+    const val mmoitems = "6.9.4-SNAPSHOT"
     const val mmocore = "1.11.3-SNAPSHOT"
     const val mythicLib = "1.5.1-SNAPSHOT"
     const val mythicmobs = "5.1.4"
