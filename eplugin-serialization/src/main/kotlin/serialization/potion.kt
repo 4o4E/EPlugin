@@ -16,7 +16,7 @@ object PotionEffectTypeSerializer : KSerializer<PotionEffectType> {
     override fun serialize(encoder: Encoder, value: PotionEffectType) = encoder.encodeString(value.name)
 }
 
-fun String.deserializeToPotionEffectType() = PotionEffectType.getByName(formatAsConst())!!
+fun String.deserializeToPotionEffectType() = PotionEffectType.getByName(formatAsConst()) ?: throw Exception("cannot find effect type with name of $this")
 
 object PotionEffectSerializer : KSerializer<PotionEffect> {
     private const val typeIndex = 0
