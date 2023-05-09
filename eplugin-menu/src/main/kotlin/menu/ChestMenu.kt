@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.menu.menu
 
 import org.bukkit.Bukkit
@@ -37,6 +39,29 @@ open class ChestMenu(
     val slots: MutableMap<Int, MenuSlot> = mutableMapOf()
 
     /**
+     * 快捷初始化slot
+     *
+     * @param list 模板
+     * @param handler 创建slot
+     */
+    fun initSlots(list: List<String>, handler: (Int, Char) -> MenuSlot?) {
+        require(list.size == row)
+        list.forEach { require(it.length == 9) }
+        val existsSlot = mutableMapOf<Char, MenuSlot>()
+        (0 until list.size * 9).forEach { index ->
+            val char = list[index / 9][index % 9]
+            val exists = existsSlot[char]
+            if (exists != null) {
+                slots[index] = exists
+                return@forEach
+            }
+            val slot = handler.invoke(index, char) ?: return@forEach
+            existsSlot[char] = slot
+            slots[index] = slot
+        }
+    }
+
+    /**
      * 更新每个格子的图标
      */
     open fun updateIcon() {
@@ -71,10 +96,10 @@ open class ChestMenu(
     override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent): Boolean {
         plugin.debug {
             plugin.langManager[
-                    "debug.menu.on_pickup",
-                    "slot" to slot,
-                    "clicked" to clicked.type.name,
-                    "player" to event.whoClicked.name,
+                "debug.menu.on_pickup",
+                "slot" to slot,
+                "clicked" to clicked.type.name,
+                "player" to event.whoClicked.name,
             ]
         }
         return getHandler(slot)?.onPickup(clicked, slot, event) ?: true
@@ -83,10 +108,10 @@ open class ChestMenu(
     override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent): Boolean {
         plugin.debug {
             plugin.langManager[
-                    "debug.menu.on_putin",
-                    "slot" to slot,
-                    "cursor" to cursor.type.name,
-                    "player" to event.whoClicked.name,
+                "debug.menu.on_putin",
+                "slot" to slot,
+                "cursor" to cursor.type.name,
+                "player" to event.whoClicked.name,
             ]
         }
         return getHandler(slot)?.onPutin(cursor, slot, event) ?: true
@@ -95,11 +120,11 @@ open class ChestMenu(
     override fun onSwitch(clicked: ItemStack, cursor: ItemStack, slot: Int, event: InventoryClickEvent): Boolean {
         plugin.debug {
             plugin.langManager[
-                    "debug.menu.on_switch",
-                    "slot" to slot,
-                    "clicked" to clicked.type.name,
-                    "cursor" to cursor.type.name,
-                    "player" to event.whoClicked.name,
+                "debug.menu.on_switch",
+                "slot" to slot,
+                "clicked" to clicked.type.name,
+                "cursor" to cursor.type.name,
+                "player" to event.whoClicked.name,
             ]
         }
         return getHandler(slot)?.onSwitch(clicked, cursor, slot, event) ?: true
@@ -108,15 +133,15 @@ open class ChestMenu(
     override fun onClick(slot: Int, event: InventoryClickEvent): Boolean {
         plugin.debug {
             plugin.langManager[
-                    "debug.menu.on_click",
-                    "slot" to slot,
-                    "player" to event.whoClicked.name,
+                "debug.menu.on_click",
+                "slot" to slot,
+                "player" to event.whoClicked.name,
             ]
         }
         return getHandler(slot)?.onClick(slot, event) ?: true
     }
 
-    override fun onHotbarAction(target: ItemStack?, hotbarItem: ItemStack?, slot: Int, hotbar: Int, event: InventoryClickEvent): Boolean{
+    override fun onHotbarAction(target: ItemStack?, hotbarItem: ItemStack?, slot: Int, hotbar: Int, event: InventoryClickEvent): Boolean {
         plugin.debug {
             plugin.langManager[
                 "debug.menu.on_hotbar",
