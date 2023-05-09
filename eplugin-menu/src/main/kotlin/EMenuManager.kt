@@ -51,9 +51,13 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
     /**
      * 插件卸载时应调用此指令关闭所有已打开的菜单
      */
-    fun close() {
-        menus.keys.toList().forEach {
-            closeMenu(it)
+    open fun shutdown() {
+        val iterator = menus.entries.iterator()
+        while (iterator.hasNext()) {
+            val (player, menu) = iterator.next()
+            menu.onShutdown(player)
+            player.closeInventory()
+            iterator.remove()
         }
     }
 
