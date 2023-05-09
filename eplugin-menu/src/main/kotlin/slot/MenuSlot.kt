@@ -21,6 +21,8 @@ abstract class MenuSlot(
      */
     open var item = emptyItem
 
+    override val inv get() = menu.inv
+
     /**
      * 更新物品
      */
