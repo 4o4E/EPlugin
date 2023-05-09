@@ -21,7 +21,11 @@ interface BkSerializable {
         fun <T : BkSerializable?> deserialize(configurationSection: ConfigurationSection, cls: Class<T>): T {
             val method = registered[cls] ?: regBkSerializable(cls)
             @Suppress("UNCHECKED_CAST")
-            return method.invoke(null, configurationSection) as T
+            return try {
+                method.invoke(null, configurationSection) as T
+            } catch (t: Throwable) {
+                throw DeserializeException(cls, t)
+            }
         }
 
         fun regBkSerializable(cls: Class<out BkSerializable?>): Method {
@@ -63,3 +67,8 @@ inline fun <reified V> ConfigurationSection.getMap(path: String, cast: (Any?) ->
     getConfigurationSection(path)?.run {
         getKeys(false).associateWith { cast(get(it)) }
     } ?: emptyMap()
+
+class DeserializeException(cls: Class<*>, throwable: Throwable? = null) : Exception() {
+    override val message = "can't deserialize configuration section to ${cls.name}"
+    override val cause = throwable
+}
