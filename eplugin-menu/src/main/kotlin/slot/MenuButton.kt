@@ -31,4 +31,12 @@ abstract class MenuButton(override var menu: ChestMenu) : MenuSlot(menu) {
         slot: Int,
         event: InventoryClickEvent
     ) = onClick(slot, event)
+
+    override fun onHotbarAction(
+        target: ItemStack?,
+        hotbarItem: ItemStack?,
+        slot: Int,
+        hotbar: Int,
+        event: InventoryClickEvent
+    ) = onClick(slot, event)
 }
