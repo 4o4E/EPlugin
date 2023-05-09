@@ -28,15 +28,13 @@ open class CountdownBar(
         private set
     lateinit var bossBar: BossBar
         private set
-    lateinit var task: BukkitTask
-        private set
 
     fun start(vararg p: Player) {
         bossBar = Bukkit.createBossBar(display(), color, style)
         p.forEach { bossBar.addPlayer(it) }
-        task = plugin.runTaskTimer(0, 20) {
+        plugin.runTaskTimer(0, 20) {
             if (tick <= 0) {
-                stop()
+                it.cancel()
                 return@runTaskTimer
             }
             bossBar.setTitle(display())
@@ -44,10 +42,5 @@ open class CountdownBar(
             tick--
         }
         isStarted = true
-    }
-
-    fun stop() {
-        task.cancel()
-        bossBar.removeAll()
     }
 }
