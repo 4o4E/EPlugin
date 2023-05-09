@@ -9,6 +9,7 @@ import org.bukkit.entity.Player
 import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.plugin.java.JavaPluginLoader
+import org.bukkit.scheduler.BukkitRunnable
 import top.e404.eplugin.config.ELangManager
 import top.e404.eplugin.util.forEachOnline
 import top.e404.eplugin.util.forEachOp
@@ -204,14 +205,21 @@ abstract class EPlugin : JavaPlugin {
     }
 
     // task
-    fun runTask(task: () -> Unit) = scheduler.runTask(this, task)
-    fun runTaskLater(delay: Long, task: () -> Unit) = scheduler.runTaskLater(this, task, delay)
-    fun runTaskTimer(delay: Long, period: Long, task: () -> Unit) = scheduler.runTaskTimer(this, task, delay, period)
+    fun runTask(task: (BukkitRunnable) -> Unit) = converse(task).runTask(this)
+    fun runTaskLater(delay: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskLater(this, delay)
+
+    fun runTaskTimer(delay: Long, period: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskTimer(this, delay, period)
 
     // async task
-    fun runTaskAsync(task: () -> Unit) = scheduler.runTaskAsynchronously(this, task)
-    fun runTaskLaterAsync(delay: Long, task: () -> Unit) = scheduler.runTaskLaterAsynchronously(this, task, delay)
-    fun runTaskTimerAsync(delay: Long, period: Long, task: () -> Unit) = scheduler.runTaskTimerAsynchronously(this, task, delay, period)
+    fun runTaskAsync(task: (BukkitRunnable) -> Unit) = converse(task).runTaskAsynchronously(this)
+    fun runTaskLaterAsync(delay: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskLaterAsynchronously(this, delay)
+    fun runTaskTimerAsync(delay: Long, period: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskTimerAsynchronously(this, delay, period)
+
+    private fun converse(task: ((BukkitRunnable) -> Unit)) = object : BukkitRunnable() {
+        override fun run() {
+            task.invoke(this)
+        }
+    }
 
     // cancel task
     fun cancelAllTask() = scheduler.cancelTasks(this)
