@@ -10,6 +10,7 @@ data class DustTransitionParticle(
     override val particle: Particle,
     override val count: Int = 1,
     override val extra: Double = 0.0,
+    override val chance: Double? = null,
     val data: DustTransition,
 ) : ParticleConfig {
     override fun generator() = Particle.DustTransition(

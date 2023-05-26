@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.particle
 
 import kotlinx.serialization.Serializable
@@ -5,6 +7,7 @@ import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.World
 import org.bukkit.entity.Player
+import kotlin.random.Random
 
 /**
  * # 粒子类型序列化器
@@ -76,14 +79,13 @@ import org.bukkit.entity.Player
  *   extra: 0
  *   data: 1
  * ```
- *
- * @param T data类型
  */
 @Serializable
 sealed interface ParticleConfig {
     val particle: Particle
     val count: Int
     val extra: Double
+    val chance: Double?
     fun generator(): Any?
 
     fun spawn(
@@ -92,11 +94,14 @@ sealed interface ParticleConfig {
         offsetX: Double = 0.0,
         offsetY: Double = 0.0,
         offsetZ: Double = 0.0,
-    ) = world.spawnParticle(
-        particle, location, count,
-        offsetX, offsetY, offsetZ,
-        extra, generator(), false
-    )
+    ) {
+        chance?.let { if (Random.nextDouble() > it) return }
+        world.spawnParticle(
+            particle, location, count,
+            offsetX, offsetY, offsetZ,
+            extra, generator(), false
+        )
+    }
 
     fun spawn(
         player: Player,

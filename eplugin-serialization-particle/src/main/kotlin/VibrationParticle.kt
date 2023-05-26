@@ -13,6 +13,7 @@ data class VibrationParticle(
     override val particle: Particle,
     override val count: Int = 1,
     override val extra: Double = 0.0,
+    override val chance: Double? = null,
     val data: V,
 ) : ParticleConfig {
     override fun generator(): Vibration {

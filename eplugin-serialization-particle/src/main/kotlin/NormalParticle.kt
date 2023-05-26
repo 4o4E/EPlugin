@@ -10,6 +10,7 @@ data class NormalParticle(
     override val particle: Particle,
     override val count: Int = 1,
     override val extra: Double = 0.0,
+    override val chance: Double? = null,
 ) : ParticleConfig {
     override fun generator() = null
 }
