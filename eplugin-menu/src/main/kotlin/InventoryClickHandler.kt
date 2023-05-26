@@ -76,7 +76,7 @@ interface InventoryClickHandler {
      * @param hotbarItem 通过快捷键确定的槽位中的物品
      * @param slot 光标指着的物品的下标
      * @param hotbar 快捷键下标
-     * @param event 时间
+     * @param event 事件
      * @return 若返回true则取消事件, 返回null代表未处理
      */
     fun onHotbarAction(

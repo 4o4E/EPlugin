@@ -4,6 +4,7 @@ package top.e404.eplugin.menu.menu
 
 import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.menu.InventoryClickHandler
@@ -139,6 +140,16 @@ open class ChestMenu(
             ]
         }
         return getHandler(slot)?.onClick(slot, event) ?: true
+    }
+
+    override fun onDrag(event: InventoryDragEvent): Boolean {
+        plugin.debug {
+            plugin.langManager[
+                "debug.menu.on_drag",
+                "player" to event.whoClicked.name,
+            ]
+        }
+        return true
     }
 
     override fun onHotbarAction(target: ItemStack?, hotbarItem: ItemStack?, slot: Int, hotbar: Int, event: InventoryClickEvent): Boolean {

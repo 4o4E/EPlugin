@@ -3,6 +3,7 @@ package top.e404.eplugin.menu.menu
 import org.bukkit.entity.HumanEntity
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.menu.InventoryClickHandler
@@ -58,6 +59,14 @@ interface InventoryMenu : InventoryClickHandler {
     override fun onClick(slot: Int, event: InventoryClickEvent): Boolean
 
     override fun onHotbarAction(target: ItemStack?, hotbarItem: ItemStack?, slot: Int, hotbar: Int, event: InventoryClickEvent): Boolean
+
+    /**
+     * 玩家在菜单中拖动时触发
+     *
+     * @param event 事件
+     * @return 若返回true则取消事件, 返回null代表未处理
+     */
+    fun onDrag(event: InventoryDragEvent): Boolean
 
     /**
      * 菜单被主动要求关闭, 通常发生在插件被卸载(关服/热重载)时

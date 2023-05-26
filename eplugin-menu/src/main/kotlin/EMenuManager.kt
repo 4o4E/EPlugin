@@ -7,6 +7,7 @@ import org.bukkit.entity.HumanEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
+import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.inventory.InventoryOpenEvent
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.listener.EListener
@@ -62,19 +63,19 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
     }
 
     // 打开菜单
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun InventoryOpenEvent.onEvent() {
         menus[player]?.onOpen(this)
     }
 
     // 关闭菜单
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun InventoryCloseEvent.onEvent() {
         menus.remove(player)?.onClose(this)
     }
 
     // 交互菜单
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun InventoryClickEvent.onEvent() {
         val menu = menus[whoClicked] ?: return
         val cursor = cursor
@@ -94,15 +95,21 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
         val clickedNotNull = clicked != null && clicked.type != Material.AIR
         if (hotbarButton != -1) {
             val hotbarItem = whoClicked.inventory.getItem(hotbarButton)
-            if (menu.onHotbarAction(clicked, hotbarItem, slot, hotbarButton, this)) isCancelled = true
+            isCancelled = menu.onHotbarAction(clicked, hotbarItem, slot, hotbarButton, this)
             return
         }
-        val b = when {
+        isCancelled = when {
             cursorNotNull && clickedNotNull -> menu.onSwitch(clicked!!, cursor!!, slot, this)
             !cursorNotNull && clickedNotNull -> menu.onPickup(clicked!!, slot, this)
             cursorNotNull && !clickedNotNull -> menu.onPutin(cursor!!, slot, this)
             else -> menu.onClick(slot, this)
         }
-        if (b) isCancelled = true
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    fun InventoryDragEvent.onEvent() {
+        menus[whoClicked]?.let {
+            if (it.onDrag(this)) isCancelled = true
+        }
     }
 }

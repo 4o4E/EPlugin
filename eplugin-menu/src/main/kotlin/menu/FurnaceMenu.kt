@@ -1,7 +1,10 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.menu.menu
 
 import org.bukkit.Bukkit
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.FurnaceInventory
 import org.bukkit.inventory.ItemStack
@@ -76,6 +79,16 @@ open class FurnaceMenu(
                 "slot_item" to target?.type,
                 "hotbar" to hotbar,
                 "hotbar_item" to hotbarItem?.type,
+                "player" to event.whoClicked.name,
+            ]
+        }
+        return true
+    }
+
+    override fun onDrag(event: InventoryDragEvent): Boolean {
+        plugin.debug {
+            plugin.langManager[
+                "debug.menu.on_drag",
                 "player" to event.whoClicked.name,
             ]
         }
