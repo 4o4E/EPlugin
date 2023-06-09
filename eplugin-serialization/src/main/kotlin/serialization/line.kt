@@ -1,4 +1,4 @@
-package top.e404.eplugin.util
+package top.e404.eplugin.config.serialization
 
 import kotlinx.serialization.Serializable
 import kotlin.math.sqrt
