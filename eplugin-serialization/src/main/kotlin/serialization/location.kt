@@ -10,6 +10,7 @@ import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.*
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import top.e404.eplugin.config.serialization.ELocation.Companion.deserializeToELocation
 import kotlin.math.floor
 
 /**
@@ -18,33 +19,37 @@ import kotlin.math.floor
 object InlineLocationSerialization : KSerializer<Location> {
     override val descriptor = primitive()
 
-    override fun deserialize(decoder: Decoder): Location {
-        val split = decoder.decodeString().split(";")
-        return Location(
-            Bukkit.getWorld(split[0]),
-            split[1].toDouble(),
-            split[2].toDouble(),
-            split[3].toDouble(),
-            split.getOrNull(4)?.toFloat() ?: 0f,
-            split.getOrNull(5)?.toFloat() ?: 0f,
-        )
-    }
+    override fun deserialize(decoder: Decoder) = decoder.decodeString().serializeToLocation()
 
-    override fun serialize(encoder: Encoder, value: Location) = encoder.encodeString(buildString {
-        append(value.world?.name.toString())
+    override fun serialize(encoder: Encoder, value: Location) = encoder.encodeString(value.inlineDeserializeToString())
+}
+
+fun String.serializeToLocation(): Location {
+    val split = split(";")
+    return Location(
+        Bukkit.getWorld(split[0]) ?: throw InvalidWorldException(split[0]),
+        split[1].toDouble(),
+        split[2].toDouble(),
+        split[3].toDouble(),
+        split.getOrNull(4)?.toFloat() ?: 0F,
+        split.getOrNull(5)?.toFloat() ?: 0F,
+    )
+}
+
+fun Location.inlineDeserializeToString() = buildString {
+    append(world?.name.toString())
+    append(";")
+    append(x)
+    append(";")
+    append(y)
+    append(";")
+    append(z)
+    if (yaw != 0F && pitch != 0F) {
         append(";")
-        append(value.x)
+        append(yaw)
         append(";")
-        append(value.y)
-        append(";")
-        append(value.z)
-        if (value.yaw != 0F && value.pitch != 0F) {
-            append(";")
-            append(value.yaw)
-            append(";")
-            append(value.pitch)
-        }
-    })
+        append(pitch)
+    }
 }
 
 /**
@@ -108,6 +113,18 @@ data class ELocation(
 ) {
     companion object {
         fun Location.toELocation() = ELocation(world!!.name, x, y, z, yaw, pitch)
+
+        fun String.deserializeToELocation(): ELocation {
+            val split = split(";")
+            return ELocation(
+                split[0],
+                split[1].toDouble(),
+                split[2].toDouble(),
+                split[3].toDouble(),
+                split.getOrNull(4)?.toFloat() ?: 0F,
+                split.getOrNull(5)?.toFloat() ?: 0F,
+            )
+        }
     }
 
     private val bkWorld get() = Bukkit.getWorld(world) ?: throw InvalidWorldException(world)
@@ -115,40 +132,17 @@ data class ELocation(
     fun inSameBlock(location: Location) = floor(location.x) == floor(x) &&
             floor(location.y) == floor(y) &&
             floor(location.z) == floor(z)
+
+    fun serializeToString() = buildString {
+        append(world).append(";").append(x).append(";").append(y).append(";").append(z)
+        if (yaw != 0F && pitch != 0F) append(";").append(yaw).append(";").append(pitch)
+    }
 }
 
 class InvalidWorldException(world: String) : RuntimeException("invalid world: $world")
 
 object InlineELocationSerialization : KSerializer<ELocation> {
     override val descriptor = primitive()
-
-    override fun deserialize(decoder: Decoder): ELocation {
-        val split = decoder.decodeString().split(";")
-        return ELocation(
-            split[0],
-            split[1].toDouble(),
-            split[2].toDouble(),
-            split[3].toDouble(),
-            split.getOrNull(4)?.toFloat() ?: 0F,
-            split.getOrNull(5)?.toFloat() ?: 0F,
-        )
-    }
-
-    override fun serialize(encoder: Encoder, value: ELocation) = encoder.encodeString(buildString {
-        append(value.world)
-        append(";")
-        append(value.x)
-        append(";")
-        append(value.y)
-        append(";")
-        append(value.z)
-        if (value.yaw != 0F) {
-            append(";")
-            append(value.yaw)
-        }
-        if (value.pitch != 0F) {
-            append(";")
-            append(value.pitch)
-        }
-    })
+    override fun deserialize(decoder: Decoder) = decoder.decodeString().deserializeToELocation()
+    override fun serialize(encoder: Encoder, value: ELocation) = encoder.encodeString(value.serializeToString())
 }
