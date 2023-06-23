@@ -8,6 +8,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.util.gson
+import top.e404.eplugin.util.serializeRecursion
 import top.e404.eplugin.util.toItemStack
 import top.e404.eplugin.util.toJson
 
@@ -15,7 +16,7 @@ object ItemStackMinSerialization : KSerializer<ItemStack> {
     private val type by lazy { object : TypeToken<Map<String, Any>>() {}.type }
     override val descriptor = primitive()
     override fun deserialize(decoder: Decoder) = ItemStack.deserialize(gson.fromJson<Map<String, Any>>(decoder.decodeString(), type))
-    override fun serialize(encoder: Encoder, value: ItemStack) = encoder.encodeString(value.serialize().toJson())
+    override fun serialize(encoder: Encoder, value: ItemStack) = encoder.encodeString(value.serializeRecursion().toJson())
 }
 
 object ItemStackPlainSerialization : KSerializer<ItemStack> {
