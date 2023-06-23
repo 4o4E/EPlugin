@@ -1,5 +1,7 @@
 package top.e404.eplugin.menu.zone
 
+import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.inventory.ItemStack
 import top.e404.eplugin.menu.Displayable
 import top.e404.eplugin.menu.menu.ChestMenu
 import top.e404.eplugin.util.emptyItem
@@ -16,7 +18,7 @@ import top.e404.eplugin.util.splitByPage
  * @property h 区域高度
  */
 abstract class MenuButtonZone<T : Displayable>(
-    menu: ChestMenu,
+    override val menu: ChestMenu,
     x: Int,
     y: Int,
     w: Int,
@@ -111,4 +113,26 @@ abstract class MenuButtonZone<T : Displayable>(
         val zoneIndex = menu2zone(menuIndex) ?: return
         updateByZoneIndex(zoneIndex)
     }
+
+    /**
+     * 处理zone的点击
+     *
+     * @param menuIndex 点击的格子在菜单中的index
+     * @param zoneIndex 点击的格子在zone中的index
+     * @param itemIndex 点击的格子对应的item在data中的index
+     * @param event 事件
+     * @return 若返回true则取消事件, 返回null代表未处理
+     */
+    abstract fun onClick(menuIndex: Int, zoneIndex: Int, itemIndex: Int, event: InventoryClickEvent): Boolean?
+
+    override fun onClick(slot: Int, event: InventoryClickEvent): Boolean? {
+        val zoneIndex = menu2zone(slot)!!
+        val dataIndex = zoneIndex + page * pageSize
+        return onClick(slot, zoneIndex, dataIndex, event)
+    }
+
+    override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent) = onClick(slot, event)
+    override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent) = onClick(slot, event)
+    override fun onSwitch(clicked: ItemStack, cursor: ItemStack, slot: Int, event: InventoryClickEvent) = onClick(slot, event)
+    override fun onHotbarAction(target: ItemStack?, hotbarItem: ItemStack?, slot: Int, hotbar: Int, event: InventoryClickEvent) = onClick(slot, event)
 }

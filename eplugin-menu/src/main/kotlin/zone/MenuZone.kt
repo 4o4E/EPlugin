@@ -14,7 +14,7 @@ import top.e404.eplugin.menu.menu.ChestMenu
  * @property h 区域高度
  */
 abstract class MenuZone(
-    val menu: ChestMenu,
+    open val menu: ChestMenu,
     val x: Int,
     val y: Int,
     val w: Int,
