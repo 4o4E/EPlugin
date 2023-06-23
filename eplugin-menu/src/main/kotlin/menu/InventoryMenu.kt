@@ -64,9 +64,18 @@ interface InventoryMenu : InventoryClickHandler {
      * 玩家在菜单中拖动时触发
      *
      * @param event 事件
-     * @return 若返回true则取消事件, 返回null代表未处理
+     * @return 若返回true则取消事件
      */
     fun onDrag(event: InventoryDragEvent): Boolean
+
+    /**
+     * 当玩家在自己背包中shift+点击移动物品进入菜单时触发
+     *
+     * @param clicked 点击的物品
+     * @param empty 菜单中的目标格子
+     * @return 若返回true则取消事件
+     */
+    fun onShiftPutin(clicked: ItemStack, event: InventoryClickEvent): Boolean
 
     /**
      * 菜单被主动要求关闭, 通常发生在插件被卸载(关服/热重载)时

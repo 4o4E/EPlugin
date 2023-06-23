@@ -85,6 +85,18 @@ open class FurnaceMenu(
         return true
     }
 
+    override fun onShiftPutin(clicked: ItemStack, event: InventoryClickEvent): Boolean {
+        plugin.debug {
+            plugin.langManager[
+                "debug.menu.on_shift_putin",
+                "player" to event.whoClicked.name,
+                "slot" to event.rawSlot,
+                "slot_item" to clicked.type
+            ]
+        }
+        return true
+    }
+
     override fun onDrag(event: InventoryDragEvent): Boolean {
         plugin.debug {
             plugin.langManager[
