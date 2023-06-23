@@ -5,10 +5,7 @@ package top.e404.eplugin.menu
 import org.bukkit.Material
 import org.bukkit.entity.HumanEntity
 import org.bukkit.event.EventHandler
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryCloseEvent
-import org.bukkit.event.inventory.InventoryDragEvent
-import org.bukkit.event.inventory.InventoryOpenEvent
+import org.bukkit.event.inventory.*
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.listener.EListener
 import top.e404.eplugin.menu.menu.InventoryMenu
@@ -74,12 +71,22 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
         menus.remove(player)?.onClose(this)
     }
 
+    private val shift = listOf(InventoryAction.PICKUP_ALL)
+
     // 交互菜单
     @EventHandler(ignoreCancelled = true)
     fun InventoryClickEvent.onEvent() {
         val menu = menus[whoClicked] ?: return
         val cursor = cursor
         val clicked = currentItem
+        if (isShiftClick
+            && menu.inv == whoClicked.openInventory.topInventory
+            && clicked != null
+            && menu.inv.firstEmpty() != -1
+        ) {
+            if (menu.onShiftPutin(clicked, this)) isCancelled = true
+            return
+        }
         // 打开菜单后点击了自己背包
         if (clickedInventory != menu.inv) {
             if (!menu.allowSelf) isCancelled = true
