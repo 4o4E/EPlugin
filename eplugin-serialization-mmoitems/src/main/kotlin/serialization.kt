@@ -431,7 +431,7 @@ inline fun <reified T : StatData> T.mergeWith(t: T) = apply {
         is AbilityListData -> abilities.addAll((t as AbilityListData).abilities)
         is AdvancedEnchantMap -> enchants.putAll((t as AdvancedEnchantMap).enchants)
         is CommandListData -> commands.addAll((t as CommandListData).commands)
-        is DoubleData -> value = max((t as DoubleData).value, value)
+        is DoubleData -> merge(t as DoubleData)
         is ElementListData -> merge(t)
         is EnchantListData -> merge(t)
         is GemSocketsData -> merge(t as GemSocketsData)
