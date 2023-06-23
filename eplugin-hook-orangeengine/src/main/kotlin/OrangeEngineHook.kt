@@ -17,4 +17,9 @@ open class OrangeEngineHook(
         model: String,
         type: ModelType = ModelType.BLOCKBENCH,
     ) = modelManager.addModelEntity(id, model, type)!!
+
+    fun playAnimation(
+        id: UUID,
+        animation: String
+    ) = modelManager.getModelEntity(id).playAnimation(animation)
 }
