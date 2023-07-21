@@ -64,7 +64,7 @@ abstract class YamlConfig(
         saveDefault(sender)
         val nc = YamlConfiguration()
         try {
-            nc.load(file)
+            nc.loadFromString(file.readText(Charsets.UTF_8))
         } catch (e: InvalidConfigurationException) {
             plugin.sendAndWarn(sender, "配置文件`${path}`格式错误, 请检查配置文件, 此文件内容将不会重载", e)
             return
