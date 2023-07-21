@@ -5,11 +5,11 @@ package top.e404.eplugin.menu
  */
 fun checkArg(x: Int, y: Int, w: Int, h: Int) {
     require(x in 0..8) { "require x in 0..8" }
-    require(y in 0..6) { "require y in 0..{row}" }
+    require(y in 0..5) { "require y in 0..{row}" }
     require(w > 0) { "require w > 0" }
     require(h > 0) { "require h > 0" }
-    require(x + w < 9) { "require x + w < 9" }
-    require(y + h < 6) { "require y + h < {row}" }
+    require(x + w <= 9) { "require x + w <= 9" }
+    require(y + h <= 6) { "require y + h <= {row}" }
 }
 
 /**
