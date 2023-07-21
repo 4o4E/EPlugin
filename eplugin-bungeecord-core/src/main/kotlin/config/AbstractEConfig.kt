@@ -61,7 +61,7 @@ abstract class AbstractEConfig(
     }
 
     /**
-     * 在需要立刻执行保存任务时调用
+     * 在需要立刻执行保存任务时调用, 取消scheduleSave的保存计划任务(若存在), 立即同步保存到文件
      */
     fun shutdown() {
         saveTask?.cancel()
