@@ -29,7 +29,10 @@ interface Savable {
      * 在需要立刻执行保存任务时调用
      */
     fun saveImmediately() {
-        saveTask?.cancel()
+        saveTask?.run {
+            cancel()
+            saveTask = null
+        }
         save(null)
     }
 }
