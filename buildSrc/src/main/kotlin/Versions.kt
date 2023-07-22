@@ -2,7 +2,7 @@ object Versions {
     const val group = "top.e404"
     const val version = "1.1.0"
     const val spigot = "1.13.2-R0.1-SNAPSHOT"
-    const val kotlin = "1.8.0"
+    const val kotlin = "1.8.20"
     const val serialization = "1.5.0"
     const val kaml = "0.53.0"
 }
