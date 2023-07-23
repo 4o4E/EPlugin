@@ -113,7 +113,7 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
                 else -> menu.onClick(slot, this)
             }
         } catch (t: Throwable) {
-            plugin.warn("处理菜单${menu::class.java.name}点击时出现异常, 已阻止点击, $this", t)
+            plugin.warn("处理菜单${menu::class.java.name}点击时出现异常, 已阻止点击", t)
             isCancelled = true
         }
     }
@@ -125,7 +125,7 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
             try {
                 if (it.onDrag(this)) isCancelled = true
             } catch (t: Throwable) {
-                plugin.warn("处理菜单${menu::class.java.name}拖动时出现异常, 已阻止, $this", t)
+                plugin.warn("处理菜单${menu::class.java.name}拖动时出现异常, 已阻止", t)
                 isCancelled = true
             }
         }
