@@ -28,11 +28,11 @@ interface Savable {
     /**
      * 在需要立刻执行保存任务时调用
      */
-    fun saveImmediately() {
+    fun saveImmediately(sender: CommandSender? = null) {
         saveTask?.run {
             cancel()
             saveTask = null
         }
-        save(null)
+        save(sender)
     }
 }
