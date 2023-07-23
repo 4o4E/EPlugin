@@ -77,46 +77,57 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
     @EventHandler(ignoreCancelled = true)
     fun InventoryClickEvent.onEvent() {
         val menu = menus[whoClicked] ?: return
-        val cursor = cursor
-        val clicked = currentItem
-        if (isShiftClick
-            && menu.inv == whoClicked.openInventory.topInventory
-            && clicked != null
-            && menu.inv.firstEmpty() != -1
-        ) {
-            if (menu.onShiftPutin(clicked, this)) isCancelled = true
-            return
-        }
-        // 打开菜单后点击了自己背包
-        if (clickedInventory != menu.inv) {
-            if (!menu.allowSelf) isCancelled = true
-            menu.onClickSelfInv(this)
-            return
-        }
-        // 点击了菜单外的区域
-        if (slot == -999) {
-            menu.onClickBlank(this)
-            return
-        }
-        val cursorNotNull = cursor != null && cursor.type != Material.AIR
-        val clickedNotNull = clicked != null && clicked.type != Material.AIR
-        if (hotbarButton != -1) {
-            val hotbarItem = whoClicked.inventory.getItem(hotbarButton)
-            isCancelled = menu.onHotbarAction(clicked, hotbarItem, slot, hotbarButton, this)
-            return
-        }
-        isCancelled = when {
-            cursorNotNull && clickedNotNull -> menu.onSwitch(clicked!!, cursor!!, slot, this)
-            !cursorNotNull && clickedNotNull -> menu.onPickup(clicked!!, slot, this)
-            cursorNotNull && !clickedNotNull -> menu.onPutin(cursor!!, slot, this)
-            else -> menu.onClick(slot, this)
+        try {
+            val cursor = cursor
+            val clicked = currentItem
+            if (isShiftClick
+                && menu.inv == whoClicked.openInventory.topInventory
+                && clicked != null
+                && menu.inv.firstEmpty() != -1
+            ) {
+                if (menu.onShiftPutin(clicked, this)) isCancelled = true
+                return
+            }
+            // 打开菜单后点击了自己背包
+            if (clickedInventory != menu.inv) {
+                if (!menu.allowSelf) isCancelled = true
+                menu.onClickSelfInv(this)
+                return
+            }
+            // 点击了菜单外的区域
+            if (slot == -999) {
+                menu.onClickBlank(this)
+                return
+            }
+            val cursorNotNull = cursor != null && cursor.type != Material.AIR
+            val clickedNotNull = clicked != null && clicked.type != Material.AIR
+            if (hotbarButton != -1) {
+                val hotbarItem = whoClicked.inventory.getItem(hotbarButton)
+                isCancelled = menu.onHotbarAction(clicked, hotbarItem, slot, hotbarButton, this)
+                return
+            }
+            isCancelled = when {
+                cursorNotNull && clickedNotNull -> menu.onSwitch(clicked!!, cursor!!, slot, this)
+                !cursorNotNull && clickedNotNull -> menu.onPickup(clicked!!, slot, this)
+                cursorNotNull && !clickedNotNull -> menu.onPutin(cursor!!, slot, this)
+                else -> menu.onClick(slot, this)
+            }
+        } catch (t: Throwable) {
+            plugin.warn("处理菜单${menu::class.java.name}点击时出现异常, 已阻止点击, $this", t)
+            isCancelled = true
         }
     }
 
     @EventHandler(ignoreCancelled = true)
     fun InventoryDragEvent.onEvent() {
-        menus[whoClicked]?.let {
-            if (it.onDrag(this)) isCancelled = true
+        val menu = menus[whoClicked]
+        menu?.let {
+            try {
+                if (it.onDrag(this)) isCancelled = true
+            } catch (t: Throwable) {
+                plugin.warn("处理菜单${menu::class.java.name}拖动时出现异常, 已阻止, $this", t)
+                isCancelled = true
+            }
         }
     }
 }
