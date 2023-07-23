@@ -206,14 +206,20 @@ abstract class EPlugin : JavaPlugin {
 
     // task
     fun runTask(task: (BukkitRunnable) -> Unit) = converse(task).runTask(this)
+    fun runTask(task: () -> Unit) = scheduler.runTask(this, task)
     fun runTaskLater(delay: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskLater(this, delay)
+    fun runTaskLater(delay: Long, task: () -> Unit) = scheduler.runTaskLater(this, task, delay)
 
     fun runTaskTimer(delay: Long, period: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskTimer(this, delay, period)
+    fun runTaskTimer(delay: Long, period: Long, task: () -> Unit) = scheduler.runTaskTimer(this, task, delay, period)
 
     // async task
     fun runTaskAsync(task: (BukkitRunnable) -> Unit) = converse(task).runTaskAsynchronously(this)
+    fun runTaskAsync(task: () -> Unit) = scheduler.runTaskAsynchronously(this, task)
     fun runTaskLaterAsync(delay: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskLaterAsynchronously(this, delay)
+    fun runTaskLaterAsync(delay: Long, task: () -> Unit) = scheduler.runTaskLaterAsynchronously(this, task, delay)
     fun runTaskTimerAsync(delay: Long, period: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskTimerAsynchronously(this, delay, period)
+    fun runTaskTimerAsync(delay: Long, period: Long, task: () -> Unit) = scheduler.runTaskTimerAsynchronously(this, task, delay, period)
 
     private fun converse(task: ((BukkitRunnable) -> Unit)) = object : BukkitRunnable() {
         override fun run() {
