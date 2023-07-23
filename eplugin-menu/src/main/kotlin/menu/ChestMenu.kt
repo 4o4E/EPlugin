@@ -81,7 +81,15 @@ open class ChestMenu(
      * @param index 下标
      */
     open fun updateIcon(index: Int) {
-        zones.firstOrNull { index in it }?.updateByMenuIndex(index)
+        if (zones.firstOrNull { index in it }?.updateByMenuIndex(index) != null) {
+            return
+        }
+        slots[index]?.let {
+            it.updateItem()
+            inv.setItem(index, it.item)
+            return
+        }
+        plugin.warn("无法更新下标为${index}的图标")
     }
 
     /**
