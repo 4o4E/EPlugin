@@ -91,6 +91,7 @@ abstract class ECommandManager(
         if (c == null || c.mustByPlayer && sender !is Player) return list
         // 传递给指令
         c.onTabComplete(sender, args, list)
+        if (list.isEmpty()) return list
         val last = args.last()
         return list.filter { it.contains(last, true) }.toMutableList()
     }
