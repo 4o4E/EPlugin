@@ -15,18 +15,36 @@ abstract class ELangManager(
     default = JarConfigDefault(plugin, "lang.yml"),
     clearBeforeSave = false
 ) {
-    private var cache = mutableMapOf<String, String>()
-    override operator fun get(path: String) = cache.getOrElse(path) { path }.color()
+    private val defaultLang by lazy {
+        val cfg = YamlConfiguration().also { it.loadFromString(default.string) }
+        val keys = cfg.getKeys(true)
+        val map = HashMap<String, String>(keys.size)
+        keys.forEach {
+            val value = cfg.get(it)
+            if (value !is String) return@forEach
+            map[it] = value
+        }
+        map
+    }
+    private var cacheLang = mutableMapOf<String, String>()
+    override operator fun get(path: String) =
+        cacheLang[path]?.color()
+            ?: defaultLang[path]?.color()
+            ?: path
+
     operator fun get(path: String, vararg placeholder: Pair<String, Any?>) =
-        cache[path]?.placeholder(*placeholder) ?: path
+        cacheLang[path]?.placeholder(*placeholder)
+            ?: defaultLang[path]?.placeholder(*placeholder)
+            ?: path
 
     override fun YamlConfiguration.onLoad() {
-        val cache = mutableMapOf<String, String>()
-        getKeys(true).forEach {
+        val keys = getKeys(true)
+        val cache = HashMap<String, String>(keys.size)
+        keys.forEach {
             val value = get(it)
             if (value !is String) return@forEach
             cache[it] = value
         }
-        this@ELangManager.cache = cache
+        cacheLang = cache
     }
 }
