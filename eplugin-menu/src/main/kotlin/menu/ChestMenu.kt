@@ -35,7 +35,7 @@ open class ChestMenu(
     val zones: MutableSet<MenuZone> = mutableSetOf()
 
     /**
-     * 子区域之外的点击处理
+     * 子区域之外的点击处理, 手动添加时需要自行注入slot的index
      */
     val slots: MutableMap<Int, MenuSlot> = mutableMapOf()
 
@@ -54,11 +54,13 @@ open class ChestMenu(
             val exists = existsSlot[char]
             if (exists != null) {
                 slots[index] = exists
+                exists.boundIndexes.add(index)
                 return@forEach
             }
             val slot = handler.invoke(index, char) ?: return@forEach
             existsSlot[char] = slot
             slots[index] = slot
+            slot.boundIndexes.add(index)
         }
     }
 

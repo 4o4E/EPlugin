@@ -17,6 +17,11 @@ abstract class MenuSlot(
     open val menu: ChestMenu
 ) : InventoryClickHandler {
     /**
+     * 绑定了的菜单格子下标, 由菜单在初始化的时候注入
+     */
+    val boundIndexes = mutableSetOf<Int>()
+
+    /**
      * 对应在菜单中展示的物品
      */
     open var item = emptyItem
