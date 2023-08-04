@@ -10,7 +10,6 @@ import top.e404.eplugin.menu.menu.ChestMenu
  * 代表一个按钮, cancel所有点击
  *
  * @property menu 持有此格子的菜单
- * @property index 在菜单中的下标
  */
 abstract class MenuButton(override var menu: ChestMenu) : MenuSlot(menu) {
     override fun onPickup(
