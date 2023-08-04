@@ -13,11 +13,14 @@ import top.e404.eplugin.util.toItemStack
 import top.e404.eplugin.util.toJson
 
 object ItemStackMinSerialization : KSerializer<ItemStack> {
-    private val type by lazy { object : TypeToken<Map<String, Any>>() {}.type }
     override val descriptor = primitive()
-    override fun deserialize(decoder: Decoder) = ItemStack.deserialize(gson.fromJson<Map<String, Any>>(decoder.decodeString(), type))
-    override fun serialize(encoder: Encoder, value: ItemStack) = encoder.encodeString(value.serializeRecursion().toJson())
+    override fun deserialize(decoder: Decoder) = decoder.decodeString().deserializeToItemStack()
+    override fun serialize(encoder: Encoder, value: ItemStack) = encoder.encodeString(value.serializeToString())
 }
+
+private val type by lazy { object : TypeToken<Map<String, Any>>() {}.type }
+fun ItemStack.serializeToString() = serializeRecursion().toJson()
+fun String.deserializeToItemStack() = ItemStack.deserialize(gson.fromJson<Map<String, Any>>(this, type))
 
 object ItemStackPlainSerialization : KSerializer<ItemStack> {
     override val descriptor = primitive()
