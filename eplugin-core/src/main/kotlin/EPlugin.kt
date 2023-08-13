@@ -224,4 +224,12 @@ abstract class EPlugin : JavaPlugin {
     // cancel task
     fun cancelAllTask() = scheduler.cancelTasks(this)
     fun cancelTask(id: Int) = scheduler.cancelTask(id)
+
+    // resource
+
+    fun getResourceAsBytes(path: String) = classLoader.getResource(path)?.readBytes()
+        ?: throw Exception("can't find resource with path: $path")
+
+    fun getResourceAsText(path: String) = classLoader.getResource(path)?.readText()
+    ?: throw Exception("can't find resource with path: $path")
 }
