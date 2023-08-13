@@ -29,7 +29,6 @@ abstract class AbstractDebugCommand(
                         else "debug.console_disable"
                 ]
             )
-            plugin.sendNotPlayer(sender)
             return
         }
         val senderName = sender.name
