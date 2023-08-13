@@ -120,14 +120,12 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
 
     @EventHandler(ignoreCancelled = true)
     fun InventoryDragEvent.onEvent() {
-        val menu = menus[whoClicked]
-        menu?.let {
-            try {
-                if (it.onDrag(this)) isCancelled = true
-            } catch (t: Throwable) {
-                plugin.warn("处理菜单${menu::class.java.name}拖动时出现异常, 已阻止", t)
-                isCancelled = true
-            }
+        val menu = menus[whoClicked] ?: return
+        try {
+            if (menu.onDrag(this)) isCancelled = true
+        } catch (t: Throwable) {
+            plugin.warn("处理菜单${menu::class.java.name}拖动时出现异常, 已阻止", t)
+            isCancelled = true
         }
     }
 }
