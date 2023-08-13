@@ -4,6 +4,7 @@ package top.e404.eplugin.util
 
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 
@@ -26,3 +27,5 @@ private val vectors = listOf(
 fun Player.getBlockUnderFoot() = vectors.map { location.add(it).block }
 
 fun Player.isMidAir() = getBlockUnderFoot().all { it.isEmpty }
+
+fun Player.playSound(sound: Sound) = playSound(location, sound, 1F, 1F)
