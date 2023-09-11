@@ -119,13 +119,13 @@ abstract class EPlugin : JavaPlugin {
      */
     fun sendOpMsg(message: String) = forEachOp { sendMsgWithPrefix(it, message) }
 
-    private fun sendDebugMessage(str: String) {
+    fun sendDebugMessage(str: String) {
         val msg = "$debugPrefix &b${str}".color()
         if (debug) console.sendMessage(msg)
         debuggers.forEach { Bukkit.getPlayer(it)?.sendMessage(msg) }
     }
 
-    fun debug(msg: () -> String) {
+    inline fun debug(msg: () -> String) {
         if (!debug && debuggers.isEmpty()) return
         sendDebugMessage(msg())
     }
@@ -134,6 +134,11 @@ abstract class EPlugin : JavaPlugin {
         langManager.config.getString(path)?.let {
             sendDebugMessage(it.placeholder(*placeholder))
         } ?: sendDebugMessage(path)
+    }
+
+    inline fun buildDebug(block: StringBuilder.() -> Unit) {
+        if (!debug && debuggers.isEmpty()) return
+        sendDebugMessage(buildString(block))
     }
 
     fun info(msg: String) =
