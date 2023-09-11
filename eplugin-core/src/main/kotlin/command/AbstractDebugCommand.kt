@@ -12,7 +12,7 @@ abstract class AbstractDebugCommand(
 ) : ECommand(
     plugin = plugin,
     name = "debug",
-    regex = "(?i)debug",
+    regex = "(?i)debug|d",
     mustByPlayer = false,
     permission = permission
 ) {
