@@ -80,10 +80,10 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
         try {
             val cursor = cursor
             val clicked = currentItem
-            if (isShiftClick
-                && menu.inv == whoClicked.openInventory.topInventory
-                && clicked != null
-                && menu.inv.firstEmpty() != -1
+            if (isShiftClick // shift点击
+                && clicked != null // 点击的格子中有物品
+                && menu.inv.firstEmpty() != -1 // 菜单种有空位
+                && clickedInventory == whoClicked.openInventory.bottomInventory // 点的是自己背包
             ) {
                 if (menu.onShiftPutin(clicked, this)) isCancelled = true
                 return
