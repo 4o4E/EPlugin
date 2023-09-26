@@ -31,7 +31,12 @@ abstract class MenuSlot(
     /**
      * 更新物品
      */
-    abstract fun updateItem()
+    open fun updateItem() {
+        menu.plugin.buildDebug {
+            append("更新slot的图标, 绑定的index: ")
+            boundIndexes.joinTo(this, ", ", "[", "]")
+        }
+    }
 
     abstract override fun onClick(
         slot: Int,

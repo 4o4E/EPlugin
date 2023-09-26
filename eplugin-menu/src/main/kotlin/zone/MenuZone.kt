@@ -63,19 +63,27 @@ abstract class MenuZone(
     /**
      * 更新所有图标
      */
-    open fun update() {}
+    open fun update() {
+        menu.plugin.debug { "更新zone的所有图标, 位置: $x,$y,$w,$h" }
+    }
 
     /**
      * 更新[zoneIndex]处的图标
      *
      * @param zoneIndex 下标
      */
-    open fun updateByZoneIndex(zoneIndex: Int) {}
+    open fun updateByZoneIndex(zoneIndex: Int) {
+        val menuIndex = zone2menu(zoneIndex)
+        menu.plugin.debug { "更新zone的指定图标, zoneIndex: $zoneIndex, menuIndex: $menuIndex, 位置: $x,$y,$w,$h" }
+    }
 
     /**
      * 更新[menuIndex]处的图标
      *
      * @param menuIndex 下标
      */
-    open fun updateByMenuIndex(menuIndex: Int) {}
+    open fun updateByMenuIndex(menuIndex: Int) {
+        val zoneIndex = menu2zone(menuIndex)
+        menu.plugin.debug { "更新zone的指定图标, zoneIndex: $zoneIndex, menuIndex: $menuIndex, 位置: $x,$y,$w,$h" }
+    }
 }

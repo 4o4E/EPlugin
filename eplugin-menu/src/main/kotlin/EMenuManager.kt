@@ -22,16 +22,17 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
     /**
      * 给玩家打开菜单, 只有通过此方法打开的菜单才能接入到
      *
-     * @param m 菜单
-     * @param p 玩家
+     * @param menu 菜单
+     * @param player 玩家
      */
-    fun openMenu(m: InventoryMenu, p: HumanEntity) {
+    fun openMenu(menu: InventoryMenu, player: HumanEntity) {
         // 先关闭已打开的菜单, 确保正确触发 InventoryCloseEvent
-        p.closeInventory()
+        player.closeInventory()
         // 打开新菜单
-        menus[p] = m
-        m.onInit()
-        p.openInventory(m.inv)
+        menus[player] = menu
+        menu.onInit()
+        plugin.debug { "为玩家${player.name}打开菜单${menu::class.java.simpleName}" }
+        player.openInventory(menu.inv)
     }
 
     /**
@@ -40,9 +41,10 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
      * @param p 玩家
      */
     fun closeMenu(p: HumanEntity) {
-        if (menus.containsKey(p)) {
+        val menu = menus.remove(p)
+        if (menu != null) {
+            plugin.debug { "为玩家${p.name}关闭菜单${menu::class.java.simpleName}" }
             p.closeInventory()
-            menus.remove(p)
         }
     }
 
@@ -50,6 +52,7 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
      * 插件卸载时应调用此指令关闭所有已打开的菜单
      */
     open fun shutdown() {
+        plugin.debug { "菜单管理器shutdown" }
         val iterator = menus.entries.iterator()
         while (iterator.hasNext()) {
             val (player, menu) = iterator.next()
@@ -62,13 +65,19 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
     // 打开菜单
     @EventHandler(ignoreCancelled = true)
     fun InventoryOpenEvent.onEvent() {
-        menus[player]?.onOpen(this)
+        menus[player]?.let {
+            plugin.debug { "玩家${player.name}打开菜单${it::class.java.simpleName}" }
+            it.onOpen(this)
+        }
     }
 
     // 关闭菜单
     @EventHandler(ignoreCancelled = true)
     fun InventoryCloseEvent.onEvent() {
-        menus.remove(player)?.onClose(this)
+        menus.remove(player)?.let {
+            plugin.debug { "玩家${player.name}打开菜单${it::class.java.simpleName}" }
+            it.onClose(this)
+        }
     }
 
     private val shift = listOf(InventoryAction.PICKUP_ALL)

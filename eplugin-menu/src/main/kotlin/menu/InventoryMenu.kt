@@ -41,7 +41,7 @@ interface InventoryMenu : InventoryClickHandler {
      *
      * @param event 事件
      */
-    fun onClickSelfInv(event: InventoryClickEvent) {}
+    fun onClickSelfInv(event: InventoryClickEvent)
 
     /**
      * 玩家打开菜单后点击菜单外的区域
@@ -72,7 +72,7 @@ interface InventoryMenu : InventoryClickHandler {
      * 当玩家在自己背包中shift+点击移动物品进入菜单时触发
      *
      * @param clicked 点击的物品
-     * @param empty 菜单中的目标格子
+     * @param event 事件
      * @return 若返回true则取消事件
      */
     fun onShiftPutin(clicked: ItemStack, event: InventoryClickEvent): Boolean
@@ -80,5 +80,5 @@ interface InventoryMenu : InventoryClickHandler {
     /**
      * 菜单被主动要求关闭, 通常发生在插件被卸载(关服/热重载)时
      */
-    fun onShutdown(player: HumanEntity) {}
+    fun onShutdown(player: HumanEntity)
 }

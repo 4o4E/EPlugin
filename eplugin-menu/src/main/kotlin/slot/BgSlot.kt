@@ -18,5 +18,4 @@ class BgSlot(menu: ChestMenu, override var item: ItemStack) : MenuSlot(menu) {
     override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent) = true
     override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent) = true
     override fun onSwitch(clicked: ItemStack, cursor: ItemStack, slot: Int, event: InventoryClickEvent) = true
-    override fun updateItem() {}
 }

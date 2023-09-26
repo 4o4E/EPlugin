@@ -11,7 +11,7 @@ import top.e404.eplugin.menu.slot.MenuButton
  * 代表一个按钮, 能自动管理多种状态
  *
  * @property menu 持有此格子的菜单
- * @property index 此格子对应的下标
+ * @param compositions 所有的按钮状态
  */
 abstract class PolymorphicButton(
     override var menu: ChestMenu,
@@ -39,6 +39,7 @@ abstract class PolymorphicButton(
     }
 
     override fun updateItem() {
+        super.updateItem()
         // 更新图标
         item = current?.item ?: defaultItem
     }

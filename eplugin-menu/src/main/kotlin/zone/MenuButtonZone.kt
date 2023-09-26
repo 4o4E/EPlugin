@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.menu.zone
 
 import org.bukkit.event.inventory.InventoryClickEvent
@@ -77,6 +79,7 @@ abstract class MenuButtonZone<T : Displayable>(
     // 图标
 
     override fun update() {
+        super.update()
         val byPage = data.splitByPage(pageSize, page)
         for (i in 0 until pageSize) {
             val displayable = byPage.getOrNull(i)
@@ -98,6 +101,7 @@ abstract class MenuButtonZone<T : Displayable>(
      * @param zoneIndex 下标
      */
     override fun updateByZoneIndex(zoneIndex: Int) {
+        super.updateByZoneIndex(zoneIndex)
         val byPage = data.splitByPage(pageSize, page)
         val displayable = byPage[zoneIndex]
         displayable.update()

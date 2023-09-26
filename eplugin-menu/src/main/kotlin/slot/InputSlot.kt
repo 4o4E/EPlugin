@@ -18,5 +18,4 @@ class InputSlot(menu: ChestMenu) : MenuSlot(menu) {
     override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent) = false
     override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent) = false
     override fun onSwitch(clicked: ItemStack, cursor: ItemStack, slot: Int, event: InventoryClickEvent) = false
-    override fun updateItem() {}
 }

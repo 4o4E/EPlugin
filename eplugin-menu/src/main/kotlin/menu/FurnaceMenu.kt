@@ -3,6 +3,7 @@
 package top.e404.eplugin.menu.menu
 
 import org.bukkit.Bukkit
+import org.bukkit.entity.HumanEntity
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryDragEvent
 import org.bukkit.event.inventory.InventoryType
@@ -24,86 +25,49 @@ open class FurnaceMenu(
     override val inv = Bukkit.createInventory(null, InventoryType.FURNACE, title) as FurnaceInventory
 
     override fun onPickup(clicked: ItemStack, slot: Int, event: InventoryClickEvent): Boolean {
-        plugin.debug {
-            plugin.langManager[
-                    "debug.menu.on_pickup",
-                    "slot" to slot,
-                    "clicked" to clicked.type.name,
-                    "player" to event.whoClicked.name,
-            ]
-        }
+        plugin.debug { "玩家${event.whoClicked.name}交互(pickup)了菜单的第${slot}个格子(clicked: ${clicked.type.name})" }
         return true
     }
 
     override fun onPutin(cursor: ItemStack, slot: Int, event: InventoryClickEvent): Boolean {
-        plugin.debug {
-            plugin.langManager[
-                    "debug.menu.on_putin",
-                    "slot" to slot,
-                    "cursor" to cursor.type.name,
-                    "player" to event.whoClicked.name,
-            ]
-        }
+        plugin.debug { "玩家${event.whoClicked.name}交互(putin)了菜单的第${slot}个格子(cursor: ${cursor.type.name})" }
         return true
     }
 
     override fun onSwitch(clicked: ItemStack, cursor: ItemStack, slot: Int, event: InventoryClickEvent): Boolean {
         plugin.debug {
-            plugin.langManager[
-                    "debug.menu.on_switch",
-                    "slot" to slot,
-                    "clicked" to clicked.type.name,
-                    "cursor" to cursor.type.name,
-                    "player" to event.whoClicked.name,
-            ]
+            "玩家${event.whoClicked.name}交互(switch)了菜单的第${slot}个格子(clicked: ${clicked.type.name}, cursor: ${cursor.type.name})"
         }
         return true
     }
 
     override fun onClick(slot: Int, event: InventoryClickEvent): Boolean {
-        plugin.debug {
-            plugin.langManager[
-                    "debug.menu.on_click",
-                    "slot" to slot,
-                    "player" to event.whoClicked.name,
-            ]
-        }
+        plugin.debug { "玩家${event.whoClicked.name}交互(click)了菜单的第${slot}个格子" }
         return true
     }
 
     override fun onHotbarAction(target: ItemStack?, hotbarItem: ItemStack?, slot: Int, hotbar: Int, event: InventoryClickEvent): Boolean{
         plugin.debug {
-            plugin.langManager[
-                "debug.menu.on_hotbar",
-                "slot" to slot,
-                "slot_item" to target?.type,
-                "hotbar" to hotbar,
-                "hotbar_item" to hotbarItem?.type,
-                "player" to event.whoClicked.name,
-            ]
+            "玩家${event.whoClicked.name}使用快捷键切换${slot}(${target?.type})<->${hotbar}(${hotbarItem?.type})"
         }
         return true
     }
 
     override fun onShiftPutin(clicked: ItemStack, event: InventoryClickEvent): Boolean {
-        plugin.debug {
-            plugin.langManager[
-                "debug.menu.on_shift_putin",
-                "player" to event.whoClicked.name,
-                "slot" to event.rawSlot,
-                "slot_item" to clicked.type
-            ]
-        }
+        plugin.debug { "玩家${event.whoClicked.name}在菜单中shift+点击移动${event.rawSlot}(${clicked.type.name})" }
         return true
     }
 
     override fun onDrag(event: InventoryDragEvent): Boolean {
-        plugin.debug {
-            plugin.langManager[
-                "debug.menu.on_drag",
-                "player" to event.whoClicked.name,
-            ]
-        }
+        plugin.debug { "玩家${event.whoClicked.name}在菜单中拖动" }
         return true
+    }
+
+    override fun onClickSelfInv(event: InventoryClickEvent) {
+        plugin.debug { "玩家${event.whoClicked.name}在菜单中点击自己背包${event.slot}(${event.currentItem?.type})" }
+    }
+
+    override fun onShutdown(player: HumanEntity) {
+        plugin.debug { "玩家${player.name}打开的菜单${this::class.java.simpleName}因shutdown而关闭" }
     }
 }
