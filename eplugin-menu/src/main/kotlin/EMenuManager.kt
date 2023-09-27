@@ -75,7 +75,7 @@ open class EMenuManager(override val plugin: EPlugin) : EListener(plugin) {
     @EventHandler(ignoreCancelled = true)
     fun InventoryCloseEvent.onEvent() {
         menus.remove(player)?.let {
-            plugin.debug { "玩家${player.name}打开菜单${it::class.java.simpleName}" }
+            plugin.debug { "玩家${player.name}关闭菜单${it::class.java.simpleName}" }
             it.onClose(this)
         }
     }
