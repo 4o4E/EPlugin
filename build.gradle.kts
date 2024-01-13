@@ -31,10 +31,11 @@ subprojects {
     apply(plugin = "org.gradle.java-library")
 
     repositories {
+        maven("https://maven.aliyun.com/repository/public/")
+        mavenCentral()
         // spigot
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
         maven("https://oss.sonatype.org/content/groups/public/")
-        mavenCentral()
         mavenLocal()
     }
 
