@@ -14,6 +14,7 @@ include(
     ":eplugin-hook-nova",
     ":eplugin-hook-orangeengine",
     ":eplugin-hook-placeholderapi",
+    ":eplugin-hook-playerparticles",
     ":eplugin-hook-playerpoints",
     ":eplugin-hook-psr",
     ":eplugin-hook-slimefun",
