@@ -65,3 +65,18 @@ fun <T> Collection<Tableable<T>>.choose(): T {
     }
     return last().generator()
 }
+
+/**
+ * 从列表按照权重随机挑选一个
+ *
+ * @param getWeight 获取权重 获取的权重不可低于0
+ * @return 选择的元素
+ */
+fun <T> Iterable<T>.chooseBy(getWeight: (T) -> Int): T {
+    var random = Random.nextInt(0, sumOf { getWeight(it) })
+    for (t in this) {
+        random -= getWeight(t)
+        if (random <= 0) return t
+    }
+    throw Exception()
+}
