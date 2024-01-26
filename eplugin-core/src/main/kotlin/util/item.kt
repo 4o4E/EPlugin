@@ -4,6 +4,7 @@ package top.e404.eplugin.util
 
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -35,9 +36,10 @@ var ItemStack.name: String?
     }
 
 fun ItemStack.editItemMeta(block: ItemMeta.() -> Unit) = apply {
-    val im = itemMeta ?: ItemStack(type).itemMeta!!
-    im.block()
-    itemMeta = im
+    val im = itemMeta
+        ?: Bukkit.getItemFactory().getItemMeta(type)
+        ?: throw IllegalStateException("cannot create item meta for ${type.name}")
+    itemMeta = im.also(block)
 }
 
 val emptyItem: ItemStack
@@ -49,7 +51,7 @@ fun buildItemStack(
     name: String? = null,
     lore: List<String>? = null,
     block: ItemMeta.() -> Unit = {}
-) = ItemStack(type, amount).editItemMeta {
+) = if (type == Material.AIR) ItemStack(type) else ItemStack(type, amount).editItemMeta {
     name?.let { setDisplayName(it.color()) }
     lore?.let { list -> this.lore = list.map { it.color() } }
     block()
