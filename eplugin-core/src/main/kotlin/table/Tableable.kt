@@ -23,7 +23,7 @@ fun <T> Collection<Tableable<T>>.choose(
     // 允许重复
     if (repeat) {
         while (collection.size < amount) {
-            var t = Random.nextInt(all)
+            var t = Random.nextInt(all) + 1
             for (item in this) {
                 t -= item.weight
                 if (t <= 0) {
@@ -37,7 +37,7 @@ fun <T> Collection<Tableable<T>>.choose(
     // 不允许重复
     val list = toMutableList()
     while (collection.size < amount) {
-        var t = Random.nextInt(all)
+        var t = Random.nextInt(all) + 1
         for (item in this) {
             t -= item.weight
             if (t <= 0) {
@@ -58,7 +58,7 @@ fun <T> Collection<Tableable<T>>.choose(
  * @return 选择的元素
  */
 fun <T> Collection<Tableable<T>>.choose(): T {
-    var random = Random.nextInt(0, sumOf { it.weight })
+    var random = Random.nextInt(0, sumOf { it.weight }) + 1
     for (t in this) {
         random -= t.weight
         if (random <= 0) return t.generator()
@@ -73,7 +73,7 @@ fun <T> Collection<Tableable<T>>.choose(): T {
  * @return 选择的元素
  */
 fun <T> Iterable<T>.chooseBy(getWeight: (T) -> Int): T {
-    var random = Random.nextInt(0, sumOf { getWeight(it) })
+    var random = Random.nextInt(0, sumOf { getWeight(it) }) + 1
     for (t in this) {
         random -= getWeight(t)
         if (random <= 0) return t
