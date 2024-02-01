@@ -60,13 +60,15 @@ abstract class AbstractMultiFileConfig<T : Any> : Savable {
      *
      * @param fileMap 文件map<路径, File对象>
      */
-    protected fun File.files(fileMap: MutableMap<String, File>) {
+    protected open fun File.files(fileMap: MutableMap<String, File>) {
         if (isFile) {
-            fileMap[path] = this
+            if (select()) fileMap[path] = this
             return
         }
         listFiles()?.forEach { it.files(fileMap) }
     }
+
+    protected open fun File.select(): Boolean = true
 
     /**
      * 从所有文件中加载数据
