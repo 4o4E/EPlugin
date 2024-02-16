@@ -23,6 +23,7 @@ abstract class YamlConfig(
     open val clearBeforeSave: Boolean = false,
 ) : AbstractEConfig(plugin, path, default) {
     var config: YamlConfiguration = YamlConfiguration()
+        internal set
 
     open operator fun get(path: String) = config.getString(path)
     operator fun set(path: String, value: Any?) = config.set(path, value)

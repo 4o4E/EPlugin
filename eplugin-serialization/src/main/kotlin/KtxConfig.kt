@@ -37,6 +37,7 @@ abstract class KtxConfig<T : Any>(
     }
 
     lateinit var config: T
+        internal set
 
     /**
      * 保存默认的配置文件
