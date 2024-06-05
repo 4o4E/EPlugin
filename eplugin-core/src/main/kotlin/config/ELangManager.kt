@@ -28,8 +28,8 @@ abstract class ELangManager(
     }
     private var cacheLang = mutableMapOf<String, String>()
     override operator fun get(path: String) =
-        cacheLang[path]?.color()
-            ?: defaultLang[path]?.color()
+        cacheLang[path]?.color
+            ?: defaultLang[path]?.color
             ?: path
 
     operator fun get(path: String, vararg placeholder: Pair<String, Any?>) =

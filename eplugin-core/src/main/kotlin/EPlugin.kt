@@ -26,7 +26,7 @@ abstract class EPlugin : JavaPlugin {
     ) : super(loader, description, dataFolder, file)
 
     companion object {
-        fun String.color() = replace("&", "§")
+        val String.color get() = replace("&", "§")
         private val colorRegex = Regex("(?i)[§&][\\da-fk-orx]")
         fun String.removeColor() = replace(colorRegex, "")
 
@@ -40,7 +40,7 @@ abstract class EPlugin : JavaPlugin {
         fun String.placeholder(placeholder: Map<String, Any?>): String {
             var s = this
             for ((k, v) in placeholder.entries) s = s.replace("{$k}", v.toString())
-            return s.color()
+            return s.color
         }
 
         /**
@@ -52,23 +52,23 @@ abstract class EPlugin : JavaPlugin {
         fun String.placeholder(vararg placeholder: Pair<String, Any?>): String {
             var s = this
             for ((k, v) in placeholder) s = s.replace("{$k}", v.toString())
-            return s.color()
+            return s.color
         }
 
         private val regex = Regex("[.\\s\\-_]+")
         fun String.formatAsConst() = replace(regex, "_").uppercase()
 
-        private val scheduler by lazy { Bukkit.getScheduler() }
+        private val scheduler inline get() = Bukkit.getScheduler()
     }
 
-    private fun noperm() = langManager.getOrSelf("message.noperm")
-    private fun notPlayer() = langManager.getOrSelf("message.non_player")
-    private fun unknown() = langManager.getOrSelf("message.unknown_command")
-    private fun invalidArgs() = langManager.getOrSelf("message.invalid_args")
+    private val noperm get() = langManager.getOrSelf("message.noperm")
+    private val notPlayer get() = langManager.getOrSelf("message.non_player")
+    private val unknown get() = langManager.getOrSelf("message.unknown_command")
+    private val invalidArgs get() = langManager.getOrSelf("message.invalid_args")
 
+    open val prefix: String get() = langManager.getOrElse("prefix") { "" }
+    open val debugPrefix: String get() = langManager.getOrElse("debug_prefix") { "" }
     abstract var debug: Boolean
-    abstract val prefix: String
-    abstract val debugPrefix: String
     abstract val langManager: ELangManager
 
     // bstats
@@ -120,7 +120,7 @@ abstract class EPlugin : JavaPlugin {
     fun sendOpMsg(message: String) = forEachOp { sendMsgWithPrefix(it, message) }
 
     fun sendDebugMessage(str: String) {
-        val msg = "$debugPrefix &b${str}".color()
+        val msg = "$debugPrefix &b${str}".color
         if (debug) console.sendMessage(msg)
         debuggers.forEach { Bukkit.getPlayer(it)?.sendMessage(msg) }
     }
@@ -141,8 +141,7 @@ abstract class EPlugin : JavaPlugin {
         sendDebugMessage(buildString(block))
     }
 
-    fun info(msg: String) =
-        sendMsgWithPrefix(console, "&f$msg".color())
+    fun info(msg: String) = sendMsgWithPrefix(console, "&f$msg".color)
 
     fun warn(msg: String, throwable: Throwable? = null) =
         if (throwable == null) logger.log(Level.WARNING, msg)
@@ -153,35 +152,29 @@ abstract class EPlugin : JavaPlugin {
         warn(msg, t)
     }
 
-    fun withPrefix(s: String) = "$prefix $s".color()
+    fun withPrefix(s: String) = "$prefix $s".color
 
-    fun sendMsgWithPrefix(sender: CommandSender, s: String) =
-        sender.sendMessage(withPrefix(s))
+    fun sendMsgWithPrefix(sender: CommandSender, s: String) = sender.sendMessage(withPrefix(s))
 
     /**
      * 发送无权限的消息
      */
-    fun sendNoperm(sender: CommandSender) {
-        sendMsgWithPrefix(sender, noperm())
-    }
+    fun sendNoperm(sender: CommandSender) = sendMsgWithPrefix(sender, noperm)
 
     /**
      * 发送仅玩家可用的消息
      */
-    fun sendNotPlayer(sender: CommandSender) =
-        sendMsgWithPrefix(sender, notPlayer())
+    fun sendNotPlayer(sender: CommandSender) = sendMsgWithPrefix(sender, notPlayer)
 
     /**
      * 发送未知指令的消息
      */
-    fun sendUnknown(sender: CommandSender) =
-        sendMsgWithPrefix(sender, unknown())
+    fun sendUnknown(sender: CommandSender) = sendMsgWithPrefix(sender, unknown)
 
     /**
      * 发送无效参数的消息
      */
-    fun sendInvalidArgs(sender: CommandSender) =
-        sendMsgWithPrefix(sender, invalidArgs())
+    fun sendInvalidArgs(sender: CommandSender) = sendMsgWithPrefix(sender, invalidArgs)
 
     fun sendOrElse(sender: CommandSender?, msg: String, onElse: () -> Unit) {
         if (sender is Player) sendMsgWithPrefix(sender, msg)
@@ -213,17 +206,21 @@ abstract class EPlugin : JavaPlugin {
     fun runTask(task: (BukkitRunnable) -> Unit) = converse(task).runTask(this)
     fun runTaskLater(delay: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskLater(this, delay)
 
-    fun runTaskTimer(delay: Long, period: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskTimer(this, delay, period)
+    fun runTaskTimer(delay: Long, period: Long, task: (BukkitRunnable) -> Unit) =
+        converse(task).runTaskTimer(this, delay, period)
 
     // async task
     fun runTaskAsync(task: (BukkitRunnable) -> Unit) = converse(task).runTaskAsynchronously(this)
-    fun runTaskLaterAsync(delay: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskLaterAsynchronously(this, delay)
-    fun runTaskTimerAsync(delay: Long, period: Long, task: (BukkitRunnable) -> Unit) = converse(task).runTaskTimerAsynchronously(this, delay, period)
+    fun runTaskLaterAsync(delay: Long, task: (BukkitRunnable) -> Unit) =
+        converse(task).runTaskLaterAsynchronously(this, delay)
 
-    private fun converse(task: ((BukkitRunnable) -> Unit)) = object : BukkitRunnable() {
-        override fun run() {
-            task.invoke(this)
-        }
+    fun runTaskTimerAsync(delay: Long, period: Long, task: (BukkitRunnable) -> Unit) =
+        converse(task).runTaskTimerAsynchronously(this, delay, period)
+
+    private fun converse(task: ((BukkitRunnable) -> Unit)) = InternalRunnable(task) as BukkitRunnable
+
+    internal class InternalRunnable(private val task: (BukkitRunnable) -> Unit) : BukkitRunnable() {
+        override fun run() = task.invoke(this)
     }
 
     // cancel task
@@ -231,10 +228,11 @@ abstract class EPlugin : JavaPlugin {
     fun cancelTask(id: Int) = scheduler.cancelTask(id)
 
     // resource
+    fun getResourceAsBytes(path: String) = classLoader.getResource(path)
+        ?.readBytes()
+        ?: error("can't find resource with path: $path")
 
-    fun getResourceAsBytes(path: String) = classLoader.getResource(path)?.readBytes()
-        ?: throw Exception("can't find resource with path: $path")
-
-    fun getResourceAsText(path: String) = classLoader.getResource(path)?.readText()
-    ?: throw Exception("can't find resource with path: $path")
+    fun getResourceAsText(path: String) = classLoader.getResource(path)
+        ?.readText()
+        ?: error("can't find resource with path: $path")
 }

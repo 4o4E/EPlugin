@@ -1,3 +1,5 @@
+@file:Suppress("UNUSED")
+
 package top.e404.eplugin.table
 
 import kotlin.random.Random
@@ -79,4 +81,50 @@ fun <T> Iterable<T>.chooseBy(getWeight: (T) -> Int): T {
         if (random <= 0) return t
     }
     throw Exception()
+}
+
+/**
+ * 从列表按照权重随机挑选一个
+ *
+ * @param amount 数量
+ * @param repeat 是否允许重复选择同一元素
+ * @param getWeight 获取权重 获取的权重不可低于0
+ * @return 选择的元素
+ */
+fun <T> Iterable<T>.chooseBy(
+    amount: Int,
+    repeat: Boolean = true,
+    getWeight: (T) -> Int
+): List<T> {
+    var all = sumOf { getWeight(it) }
+    val collection = ArrayList<T>(amount)
+    // 允许重复
+    if (repeat) {
+        while (collection.size < amount) {
+            var t = Random.nextInt(all) + 1
+            for (item in this) {
+                t -= getWeight(item)
+                if (t <= 0) {
+                    collection.add(item)
+                    continue
+                }
+            }
+        }
+        return collection
+    }
+    // 不允许重复
+    val list = toMutableList()
+    while (collection.size < amount) {
+        var t = Random.nextInt(all) + 1
+        for (item in this) {
+            t -= getWeight(item)
+            if (t <= 0) {
+                list.remove(item)
+                all -= getWeight(item)
+                collection.add(item)
+                continue
+            }
+        }
+    }
+    return collection
 }

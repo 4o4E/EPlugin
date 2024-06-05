@@ -36,6 +36,8 @@ subprojects {
         // spigot
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
         maven("https://oss.sonatype.org/content/groups/public/")
+        // paper
+        maven("https://repo.papermc.io/repository/maven-public/")
         mavenLocal()
     }
 

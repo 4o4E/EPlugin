@@ -93,6 +93,8 @@ fun Clipboard.paste(
     ClipboardHolder(this)
         .createPaste(session)
         .to(BlockVector3.at(x, y, z))
+        .copyBiomes(true)
+        .copyEntities(true)
         .build()
 )
 

@@ -8,7 +8,7 @@ import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Location
 import top.e404.eplugin.EPlugin.Companion.color
 
-fun String.hover(hover: String) = TextComponent(color()).apply {
+fun String.hover(hover: String) = TextComponent(color).apply {
     hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, arrayOf(TextComponent(hover)))
 }
 

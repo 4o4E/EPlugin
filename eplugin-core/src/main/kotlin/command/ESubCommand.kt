@@ -13,14 +13,13 @@ import top.e404.eplugin.EPlugin
  * @param regex 匹配正则
  * @property usage 使用方法
  * @property mustByPlayer 是否只能由玩家使用
- * @property perms 所需权限
+ * @param perms 所需权限
  */
 abstract class ESubCommand(
     override val plugin: EPlugin,
     override val name: String,
     regex: String,
     override val mustByPlayer: Boolean,
-    override val usage: String,
     vararg perms: String
 ) : ECommand(plugin, name, regex, mustByPlayer, *perms) {
     /**
@@ -33,7 +32,9 @@ abstract class ESubCommand(
     /**
      * 包含的子指令
      */
-    val subCommands: List<ESubCommand> = ArrayList()
+    open val subCommands: List<ESubCommand> = ArrayList()
+
+    override val usage: String get() = subCommands.joinToString("\n") { it.usage }
 
     override fun onTabComplete(
         sender: CommandSender,

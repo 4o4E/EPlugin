@@ -6,7 +6,6 @@ import kotlinx.serialization.KSerializer
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import org.bukkit.enchantments.Enchantment
-import top.e404.eplugin.EPlugin.Companion.formatAsConst
 
 object EnchantmentSerialization : KSerializer<Enchantment> {
     override val descriptor = primitive()
@@ -14,4 +13,5 @@ object EnchantmentSerialization : KSerializer<Enchantment> {
     override fun serialize(encoder: Encoder, value: Enchantment) = encoder.encodeString(value.key.namespace)
 }
 
-fun String.deserializeToEnchantment() = Enchantment.getByKey(formatAsConst().deserializeToNamespacedKey()) ?: throw Exception("unknown enchantment: $this")
+@Suppress("DEPRECATION")
+fun String.deserializeToEnchantment() = Enchantment.getByKey(deserializeToNamespacedKey()) ?: throw Exception("unknown enchantment: $this")

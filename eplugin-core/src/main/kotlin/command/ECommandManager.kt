@@ -105,7 +105,7 @@ abstract class ECommandManager(
                 val author =
                     if (authors.size == 1) authors.first()
                     else authors.toString()
-                sendMessage("&7-=[ &6$name V$version&b by $author &7]=-\n${help}".color())
+                sendMessage("&7-=[ &6$name V$version&b by $author &7]=-\n${help}".color)
             }
         }
     }

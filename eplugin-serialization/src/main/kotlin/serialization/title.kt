@@ -20,9 +20,11 @@ data class Title(
     val stay: Int = 20,
     @SerialName("fadeout") val fadeOut: Int = 20,
 ) : BkSerializable {
-    fun show(p: Player) = p.sendTitle(title.color(), subtitle.color(), fadeIn, stay, fadeOut)
+    @Suppress("DEPRECATION")
+    fun show(p: Player) = p.sendTitle(title.color, subtitle.color, fadeIn, stay, fadeOut)
     fun showAll() = forEachOnline(::show)
 
+    @Suppress("DEPRECATION")
     fun display(p: Player, vararg placeholder: Pair<String, *>) = p.sendTitle(
         title.placeholder(*placeholder),
         subtitle.placeholder(*placeholder),

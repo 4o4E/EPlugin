@@ -20,7 +20,7 @@ open class Scoreboard(
     }
 
     private val objective = scoreboard.registerNewObjective(
-        System.currentTimeMillis().toString(36), "dummy", title.color()
+        System.currentTimeMillis().toString(36), "dummy", title.color
     ).also {
         it.displaySlot = DisplaySlot.SIDEBAR
     }
@@ -35,7 +35,7 @@ open class Scoreboard(
     open var title: String
         get() = objective.displayName
         set(value) {
-            val title = value.color()
+            val title = value.color
             if (objective.displayName != title) objective.displayName = title
         }
 

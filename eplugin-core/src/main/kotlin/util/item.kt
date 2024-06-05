@@ -52,8 +52,8 @@ fun buildItemStack(
     lore: List<String>? = null,
     block: ItemMeta.() -> Unit = {}
 ) = if (type == Material.AIR) ItemStack(type) else ItemStack(type, amount).editItemMeta {
-    name?.let { setDisplayName(it.color()) }
-    lore?.let { list -> this.lore = list.map { it.color() } }
+    name?.let { setDisplayName(it.color) }
+    lore?.let { list -> this.lore = list.map { it.color } }
     block()
 }
 

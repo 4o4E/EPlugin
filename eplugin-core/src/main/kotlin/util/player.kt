@@ -12,10 +12,10 @@ fun OfflinePlayer.uuid() = uniqueId.toString()
 fun OfflinePlayer.fixedUuid() = uniqueId.toString().replace("-", "")
 
 fun getOnline() = Bukkit.getOnlinePlayers()
-fun getOnlineOp() = getOnline().filter { it.isOp }
+fun getOnlineOp() = getOnline().filter(Player::isOp)
 
-fun forEachOp(block: (Player) -> Unit) = getOnlineOp().forEach(block)
-fun forEachOnline(block: (Player) -> Unit) = getOnline().forEach(block)
+inline fun forEachOp(block: (Player) -> Unit) = getOnlineOp().forEach(block)
+inline fun forEachOnline(block: (Player) -> Unit) = getOnline().forEach(block)
 
 private val vectors = listOf(
     Vector(0.3, -1.0, 0.3),
