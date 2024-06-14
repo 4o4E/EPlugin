@@ -102,6 +102,7 @@ abstract class GameInstance<Config : GameConfig, GamePLayer : Gamer>(
             plugin.debug { "register game manager, init stage to waiting, start game tick loop" }
             currentStage = GameStage.WAITING
             currentStageHandler = waiting
+            waiting.onEnter(waiting, null)
             plugin.runTaskTimer(20, 20) {
                 currentStageHandler.safeOnTick()
             }
