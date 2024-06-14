@@ -117,6 +117,20 @@ abstract class GameInstance<Config : GameConfig, GamePLayer : Gamer>(
     abstract fun addPlayer(player: Player)
 
     /**
+     * 将玩家添加进游戏
+     *
+     * @param players 玩家集合
+     */
+    abstract fun addPlayer(players: Collection<Player>)
+
+    /**
+     * 将玩家添加为旁观者
+     *
+     * @param players 玩家集合
+     */
+    abstract fun addObserver(players: Collection<Player>)
+
+    /**
      * 将玩家添加为旁观者
      *
      * @param player 玩家
