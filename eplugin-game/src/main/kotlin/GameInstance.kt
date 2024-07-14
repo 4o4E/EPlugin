@@ -3,6 +3,7 @@
 package top.e404.eplugin.game
 
 import org.bukkit.entity.Player
+import org.bukkit.scheduler.BukkitTask
 import top.e404.dynamicmap.dyn.DynamicMap
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.game.stage.*
@@ -69,6 +70,8 @@ abstract class GameInstance<Config : GameConfig, GamePLayer : Gamer>(
      */
     abstract val observers: MutableList<Player>
 
+    var tickerTask: BukkitTask? = null
+
     open val gamers get() = players.keys
 
     inline val allowJoin get() = currentStage == GameStage.WAITING || currentStage == GameStage.READY
@@ -98,14 +101,12 @@ abstract class GameInstance<Config : GameConfig, GamePLayer : Gamer>(
             // 轮到哪个哪个才注册
             // it.register()
         }
-        plugin.runTask {
-            plugin.debug { "register game manager, init stage to waiting, start game tick loop" }
-            currentStage = GameStage.WAITING
-            currentStageHandler = waiting
-            waiting.onEnter(waiting, null)
-            plugin.runTaskTimer(20, 20) {
-                currentStageHandler.safeOnTick()
-            }
+        plugin.debug { "register game manager, init stage to waiting, start game tick loop" }
+        currentStage = GameStage.WAITING
+        currentStageHandler = waiting
+        waiting.onEnter(waiting, null)
+        tickerTask = plugin.runTaskTimer(20, 20) {
+            currentStageHandler.safeOnTick()
         }
     }
 

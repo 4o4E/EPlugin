@@ -46,6 +46,8 @@ abstract class StageEndingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
             }
             // 重置旁观玩家游戏模式
             instance.observers.forEach { it.gameMode = GameMode.SURVIVAL }
+            // 取消tick任务
+            instance.tickerTask?.cancel()
             // 销毁游戏实例
             instance.destroy()
             return
