@@ -295,9 +295,8 @@ fun <T> List<T>.asMutableList() = when (this) {
     else -> ArrayList(this)
 }
 
-@Suppress("INVISIBLE_MEMBER", "INVISIBLE_REFERENCE")
 fun <T, R> Iterable<T>.mapMutable(transform: (T) -> R): MutableList<R> {
-    return mapTo(ArrayList(collectionSizeOrDefault(10)), transform)
+    return mapTo(ArrayList(if (this is Collection<*>) this.size else 10), transform)
 }
 
 fun <T, R> Collection<T>.mapMutable(transform: (T) -> R): MutableList<R> {

@@ -28,6 +28,7 @@ include(
     ":eplugin-menu",
     ":eplugin-mysql",
     ":eplugin-reflect",
+    ":eplugin-script",
     ":eplugin-serialization",
     ":eplugin-serialization-adventure",
     ":eplugin-serialization-mmoitems",

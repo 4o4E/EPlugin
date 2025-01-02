@@ -13,9 +13,11 @@ import top.e404.eplugin.EPlugin.Companion.formatAsConst
 object PotionEffectTypeSerializer : KSerializer<PotionEffectType> {
     override val descriptor = primitive()
     override fun deserialize(decoder: Decoder) = decoder.decodeString().formatAsConst().deserializeToPotionEffectType()
+    @Suppress("DEPRECATION")
     override fun serialize(encoder: Encoder, value: PotionEffectType) = encoder.encodeString(value.name)
 }
 
+@Suppress("DEPRECATION")
 fun String.deserializeToPotionEffectType() = PotionEffectType.getByName(formatAsConst()) ?: throw Exception("cannot find effect type with name of $this")
 
 object PotionEffectSerializer : KSerializer<PotionEffect> {
@@ -55,6 +57,7 @@ object PotionEffectSerializer : KSerializer<PotionEffect> {
         PotionEffect(type.deserializeToPotionEffectType(), duration, amplifier, ambient, particles, icon)
     }
 
+    @Suppress("DEPRECATION")
     override fun serialize(encoder: Encoder, value: PotionEffect) = encoder.encodeStructure(descriptor) {
         encodeStringElement(descriptor, typeIndex, value.type.name)
         encodeIntElement(descriptor, durationIndex, value.duration)

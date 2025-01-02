@@ -33,6 +33,7 @@ data class Title(
         fadeOut
     )
 
+    @Suppress("DEPRECATION")
     fun displayAll(vararg placeholder: Pair<String, *>) = forEachOnline {
         it.sendTitle(
             title.placeholder(*placeholder),

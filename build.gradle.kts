@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") version Versions.kotlin
     kotlin("plugin.serialization") version Versions.kotlin
@@ -18,11 +16,6 @@ allprojects {
         mavenCentral()
         mavenLocal()
     }
-
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
-        kotlinOptions.freeCompilerArgs.plus("-Xlint:-unused")
-    }
 }
 
 subprojects {
@@ -39,10 +32,6 @@ subprojects {
         // paper
         maven("https://repo.papermc.io/repository/maven-public/")
         mavenLocal()
-    }
-
-    java {
-        withSourcesJar()
     }
 
     afterEvaluate {
