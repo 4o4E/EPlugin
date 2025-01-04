@@ -30,4 +30,18 @@ data class Message(
 
     fun sendToAll(vararg placeholder: Pair<String, *>) = sendTo(Bukkit.getOnlinePlayers(), *placeholder)
     fun sendToAll(placeholder: (Player) -> Array<Pair<String, *>>) = forEachOnline { sendTo(it, *placeholder(it)) }
+    fun sendTo(p: Player, prefix: String, vararg placeholder: Pair<String, *>) {
+        if (chat.isNotBlank()) p.sendMessage(("&7[&f$prefix&7] $chat").placeholder(*placeholder))
+        @Suppress("DEPRECATION")
+        if (actionBar.isNotBlank()) p.sendActionBar(actionBar.placeholder(*placeholder))
+        title?.display(p, *placeholder)
+        sound?.playTo(p)
+    }
+
+    fun sendTo(players: Iterable<Player>, prefix: String, vararg placeholder: Pair<String, *>) {
+        players.forEach { sendTo(it, prefix, *placeholder) }
+    }
+
+    fun sendToAll(prefix: String, vararg placeholder: Pair<String, *>) = sendTo(Bukkit.getOnlinePlayers(), prefix, *placeholder)
+    fun sendToAll(prefix: String, placeholder: (Player) -> Array<Pair<String, *>>) = forEachOnline { sendTo(it, prefix, *placeholder(it)) }
 }
