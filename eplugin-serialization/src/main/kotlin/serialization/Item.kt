@@ -65,8 +65,8 @@ data class FireworkData(
 ) {
     fun apply(meta: FireworkMeta) {
         meta.power = power
-        effects.forEach {
-            meta.effects.add(it.toEffect())
+        effects.map { it.toEffect() }.let {
+            meta.addEffects(it)
         }
     }
 }
