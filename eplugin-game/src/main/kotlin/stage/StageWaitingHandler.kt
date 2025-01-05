@@ -6,16 +6,10 @@ import top.e404.eplugin.EPlugin
 import top.e404.eplugin.game.GameConfig
 import top.e404.eplugin.game.GameStage
 import top.e404.eplugin.game.Gamer
-import top.e404.eplugin.game.ScoreboardManager
 
 abstract class StageWaitingHandler<Config: GameConfig, GamePlayer : Gamer>(plugin: EPlugin) : GameStageHandler<Config, GamePlayer>(plugin) {
     final override val stage = GameStage.WAITING
     override val stageConfig get() = config.waiting
-    override val scoreboard by lazy {
-        object : ScoreboardManager(stageConfig.scoreboard) {
-            override fun placeholders(player: Player) = getPlaceholder(player)
-        }
-    }
 
     override fun getPlaceholder(player: Player): Array<Pair<String, *>> = arrayOf(
         "max" to config.info.max,

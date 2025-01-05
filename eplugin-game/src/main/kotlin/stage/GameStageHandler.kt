@@ -19,17 +19,21 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
     /**
      * 游戏设置
      */
-    protected open val config get() = instance.gameConfig
+    open val config get() = instance.gameConfig
 
     /**
      * 当前阶段的游戏设置
      */
-    protected abstract val stageConfig: GameStageConfig
+    abstract val stageConfig: GameStageConfig
 
     /**
      * 当前阶段的计分板管理器
      */
-    abstract val scoreboard: ScoreboardManager
+    open val scoreboard: ScoreboardManager by lazy {
+        object : ScoreboardManager(stageConfig.scoreboard) {
+            override fun placeholders(player: Player) = getPlaceholder(player) + instance.getInstancePlaceholder(player)
+        }
+    }
 
     /**
      * 获取此阶段的占位符
@@ -62,6 +66,7 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
         register()
         tick = 0
         enter = System.currentTimeMillis()
+        stageConfig.enter?.sendTo(instance.inInstancePlayer, config.info.name)
     }
 
     /**
@@ -88,5 +93,6 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
     open fun onLeave(next: GameStageHandler<Config, GamePLayer>, data: Any?) {
         // 注销自己
         unregister()
+        stageConfig.leave?.sendTo(instance.inInstancePlayer)
     }
 }

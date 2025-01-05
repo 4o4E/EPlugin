@@ -5,17 +5,11 @@ import top.e404.eplugin.EPlugin
 import top.e404.eplugin.game.GameConfig
 import top.e404.eplugin.game.GameStage
 import top.e404.eplugin.game.Gamer
-import top.e404.eplugin.game.ScoreboardManager
 import top.e404.eplugin.util.parseSecondAsDuration
 
 abstract class StageGamingHandler<Config : GameConfig, GamePlayer : Gamer>(plugin: EPlugin) : GameStageHandler<Config, GamePlayer>(plugin) {
     final override val stage = GameStage.GAMING
     override val stageConfig get() = config.gaming
-    override val scoreboard by lazy {
-        object : ScoreboardManager(stageConfig.scoreboard) {
-            override fun placeholders(player: Player) = getPlaceholder(player)
-        }
-    }
 
     override fun getPlaceholder(player: Player): Array<Pair<String, *>> = arrayOf(
         "observer_count" to instance.observers.size,
@@ -28,6 +22,8 @@ abstract class StageGamingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
         super.onEnter(last, data)
         // 切换计分板显示
         scoreboard.init(instance.inInstancePlayer)
+        // 记录开始事件
+        instance.gameStart = System.currentTimeMillis()
     }
 
     override fun onTick() {
@@ -37,6 +33,6 @@ abstract class StageGamingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
 
     override fun onLeave(next: GameStageHandler<Config, GamePlayer>, data: Any?) {
         // 重置玩家计分板
-        scoreboard.finalize()
+        scoreboard.stop()
     }
 }

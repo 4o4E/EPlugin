@@ -4,6 +4,7 @@ package top.e404.eplugin.game
 
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.scoreboard.Team
 import top.e404.eplugin.config.serialization.ScoreboardConfig
 import top.e404.eplugin.scoreboard.Scoreboard
 
@@ -28,7 +29,7 @@ abstract class ScoreboardManager(val config: ScoreboardConfig) {
     /**
      * 在此计分板管理器结束使用时调用
      */
-    fun finalize() {
+    fun stop() {
         data.forEach { (player, scoreboard) ->
             scoreboard.destroy()
             player.scoreboard = Bukkit.getScoreboardManager().mainScoreboard
@@ -73,5 +74,16 @@ abstract class ScoreboardManager(val config: ScoreboardConfig) {
      * @param player 对应的玩家
      * @return 占位符
      */
-    abstract fun placeholders(player: Player) : Array<Pair<String, *>>
+    abstract fun placeholders(player: Player): Array<Pair<String, *>>
+
+    /**
+     * 设置其中的玩家没有碰撞
+     */
+    fun setNoCollision() {
+        data.values.forEach { scoreboard ->
+            scoreboard.scoreboard.teams.forEach {
+                it.setOption(Team.Option.COLLISION_RULE, Team.OptionStatus.ALWAYS)
+            }
+        }
+    }
 }

@@ -8,4 +8,15 @@ import org.bukkit.entity.Player
 @Suppress("UNUSED")
 interface Gamer {
     val player: Player
+    val role: Role
+}
+
+/**
+ * 角色标记, 用来区分不同的阵营
+ */
+interface Role {
+    /**
+     * 角色名
+     */
+    val roleName: String
 }
