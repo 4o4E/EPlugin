@@ -24,13 +24,13 @@ fun <T> Collection<Tableable<T>>.choose(
     val collection = ArrayList<T>(amount)
     // 允许重复
     if (repeat) {
-        while (collection.size < amount) {
+        w@ while (collection.size < amount) {
             var t = Random.nextInt(all) + 1
             for (item in this) {
                 t -= item.weight
                 if (t <= 0) {
                     collection.add(item.generator())
-                    continue
+                    continue@w
                 }
             }
         }
@@ -38,7 +38,7 @@ fun <T> Collection<Tableable<T>>.choose(
     }
     // 不允许重复
     val list = toMutableList()
-    while (collection.size < amount) {
+    w@ while (collection.size < amount) {
         var t = Random.nextInt(all) + 1
         for (item in this) {
             t -= item.weight
@@ -46,7 +46,7 @@ fun <T> Collection<Tableable<T>>.choose(
                 list.remove(item)
                 all -= item.weight
                 collection.add(item.generator())
-                continue
+                continue@w
             }
         }
     }
@@ -100,13 +100,13 @@ fun <T> Iterable<T>.chooseBy(
     val collection = ArrayList<T>(amount)
     // 允许重复
     if (repeat) {
-        while (collection.size < amount) {
+        w@ while (collection.size < amount) {
             var t = Random.nextInt(all) + 1
             for (item in this) {
                 t -= getWeight(item)
                 if (t <= 0) {
                     collection.add(item)
-                    continue
+                    continue@w
                 }
             }
         }
@@ -114,7 +114,7 @@ fun <T> Iterable<T>.chooseBy(
     }
     // 不允许重复
     val list = toMutableList()
-    while (collection.size < amount) {
+    w@ while (collection.size < amount) {
         var t = Random.nextInt(all) + 1
         for (item in this) {
             t -= getWeight(item)
@@ -122,7 +122,7 @@ fun <T> Iterable<T>.chooseBy(
                 list.remove(item)
                 all -= getWeight(item)
                 collection.add(item)
-                continue
+                continue@w
             }
         }
     }
