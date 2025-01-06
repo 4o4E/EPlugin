@@ -47,6 +47,8 @@ interface GameInfoConfig {
     val max: Int
     val excludeFeatures: Set<String>
     val border: VLocationRange
+
+    val displayName get() = "&$nameColor$name"
 }
 
 @Serializable
@@ -162,10 +164,12 @@ interface ReadyingConfig : GameStageConfig {
  *
  * @property duration 阶段的持续时长
  * @property spawn 开始游戏时的传送点
+ * @property countdownMessage 游戏剩余时间的消息
  */
 interface GamingConfig : GameStageConfig {
     val duration: Long
     val spawn: VLocation
+    val countdownMessage: Map<Long, Message>
 }
 
 /**
