@@ -8,7 +8,9 @@ plugins {
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
-    eplugin()
+    implementation(project(":eplugin-core")) {
+        exclude("org.spigotmc", "spigot-api")
+    }
     serializationCore("api")
     serializationJson("api")
     kaml("api")
