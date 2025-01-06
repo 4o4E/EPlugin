@@ -1,6 +1,5 @@
 package top.e404.eplugin.game.stage
 
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.game.GameConfig
@@ -22,10 +21,12 @@ abstract class StageReadyingHandler<Config: GameConfig, GamePlayer : Gamer>(plug
         "observer_count" to instance.observers.size,
         "gamer_count" to instance.players.size,
         "duration" to stageConfig.duration,
-        "duration_parsed" to stageConfig.duration.parseSecondAsDuration()
+        "duration_parsed" to stageConfig.duration.parseSecondAsDuration(),
+        "countdown" to stageConfig.duration - tick,
+        "countdown_parsed" to (stageConfig.duration - tick).parseSecondAsDuration(),
     )
 
-    override fun onEnter(last: GameStageHandler<Config, GamePlayer>, data: Any?) {
+    override fun onEnter(last: GameStageHandler<Config, GamePlayer>, data: Map<String, *>) {
         super.onEnter(last, data)
         // 切换计分板显示
         scoreboard.init(instance.inInstancePlayer)
@@ -44,11 +45,6 @@ abstract class StageReadyingHandler<Config: GameConfig, GamePlayer : Gamer>(plug
         // 更新计分板
         scoreboard.updateAll()
         // 结束等待
-        if (stageConfig.duration == tick) instance.switch(GameStage.GAMING, null)
-    }
-
-    override fun onLeave(next: GameStageHandler<Config, GamePlayer>, data: Any?) {
-        // 重置玩家计分板
-        instance.inInstancePlayer.forEach { it.scoreboard = Bukkit.getScoreboardManager().mainScoreboard }
+        if (stageConfig.duration == tick) instance.switch(GameStage.GAMING, emptyMap())
     }
 }

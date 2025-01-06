@@ -1,6 +1,5 @@
 package top.e404.eplugin.game.stage
 
-import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.game.GameConfig
@@ -18,7 +17,7 @@ abstract class StageWaitingHandler<Config: GameConfig, GamePlayer : Gamer>(plugi
         "gamer_count" to instance.players.size,
     )
 
-    override fun onEnter(last: GameStageHandler<Config, GamePlayer>, data: Any?) {
+    override fun onEnter(last: GameStageHandler<Config, GamePlayer>, data: Map<String, *>) {
         super.onEnter(last, data)
         // 切换计分板显示
         scoreboard.init(instance.inInstancePlayer)
@@ -32,10 +31,5 @@ abstract class StageWaitingHandler<Config: GameConfig, GamePlayer : Gamer>(plugi
         }
         // 更新计分板
         scoreboard.updateAll()
-    }
-
-    override fun onLeave(next: GameStageHandler<Config, GamePlayer>, data: Any?) {
-        // 重置玩家计分板
-        instance.inInstancePlayer.forEach { it.scoreboard = Bukkit.getScoreboardManager().mainScoreboard }
     }
 }

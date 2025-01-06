@@ -115,7 +115,7 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
         plugin.debug { "register game manager, init stage to waiting, start game tick loop" }
         currentStage = GameStage.WAITING
         currentStageHandler = waiting
-        waiting.onEnter(waiting, null)
+        waiting.onEnter(waiting, emptyMap<String, Any?>())
         tickerTask = plugin.runTaskTimer(20, 20) {
             currentStageHandler.safeOnTick()
         }
@@ -168,20 +168,20 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
      *
      * @param next 下一游戏阶段
      */
-    fun switch(next: GameStage, data: Any? = null) {
+    fun switch(next: GameStage, data: Map<String, Any?> = emptyMap()) {
         plugin.debug { "switch game stage from $currentStage to $next" }
         val nextStageHandler = when (next) {
             GameStage.WAITING -> waiting
             GameStage.READY -> readying
             GameStage.GAMING -> gaming
             GameStage.ENDING -> ending
-            else -> throw Exception("unexpected game stage: ${next.name}")
+            GameStage.INITIAL -> throw Exception("不可切换到该阶段: ${next.name}")
         }
         try {
             plugin.debug { "${currentStageHandler.stage.name}.onLeave" }
             currentStageHandler.onLeave(nextStageHandler, data)
         } catch (e: Exception) {
-            throw Exception("unexpected exception occur when leave game stage ${currentStage.name}", e)
+            plugin.warn("进入${currentStage.name}阶段时发生异常", e)
         }
         val lastStageHandler = currentStageHandler
         currentStage = next
@@ -190,7 +190,7 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
             plugin.debug { "${currentStageHandler.stage.name}.onEnter" }
             currentStageHandler.onEnter(lastStageHandler, data)
         } catch (e: Exception) {
-            throw Exception("unexpected exception occur when enter game stage ${currentStage.name}", e)
+            plugin.warn("退出${currentStage.name}阶段时发生异常", e)
         }
     }
 

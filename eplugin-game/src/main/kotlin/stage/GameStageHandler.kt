@@ -61,12 +61,12 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
     /**
      * 从其他游戏阶段切换至此游戏阶段
      */
-    open fun onEnter(last: GameStageHandler<Config, GamePLayer>, data: Any?) {
+    open fun onEnter(last: GameStageHandler<Config, GamePLayer>, data: Map<String, *>) {
         // 注册自己
         register()
         tick = 0
         enter = System.currentTimeMillis()
-        stageConfig.enter?.sendTo(instance.inInstancePlayer, config.info.name)
+        stageConfig.enter?.sendTo(instance.inInstancePlayer, config.info.displayName)
     }
 
     /**
@@ -81,7 +81,7 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
         try {
             onTick()
         } catch (e: Exception) {
-            plugin.warn("游戏进行tick-loop时出现异常, stage: ${stage.name}", e)
+            plugin.warn("游戏${stage.name}阶段进行tick-loop时出现异常", e)
         } finally {
             tick++
         }
@@ -90,9 +90,11 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
     /**
      * 从此游戏阶段切换到其他游戏阶段
      */
-    open fun onLeave(next: GameStageHandler<Config, GamePLayer>, data: Any?) {
+    open fun onLeave(next: GameStageHandler<Config, GamePLayer>, data: Map<String, *>) {
         // 注销自己
         unregister()
         stageConfig.leave?.sendTo(instance.inInstancePlayer)
+        // 重置玩家计分板
+        scoreboard.stop()
     }
 }

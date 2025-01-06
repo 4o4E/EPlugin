@@ -15,10 +15,12 @@ abstract class StageGamingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
         "observer_count" to instance.observers.size,
         "gamer_count" to instance.players.size,
         "duration" to stageConfig.duration,
-        "duration_parsed" to stageConfig.duration.parseSecondAsDuration()
+        "duration_parsed" to stageConfig.duration.parseSecondAsDuration(),
+        "countdown" to stageConfig.duration - tick,
+        "countdown_parsed" to (stageConfig.duration - tick).parseSecondAsDuration()
     )
 
-    override fun onEnter(last: GameStageHandler<Config, GamePlayer>, data: Any?) {
+    override fun onEnter(last: GameStageHandler<Config, GamePlayer>, data: Map<String, *>) {
         super.onEnter(last, data)
         // 切换计分板显示
         scoreboard.init(instance.inInstancePlayer)
@@ -29,10 +31,11 @@ abstract class StageGamingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
     override fun onTick() {
         // 更新计分板
         scoreboard.updateAll()
-    }
-
-    override fun onLeave(next: GameStageHandler<Config, GamePlayer>, data: Any?) {
-        // 重置玩家计分板
-        scoreboard.stop()
+        // 检测倒计时消息
+        stageConfig.countdownMessage[tick]?.let { message ->
+            for (player in instance.inInstancePlayer) {
+                message.sendTo(player, instance.gameConfig.info.displayName, *getPlaceholder(player) + instance.getInstancePlaceholder(player))
+            }
+        }
     }
 }
