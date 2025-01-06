@@ -6,12 +6,14 @@ import kotlinx.serialization.Serializable
 import org.bukkit.Color
 import org.bukkit.FireworkEffect
 import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.meta.FireworkMeta
 import org.bukkit.inventory.meta.PotionMeta
+import org.bukkit.inventory.meta.tags.ItemTagType
 import org.bukkit.potion.PotionEffect
 import top.e404.eplugin.EPlugin.Companion.formatAsConst
 import top.e404.eplugin.util.buildItemStack
@@ -30,8 +32,12 @@ data class Item(
     val attribute: Map<String, Double> = emptyMap(),
     val unbreakable: Boolean = false,
     val potion: List<@Serializable(PotionEffectSerializer::class) PotionEffect> = listOf(),
-    val firework: FireworkData? = null
+    val firework: FireworkData? = null,
+    val custom: Map<String, String> = emptyMap(),
 ) {
+    companion object {
+        val defaultNamespace = "eplugin"
+    }
     private val origin by lazy {
         buildItemStack(material, amount, name, lore) {
             enchant.forEach { (enchant, level) -> addEnchant(enchant, level, true) }
@@ -53,6 +59,10 @@ data class Item(
                 firework?.apply(this as FireworkMeta)
             }
             if (unbreakable) isUnbreakable = true
+            @Suppress("DEPRECATION")
+            custom.forEach { (key, value) ->
+                customTagContainer.setCustomTag(NamespacedKey(defaultNamespace, key), ItemTagType.STRING, value)
+            }
         }
     }
     val item get() = origin.clone()
