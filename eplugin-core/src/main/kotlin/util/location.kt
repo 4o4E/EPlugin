@@ -89,7 +89,10 @@ operator fun Vector.rem(value: Double) = apply {
     z %= value
 }
 
-fun Location.locationEquals(other: Location) = blockX == other.blockX && blockY == other.blockY && blockZ == other.blockZ
+infix fun Location.locationEquals(other: Location) = world == other.world
+        && blockX == other.blockX
+        && blockY == other.blockY
+        && blockZ == other.blockZ
 
 fun Location.ceil() = apply {
     x = ceil(x)
