@@ -12,12 +12,12 @@ import top.e404.eplugin.EPlugin
  * 倒计时 BossBar
  *
  * @property plugin 注册的插件
- * @property start 初始值
- * @property display
+ * @property start 初始值, 单位tick
+ * @property display 文本显示规则
  */
 open class CountdownBar(
     val plugin: EPlugin,
-    val start: Long,
+    var start: Long,
     val color: BarColor = BarColor.WHITE,
     val style: BarStyle = BarStyle.SOLID,
     val display: CountdownBar.() -> String,
@@ -25,7 +25,7 @@ open class CountdownBar(
     var isStarted = false
         private set
     var tick = start
-        private set
+        internal set
     lateinit var bossBar: BossBar
         private set
     private lateinit var task: BukkitTask
@@ -35,7 +35,7 @@ open class CountdownBar(
     fun start(vararg p: Player) {
         bossBar = Bukkit.createBossBar(display(), color, style)
         p.forEach { bossBar.addPlayer(it) }
-        task = plugin.runTaskTimer(0, 20) {
+        task = plugin.runTaskTimer(0, 1) {
             if (tick <= 0) {
                 it.cancel()
                 bossBar.removeAll()
@@ -58,10 +58,10 @@ open class CountdownBar(
 abstract class CountdownManager {
     val players = mutableMapOf<Player, CountdownBar>()
 
-    abstract fun create(player: Player): CountdownBar
+    abstract fun create(player: Player, cooldown: Long? = null): CountdownBar
 
-    fun add(player: Player) {
-        players[player] = create(player).apply {
+    fun add(player: Player, cooldown: Long? = null) {
+        players[player] = create(player, cooldown).apply {
             onEnd = {
                 players.remove(player)
             }
