@@ -97,4 +97,9 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
         // 重置玩家计分板
         scoreboard.stop()
     }
+
+    /**
+     * 处理意外退出
+     */
+    open fun shutdown() {}
 }

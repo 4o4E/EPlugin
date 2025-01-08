@@ -248,6 +248,7 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
     }
 
     open fun shutdown() {
+        currentStageHandler.shutdown()
         tickerTask?.cancel()
         inInstancePlayer.forEach {
             it.reset()
