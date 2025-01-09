@@ -1,4 +1,4 @@
-@file:Suppress("UNUSED")
+@file:Suppress("UNUSED", "DEPRECATION")
 
 package top.e404.eplugin.config.serialization
 
@@ -59,7 +59,6 @@ data class Item(
                 firework?.apply(this as FireworkMeta)
             }
             if (unbreakable) isUnbreakable = true
-            @Suppress("DEPRECATION")
             custom.forEach { (key, value) ->
                 customTagContainer.setCustomTag(NamespacedKey(defaultNamespace, key), ItemTagType.STRING, value)
             }
