@@ -66,7 +66,7 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
         register()
         tick = 0
         enter = System.currentTimeMillis()
-        stageConfig.enter?.sendTo(instance.inInstancePlayer, config.info.displayName)
+        stageConfig.enter?.sendTo(instance.inInstancePlayer, config.info.displayName, ::getPlaceholder)
     }
 
     /**
@@ -93,7 +93,7 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
     open fun onLeave(next: GameStageHandler<Config, GamePLayer>, data: Map<String, *>) {
         // 注销自己
         unregister()
-        stageConfig.leave?.sendTo(instance.inInstancePlayer)
+        stageConfig.leave?.sendTo(instance.inInstancePlayer, ::getPlaceholder)
         // 重置玩家计分板
         scoreboard.stop()
     }

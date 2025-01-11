@@ -23,13 +23,22 @@ data class Message(
         title?.display(p, *placeholder)
         sound?.playTo(p)
     }
+    fun sendTo(p: Player, placeholder: (Player) -> Array<Pair<String, *>>) {
+        sendTo(p, *placeholder(p))
+    }
 
     fun sendTo(players: Iterable<Player>, vararg placeholder: Pair<String, *>) {
         players.forEach { sendTo(it, *placeholder) }
     }
 
+    fun sendTo(players: Iterable<Player>, placeholder: (Player) -> Array<Pair<String, *>>) {
+        players.forEach { sendTo(it, placeholder) }
+    }
+
     fun sendToAll(vararg placeholder: Pair<String, *>) = sendTo(Bukkit.getOnlinePlayers(), *placeholder)
     fun sendToAll(placeholder: (Player) -> Array<Pair<String, *>>) = forEachOnline { sendTo(it, *placeholder(it)) }
+
+    // with prefix
     fun sendTo(p: Player, prefix: String, vararg placeholder: Pair<String, *>) {
         if (chat.isNotBlank()) p.sendMessage(("&7[&f$prefix&7] $chat").placeholder(*placeholder))
         @Suppress("DEPRECATION")
@@ -37,9 +46,16 @@ data class Message(
         title?.display(p, *placeholder)
         sound?.playTo(p)
     }
+    fun sendTo(p: Player, prefix: String, placeholder: (Player) -> Array<Pair<String, *>>) {
+        sendTo(p, prefix, *placeholder(p))
+    }
 
     fun sendTo(players: Iterable<Player>, prefix: String, vararg placeholder: Pair<String, *>) {
         players.forEach { sendTo(it, prefix, *placeholder) }
+    }
+
+    fun sendTo(players: Iterable<Player>, prefix: String, placeholder: (Player) -> Array<Pair<String, *>>) {
+        players.forEach { sendTo(it, prefix, placeholder) }
     }
 
     fun sendToAll(prefix: String, vararg placeholder: Pair<String, *>) = sendTo(Bukkit.getOnlinePlayers(), prefix, *placeholder)

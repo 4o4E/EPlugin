@@ -33,8 +33,8 @@ abstract class StageGamingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
         scoreboard.updateAll()
         // 检测倒计时消息
         stageConfig.countdownMessage[tick]?.let { message ->
-            for (player in instance.inInstancePlayer) {
-                message.sendTo(player, instance.gameConfig.info.displayName, *getPlaceholder(player) + instance.getInstancePlaceholder(player))
+            message.sendTo(instance.inInstancePlayer, instance.gameConfig.info.displayName) {
+                getPlaceholder(it) + instance.getInstancePlaceholder(it)
             }
         }
     }
