@@ -19,7 +19,7 @@ abstract class CountdownManager(
 ) {
     val players = mutableMapOf<Player, CountdownBar>()
 
-    open fun create(player: Player, cooldown: Long?): CountdownBar {
+    protected open fun create(player: Player, cooldown: Long?): CountdownBar {
         val start = cooldown ?: (countdownConfig.duration * 20L)
         val bossbarConfig = countdownConfig.currentBar(start / 20)
         return CountdownBar(
