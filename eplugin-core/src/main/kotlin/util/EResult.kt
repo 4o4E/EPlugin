@@ -12,10 +12,11 @@ class EResult<T : Any> internal constructor(
 
     val isSuccess get() = result != null
 
-    fun onSuccess(block: (T) -> Unit) = apply {
+    inline fun onSuccess(block: (T) -> Unit) = apply {
         if (isSuccess) block(result!!)
     }
-    fun onFail(block: (String) -> Unit) = apply {
+
+    inline fun onFail(block: (String) -> Unit) = apply {
         if (!isSuccess) block(reason!!)
     }
 }
