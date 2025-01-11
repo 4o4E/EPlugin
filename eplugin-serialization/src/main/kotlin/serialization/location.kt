@@ -10,6 +10,7 @@ import kotlinx.serialization.descriptors.element
 import kotlinx.serialization.encoding.*
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.World
 import top.e404.eplugin.config.serialization.ELocation.Companion.deserializeToELocation
 import kotlin.math.floor
 
@@ -145,4 +146,15 @@ object InlineELocationSerialization : KSerializer<ELocation> {
     override val descriptor = primitive()
     override fun deserialize(decoder: Decoder) = decoder.decodeString().deserializeToELocation()
     override fun serialize(encoder: Encoder, value: ELocation) = encoder.encodeString(value.serializeToString())
+}
+
+@Serializable
+data class VLocation(
+    val x: Double,
+    val y: Double,
+    val z: Double,
+    val yaw: Float = 0f,
+    val pitch: Float = 0f,
+) {
+    fun toLocation(world: World) = Location(world, x, y, z, yaw, pitch)
 }

@@ -134,17 +134,6 @@ interface WaitingConfig : GameStageConfig {
     val join: Message
 }
 
-@Serializable
-data class VLocation(
-    val x: Double,
-    val y: Double,
-    val z: Double,
-    val yaw: Float = 0f,
-    val pitch: Float = 0f,
-) {
-    fun toLocation(world: World) = Location(world, x, y, z, yaw, pitch)
-}
-
 /**
  * 准备阶段的游戏设置
  *
