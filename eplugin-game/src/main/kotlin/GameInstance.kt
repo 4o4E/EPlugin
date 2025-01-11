@@ -199,23 +199,49 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
      *
      * 删除地图, 在游戏管理器中注销该实例
      */
-    abstract fun destroy()
+    open fun destroy() {
+        unregister()
+    }
 
     /**
-     * 移除玩家
+     * 玩家请求退出, 若允许退出则直接退出并释放资源, 否则不做任何操作
+     *
+     * 旁观玩家将不会调用该方法
      */
-    open fun removePlayer(player: Player) {
+    open fun onExitRequest(player: Player): EResult<Unit> {
+        if (currentStage == GameStage.GAMING) {
+            return EResult.fail("游戏进行中无法退出")
+        }
         players.remove(player)
+        player.reset()
+        return EResult.ok(Unit)
+    }
+
+    /**
+     * 玩家强行退出, 旁观玩家退出将会调用该方法
+     */
+    open fun onExit(player: Player) {
+        val gamer = players[player]
+        if (gamer == null) {
+            observers.remove(player)
+            player.reset()
+            return
+        }
+        players.remove(player)
+        player.reset()
+        return
     }
 
     private val currentChatConfig inline get() = currentStageHandler.stageConfig.chat
 
     private fun getCurrentChatChannel(player: Player, prefix: String): ChatChannelConfig {
         val gamer = players[player]!!
+        plugin.debug { "玩家: ${gamer.player.name}, 角色: ${gamer.role.roleName}" }
         // 允许发言的频道
         val allowedChannels = currentChatConfig.channels.filter {
             it.allowRoles.matches(gamer.role.roleName)
         }
+        plugin.debug { "prefix: '$prefix', 候选频道: $allowedChannels" }
         return if (prefix == "") {
             currentChatConfig.defaults[gamer.role.roleName]?.let { channelName ->
                 allowedChannels.firstOrNull { it.name == channelName }
@@ -234,7 +260,8 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
         val prefix = message.substringBefore(" ", "")
         // 没有前缀 默认频道
         val channel = getCurrentChatChannel(player, prefix)
-        val sendMessage = "&7[${channel.name}&7] &f".color + message.removePrefix("!all ")
+        plugin.debug { "在聊天频道${channel.name}发言: $message" }
+        val sendMessage = "&7[${channel.name}&7] &7[&f${player.name}&7] &f".color + message.removePrefix("$prefix ")
         if (channel.allowObserver) {
             for (p in observers) {
                 p.sendMessage(sendMessage)
@@ -261,7 +288,7 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
     @EventHandler
     fun PlayerQuitEvent.onEvent() {
         if (player in gamers) {
-            removePlayer(player)
+            onExitRequest(player)
             player.reset()
             player.teleport(manager.lobby.toLocation())
             if (players.isEmpty()) destroy()

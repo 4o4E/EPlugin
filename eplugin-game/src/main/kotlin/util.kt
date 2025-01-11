@@ -3,6 +3,7 @@ package top.e404.eplugin.game
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
+import top.e404.eplugin.util.forEachOnline
 
 /**
  * 重置玩家状态
@@ -18,4 +19,9 @@ fun Player.reset() {
     inventory.clear()
     // 重置玩家计分板
     scoreboard = Bukkit.getScoreboardManager().mainScoreboard
+    // 所有玩家可见
+    @Suppress("DEPRECATION")
+    forEachOnline {
+        it.showPlayer(this)
+    }
 }

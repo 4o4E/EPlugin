@@ -6,10 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
 import org.bukkit.World
-import top.e404.eplugin.config.serialization.IntRangeSerialization
-import top.e404.eplugin.config.serialization.Message
-import top.e404.eplugin.config.serialization.RegexSerialization
-import top.e404.eplugin.config.serialization.ScoreboardConfig
+import top.e404.eplugin.config.serialization.*
 
 /**
  * 代表一个小游戏房间的设置
@@ -138,14 +135,12 @@ interface WaitingConfig : GameStageConfig {
  * 准备阶段的游戏设置
  *
  * @property duration 准备阶段的时长
- * @property countdownMessage 倒计时的消息
- * @property limit 倒计时在[limit]之内显示倒计时
+ * @property countdown 倒计时
  */
 interface ReadyingConfig : GameStageConfig {
     val duration: Long
-    val countdownMessage: Message?
-    val limit: Long
     val join: Message
+    val countdown: CountdownConfig
 }
 
 /**
@@ -165,9 +160,9 @@ interface GamingConfig : GameStageConfig {
  * 结束阶段的游戏设置
  *
  * @property duration 阶段的持续时长
- * @property auto 是否在结束阶段结束后传送回大厅
+ * @property countdown 倒计时
  */
 interface EndingConfig : GameStageConfig {
     val duration: Long
-    val auto: Boolean
+    val countdown: CountdownConfig
 }

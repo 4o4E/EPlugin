@@ -4,13 +4,12 @@ package top.e404.eplugin.game.stage
 
 import org.bukkit.entity.Player
 import top.e404.eplugin.EPlugin
-import top.e404.eplugin.game.GameConfig
-import top.e404.eplugin.game.GameStage
-import top.e404.eplugin.game.Gamer
-import top.e404.eplugin.game.reset
+import top.e404.eplugin.game.*
+import top.e404.eplugin.game.util.CountdownManager
 import top.e404.eplugin.util.parseSecondAsDuration
 
-abstract class StageEndingHandler<Config : GameConfig, GamePlayer : Gamer>(plugin: EPlugin) : GameStageHandler<Config, GamePlayer>(plugin) {
+abstract class StageEndingHandler<Config : GameConfig, GamePlayer : Gamer>(plugin: EPlugin) :
+    GameStageHandler<Config, GamePlayer>(plugin) {
     final override val stage = GameStage.ENDING
     override val stageConfig get() = config.ending
 
@@ -27,6 +26,9 @@ abstract class StageEndingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
         super.onEnter(last, data)
         // 切换计分板显示
         scoreboard.init(instance.inInstancePlayer)
+        instance.inInstancePlayer.forEach {
+            endCountdown.add(it)
+        }
     }
 
     override fun onTick() {
@@ -47,4 +49,20 @@ abstract class StageEndingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
         // 更新计分板
         scoreboard.updateAll()
     }
+
+    /**
+     * 离开游戏
+     */
+    open fun onQuit() {
+        // 注销自己
+        unregister()
+        stageConfig.leave?.sendTo(instance.inInstancePlayer, ::getPlaceholder)
+        // 重置玩家计分板
+        scoreboard.stop()
+        endCountdown.shutdown()
+    }
+
+    val endCountdown by lazy { EndCountdown(plugin, stageConfig) }
 }
+
+class EndCountdown(plugin: EPlugin, end: EndingConfig) : CountdownManager(plugin, end.countdown, true)
