@@ -40,10 +40,10 @@ abstract class GameManager<Config : GameConfig, GamePlayer : Gamer>(
      */
     val instances = mutableListOf<GameInstance<Config, GamePlayer>>()
 
-    fun getDynamicMap(mapName: String): DynamicMap {
+    suspend fun getDynamicMap(mapName: String): DynamicMap {
         val dynamicMapConfig = dynamicMapConfigManager.data[mapName] ?: error("未定义的动态地图: $mapName")
         return dynamicMapManager.create(mapName, dynamicMapConfig)
     }
 
-    abstract fun newInstance(config: GameConfig): GameInstance<Config, GamePlayer>
+    abstract suspend fun newInstance(config: GameConfig): GameInstance<Config, GamePlayer>
 }

@@ -18,15 +18,19 @@ dependencies {
     eplugin()
     eplugin("serialization")
     compileOnly("top.e404:DynamicMap:1.0.0")
+    // coroutine
+    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
+    compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
+    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1")
 }
 
 java {
     withSourcesJar()
-    targetCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
+        jvmTarget.set(JvmTarget.JVM_21)
     }
 }
