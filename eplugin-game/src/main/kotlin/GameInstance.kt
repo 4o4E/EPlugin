@@ -181,7 +181,7 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
             plugin.debug { "${currentStageHandler.stage.name}.onLeave" }
             currentStageHandler.onLeave(nextStageHandler, data)
         } catch (e: Exception) {
-            plugin.warn("进入${currentStage.name}阶段时发生异常", e)
+            plugin.warn("离开${currentStage.name}阶段时发生异常", e)
         }
         val lastStageHandler = currentStageHandler
         currentStage = next
@@ -190,7 +190,7 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
             plugin.debug { "${currentStageHandler.stage.name}.onEnter" }
             currentStageHandler.onEnter(lastStageHandler, data)
         } catch (e: Exception) {
-            plugin.warn("退出${currentStage.name}阶段时发生异常", e)
+            plugin.warn("进入${currentStage.name}阶段时发生异常", e)
         }
     }
 
