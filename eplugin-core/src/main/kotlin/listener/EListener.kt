@@ -28,10 +28,16 @@ abstract class EListener(open val plugin: EPlugin) : Listener {
             var handlersField: Field
             while (true) {
                 try {
-                    handlersField = param0.getField("handlers")
+                    handlersField = param0.getDeclaredField("handlers")
                     break
                 } catch (e: Exception) {
-                    param0 = param0.superclass ?: throw Exception("${method} 不是Event")
+                    // paper HANDLER_LIST
+                    try {
+                        handlersField = param0.getDeclaredField("HANDLER_LIST")
+                        break
+                    } catch (e: Exception) {
+                        param0 = param0.superclass ?: throw Exception("$param0 不是Event")
+                    }
                 }
             }
             handlersField.isAccessible = true
