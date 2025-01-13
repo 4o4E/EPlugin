@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 @Suppress("UNUSED")
-enum class GameStage(val message: String, val allowJoin: Boolean) {
+enum class GameStage(override val message: String, override val allowJoin: Boolean): Stage {
     /**
      * 初始化游戏, 准备房间等资源
      */
@@ -29,4 +29,9 @@ enum class GameStage(val message: String, val allowJoin: Boolean) {
      * 游戏结算, 该阶段退出的玩家才统计其游戏记录
      */
     ENDING("结算", false);
+}
+
+interface Stage {
+    val message: String
+    val allowJoin: Boolean
 }
