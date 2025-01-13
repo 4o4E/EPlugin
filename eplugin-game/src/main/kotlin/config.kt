@@ -44,6 +44,7 @@ interface GameInfoConfig {
     val max: Int
     val excludeFeatures: Set<String>
     val border: VLocationRange
+    val gamerules: Map<String, String>
 
     val displayName get() = "&$nameColor$name"
 }
