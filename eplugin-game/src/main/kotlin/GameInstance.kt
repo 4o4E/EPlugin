@@ -89,16 +89,28 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
      */
     abstract val observers: MutableList<Player>
 
+    /**
+     * 游戏tick的任务
+     */
     var tickerTask: BukkitTask? = null
 
+    /**
+     * 游戏中的玩家
+     */
     open val gamers get() = players.keys
 
+    /**
+     * 是否允许加入
+     */
     inline val allowJoin get() = currentStage == GameStage.WAITING || currentStage == GameStage.READY
 
     protected open val handlers: List<GameStageHandler<Config, GamePlayer>> by lazy {
         listOf(waiting, readying, gaming, ending)
     }
 
+    /**
+     * 实例中的所有玩家
+     */
     val inInstancePlayer get() = observers + gamers
 
     /**
@@ -274,6 +286,9 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
         }
     }
 
+    /**
+     * 中途结束
+     */
     open fun shutdown() {
         currentStageHandler.shutdown()
         tickerTask?.cancel()
