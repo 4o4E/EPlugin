@@ -63,6 +63,10 @@ abstract class StageEndingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
     }
 
     val endCountdown by lazy { EndCountdown(plugin, stageConfig) }
+
+    override val countdownList by lazy {
+        mutableListOf<CountdownManager>(endCountdown)
+    }
 }
 
 class EndCountdown(plugin: EPlugin, end: EndingConfig) : CountdownManager(plugin, end.countdown, true)

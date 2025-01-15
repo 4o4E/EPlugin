@@ -54,6 +54,10 @@ abstract class StageReadyingHandler<Config: GameConfig, GamePlayer : Gamer>(plug
     }
 
     val readyCountdown by lazy { ReadyCountdownManager(plugin, stageConfig.countdown) }
+
+    override val countdownList by lazy {
+        mutableListOf<CountdownManager>(readyCountdown)
+    }
 }
 
 class ReadyCountdownManager(
