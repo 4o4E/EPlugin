@@ -226,6 +226,7 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
         }
         players.remove(player)
         player.reset()
+        currentStageHandler.onExit(player)
         return EResult.ok(Unit)
     }
 

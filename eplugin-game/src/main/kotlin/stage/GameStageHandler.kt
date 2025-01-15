@@ -102,4 +102,9 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
      * 处理意外退出
      */
     open fun shutdown() {}
+
+    /**
+     * 处理玩家中途退出
+     */
+    open fun onExit(player: Player) {}
 }
