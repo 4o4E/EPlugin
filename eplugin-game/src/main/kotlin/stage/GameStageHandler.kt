@@ -3,6 +3,7 @@ package top.e404.eplugin.game.stage
 import org.bukkit.entity.Player
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.game.*
+import top.e404.eplugin.game.util.CountdownManager
 import top.e404.eplugin.listener.EListener
 
 abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: EPlugin) : EListener(plugin) {
@@ -34,6 +35,11 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
             override fun placeholders(player: Player) = getPlaceholder(player) + instance.getInstancePlaceholder(player)
         }
     }
+
+    /**
+     * 游戏中的倒计时管理器列表
+     */
+    open val countdownList = mutableListOf<CountdownManager>()
 
     /**
      * 获取此阶段的占位符
@@ -96,15 +102,27 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
         stageConfig.leave?.sendTo(instance.inInstancePlayer, ::getPlaceholder)
         // 重置玩家计分板
         scoreboard.stop()
+        // 重置倒计时
+        countdownList.forEach(CountdownManager::shutdown)
     }
 
     /**
      * 处理意外退出
      */
-    open fun shutdown() {}
+    open fun shutdown() {
+        // 重置玩家计分板
+        scoreboard.stop()
+        // 重置倒计时
+        countdownList.forEach(CountdownManager::shutdown)
+    }
 
     /**
      * 处理玩家中途退出
      */
-    open fun onExit(player: Player) {}
+    open fun onExit(player: Player) {
+        // 重置玩家计分板
+        scoreboard.remove(player)
+        // 重置倒计时
+        countdownList.forEach { it.remove(player) }
+    }
 }
