@@ -6,6 +6,7 @@ include(
     ":eplugin-channel",
     ":eplugin-core",
     ":eplugin-game",
+    ":eplugin-game-mini",
     ":eplugin-hook-adyeshach",
     ":eplugin-hook-bentobox",
     ":eplugin-hook-itemsadder",
