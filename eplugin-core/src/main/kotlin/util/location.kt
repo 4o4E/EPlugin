@@ -94,6 +94,8 @@ infix fun Location.locationEquals(other: Location) = world == other.world
         && blockY == other.blockY
         && blockZ == other.blockZ
 
+infix fun Location.distanceTo(other: Location) = if (world == other.world) distance(other) else Double.MAX_VALUE
+
 fun Location.ceil() = apply {
     x = ceil(x)
     y = ceil(y)
