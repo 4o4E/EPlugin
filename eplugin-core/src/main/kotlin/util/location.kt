@@ -1,6 +1,7 @@
 package top.e404.eplugin.util
 
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.util.Vector
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -108,7 +109,13 @@ fun Location.floor() = apply {
     z = floor(z)
 }
 
+fun World.getBlockAt(x: Double, y: Double, z: Double) = this.getBlockAt(x.toInt(), y.toInt(), z.toInt())
+fun World.locationAt(x: Int, y: Int, z: Int) = Location(this, x.toDouble(), y.toDouble(), z.toDouble())
+fun World.locationAt(x: Double, y: Double, z: Double) = Location(this, x, y, z)
+fun World.locationAt(x: Double, y: Double, z: Double, yaw: Float, pitch: Float) = Location(this, x, y, z, yaw, pitch)
+
 @PublishedApi
+@Suppress("NOTHING_TO_INLINE")
 internal inline fun loop(from: Int, to: Int): IntRange = if (from < to) from..to else to..from
 inline fun loopLocation(from: Location, to: Location, operation: (x: Int, y: Int, z: Int) -> Unit) {
     // 从上到下
