@@ -111,9 +111,9 @@ fun Location.floor() = apply {
 @PublishedApi
 internal inline fun loop(from: Int, to: Int): IntRange = if (from < to) from..to else to..from
 inline fun loopLocation(from: Location, to: Location, operation: (x: Int, y: Int, z: Int) -> Unit) {
-    for (x in loop(from.blockX, to.blockX)) {
+    for (z in loop(from.blockZ, to.blockZ)) {
         for (y in loop(from.blockY, to.blockY)) {
-            for (z in loop(from.blockZ, to.blockZ)) {
+            for (x in loop(from.blockX, to.blockX)) {
                 operation(x, y, z)
             }
         }
