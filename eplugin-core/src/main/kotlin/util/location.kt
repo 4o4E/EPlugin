@@ -108,8 +108,9 @@ fun Location.floor() = apply {
     z = floor(z)
 }
 
-fun loopLocation(from: Location, to: Location, operation: (x: Int, y: Int, z: Int) -> Unit) {
-    fun loop(from: Int, to: Int): IntRange = if (from < to) from..to else to..from
+@PublishedApi
+internal inline fun loop(from: Int, to: Int): IntRange = if (from < to) from..to else to..from
+inline fun loopLocation(from: Location, to: Location, operation: (x: Int, y: Int, z: Int) -> Unit) {
     for (x in loop(from.blockX, to.blockX)) {
         for (y in loop(from.blockY, to.blockY)) {
             for (z in loop(from.blockZ, to.blockZ)) {
