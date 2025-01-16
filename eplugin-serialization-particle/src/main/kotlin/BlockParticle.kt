@@ -28,7 +28,7 @@ data class BlockParticle(
     ) {
         chance?.let { if (Random.nextDouble() > it) return }
         block.world.spawnParticle(
-            particle, block.location, count,
+            particle, block.location.add(0.5, 0.5, 0.5), count,
             offsetX, offsetY, offsetZ,
             extra, Bukkit.createBlockData(block.type), false
         )
