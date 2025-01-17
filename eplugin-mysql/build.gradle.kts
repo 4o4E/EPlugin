@@ -2,6 +2,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     kotlin("jvm")
+    kotlin("plugin.serialization")
     `java-library`
 }
 
@@ -14,6 +15,8 @@ dependencies {
     api("com.zaxxer:HikariCP:4.0.3")
     // commons-lang3
     api("org.apache.commons:commons-lang3:3.12.0")
+    // serialization
+    serializationCore("compileOnly")
 }
 
 java {

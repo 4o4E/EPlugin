@@ -1,5 +1,6 @@
 package top.e404.eplugin.mysql
 
+import kotlinx.serialization.Serializable
 import org.bukkit.configuration.ConfigurationSection
 import java.sql.DriverManager
 
@@ -13,6 +14,7 @@ import java.sql.DriverManager
  * @property database 数据库名字
  * @property prefix 数据表前缀
  */
+@Serializable
 data class SqlConfig(
     val address: String,
     val port: Int,
@@ -22,8 +24,7 @@ data class SqlConfig(
     val prefix: String,
     val params: MutableList<String> = mutableListOf()
 ) {
-    val url: String
-        get() = "jdbc:mysql://$address:$port/$database${
+    val url get() = "jdbc:mysql://$address:$port/$database${
             if (params.isEmpty()) ""
             else "?${params.joinToString("&")}"
         }"
@@ -40,12 +41,12 @@ data class SqlConfig(
  */
 fun ConfigurationSection.getSqlConfig(path: String) = getConfigurationSection(path)?.let { cfg ->
     SqlConfig(
-        address = cfg.getString("address") ?: throw Exception("address不可为空"),
+        address = cfg.getString("address") ?: error("address不可为空"),
         port = cfg.getInt("port", 3306),
-        username = cfg.getString("username") ?: throw Exception("username不可为空"),
-        password = cfg.getString("password") ?: throw Exception("password不可为空"),
-        database = cfg.getString("database") ?: throw Exception("database不可为空"),
-        prefix = cfg.getString("prefix") ?: throw Exception("prefix不可为空"),
+        username = cfg.getString("username") ?: error("username不可为空"),
+        password = cfg.getString("password") ?: error("password不可为空"),
+        database = cfg.getString("database") ?: error("database不可为空"),
+        prefix = cfg.getString("prefix") ?: error("prefix不可为空"),
         params = cfg.getStringList("params")
     )
 }
