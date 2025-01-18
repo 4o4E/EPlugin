@@ -2,18 +2,18 @@ package top.e404.eplugin.game.stage
 
 import org.bukkit.entity.Player
 import top.e404.eplugin.EPlugin
+import top.e404.eplugin.config.serialization.CountdownConfig
 import top.e404.eplugin.game.GameConfig
 import top.e404.eplugin.game.GameStage
 import top.e404.eplugin.game.Gamer
+import top.e404.eplugin.game.util.CountdownManager
 import top.e404.eplugin.util.parseSecondAsDuration
 
 abstract class StageGamingHandler<Config : GameConfig, GamePlayer : Gamer>(plugin: EPlugin) : GameStageHandler<Config, GamePlayer>(plugin) {
     final override val stage = GameStage.GAMING
     override val stageConfig get() = config.gaming
 
-    override fun getPlaceholder(player: Player): Array<Pair<String, *>> = arrayOf(
-        "observer_count" to instance.observers.size,
-        "gamer_count" to instance.players.size,
+    override fun getPlaceholder(player: Player?): Array<Pair<String, *>> = arrayOf(
         "duration" to stageConfig.duration,
         "duration_parsed" to stageConfig.duration.parseSecondAsDuration(),
         "countdown" to stageConfig.duration - tick,
@@ -31,11 +31,23 @@ abstract class StageGamingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
     override fun onTick() {
         // 更新计分板
         scoreboard.updateAll()
-        // 检测倒计时消息
-        stageConfig.countdownMessage[tick]?.let { message ->
-            message.sendTo(instance.inInstancePlayer, instance.gameConfig.info.displayName) {
-                getPlaceholder(it) + instance.getInstancePlaceholder(it)
+        // 倒计时
+        val last = stageConfig.duration - tick
+        if (last == stageConfig.countdown.duration) {
+            instance.inInstancePlayer.forEach {
+                gamingCountdown.add(it, stageConfig.countdown.duration)
             }
         }
     }
+
+    val gamingCountdown by lazy { GamingCountdownManager(plugin, stageConfig.countdown) }
+
+    override val countdownList by lazy {
+        mutableListOf<CountdownManager>(gamingCountdown)
+    }
 }
+
+class GamingCountdownManager(
+    plugin: EPlugin,
+    config: CountdownConfig
+) : CountdownManager(plugin, config, true)

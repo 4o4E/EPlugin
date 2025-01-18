@@ -5,6 +5,7 @@ package top.e404.eplugin.game
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.World
 import top.e404.eplugin.config.serialization.*
 
@@ -37,6 +38,7 @@ interface GameConfig {
  * @property border 游戏区域边界
  */
 interface GameInfoConfig {
+    val icon: Material
     val name: String
     val nameColor: String
     val mapName: String
@@ -140,8 +142,8 @@ interface WaitingConfig : GameStageConfig {
  */
 interface ReadyingConfig : GameStageConfig {
     val duration: Long
-    val join: Message
     val countdown: CountdownConfig
+    val join: Message
 }
 
 /**
@@ -149,12 +151,11 @@ interface ReadyingConfig : GameStageConfig {
  *
  * @property duration 阶段的持续时长
  * @property spawn 开始游戏时的传送点
- * @property countdownMessage 游戏剩余时间的消息
  */
 interface GamingConfig : GameStageConfig {
     val duration: Long
+    val countdown: CountdownConfig
     val spawn: VLocation
-    val countdownMessage: Map<Long, Message>
 }
 
 /**

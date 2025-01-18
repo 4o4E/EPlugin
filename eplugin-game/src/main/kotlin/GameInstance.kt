@@ -53,7 +53,12 @@ abstract class GameInstance<Config : GameConfig, GamePlayer : Gamer>(
     /**
      * 获取此游戏的占位符
      */
-    abstract fun getInstancePlaceholder(player: Player): Array<Pair<String, *>>
+    open fun getInstancePlaceholder(player: Player?): Array<Pair<String, *>> = arrayOf(
+        "max" to gameConfig.info.max,
+        "min" to gameConfig.info.min,
+        "observer_count" to observers.size,
+        "gamer_count" to players.size,
+    )
 
     /**
      * 游戏开始时间

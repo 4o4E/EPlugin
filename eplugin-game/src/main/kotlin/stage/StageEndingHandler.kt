@@ -13,9 +13,7 @@ abstract class StageEndingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
     final override val stage = GameStage.ENDING
     override val stageConfig get() = config.ending
 
-    override fun getPlaceholder(player: Player): Array<Pair<String, *>> = arrayOf(
-        "observer_count" to instance.observers.size,
-        "gamer_count" to instance.players.size,
+    override fun getPlaceholder(player: Player?): Array<Pair<String, *>> = arrayOf(
         "duration" to stageConfig.duration,
         "duration_parsed" to stageConfig.duration.parseSecondAsDuration(),
         "countdown" to stageConfig.duration - tick,

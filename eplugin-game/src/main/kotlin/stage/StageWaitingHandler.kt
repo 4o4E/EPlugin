@@ -10,12 +10,7 @@ abstract class StageWaitingHandler<Config: GameConfig, GamePlayer : Gamer>(plugi
     final override val stage = GameStage.WAITING
     override val stageConfig get() = config.waiting
 
-    override fun getPlaceholder(player: Player): Array<Pair<String, *>> = arrayOf(
-        "max" to config.info.max,
-        "min" to config.info.min,
-        "observer_count" to instance.observers.size,
-        "gamer_count" to instance.players.size,
-    )
+    override fun getPlaceholder(player: Player?): Array<Pair<String, *>> = arrayOf()
 
     override fun onEnter(last: GameStageHandler<Config, GamePlayer>, data: Map<String, *>) {
         super.onEnter(last, data)

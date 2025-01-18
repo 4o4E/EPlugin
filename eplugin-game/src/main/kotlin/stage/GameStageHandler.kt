@@ -32,7 +32,7 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
      */
     open val scoreboard: ScoreboardManager by lazy {
         object : ScoreboardManager(stageConfig.scoreboard) {
-            override fun placeholders(player: Player) = getPlaceholder(player) + instance.getInstancePlaceholder(player)
+            override fun placeholders(player: Player?) = getPlaceholder(player) + instance.getInstancePlaceholder(player)
         }
     }
 
@@ -44,7 +44,7 @@ abstract class GameStageHandler<Config: GameConfig, GamePLayer : Gamer>(plugin: 
     /**
      * 获取此阶段的占位符
      */
-    protected abstract fun getPlaceholder(player: Player): Array<Pair<String, *>>
+    abstract fun getPlaceholder(player: Player?): Array<Pair<String, *>>
 
     /**
      * 当前阶段的tick计数

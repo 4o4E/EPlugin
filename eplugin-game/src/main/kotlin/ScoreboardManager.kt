@@ -74,7 +74,7 @@ abstract class ScoreboardManager(val config: ScoreboardConfig) {
      * @param player 对应的玩家
      * @return 占位符
      */
-    abstract fun placeholders(player: Player): Array<Pair<String, *>>
+    abstract fun placeholders(player: Player?): Array<Pair<String, *>>
 
     /**
      * 设置其中的玩家没有碰撞

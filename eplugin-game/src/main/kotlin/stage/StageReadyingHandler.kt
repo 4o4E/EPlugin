@@ -16,11 +16,7 @@ abstract class StageReadyingHandler<Config: GameConfig, GamePlayer : Gamer>(plug
     @Suppress("UNUSED")
     val countdown get() = enter + stageConfig.duration * 1000 - System.currentTimeMillis()
 
-    override fun getPlaceholder(player: Player): Array<Pair<String, *>> = arrayOf(
-        "max" to config.info.max,
-        "min" to config.info.min,
-        "observer_count" to instance.observers.size,
-        "gamer_count" to instance.players.size,
+    override fun getPlaceholder(player: Player?): Array<Pair<String, *>> = arrayOf(
         "duration" to stageConfig.duration,
         "duration_parsed" to stageConfig.duration.parseSecondAsDuration(),
         "countdown" to stageConfig.duration - tick,
