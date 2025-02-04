@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    spigot()
     implementation(project(":eplugin-core")) {
         exclude("org.spigotmc", "spigot-api")
     }
@@ -18,11 +18,11 @@ dependencies {
 
 java {
     withSourcesJar()
-    targetCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
+        jvmTarget.set(JvmTarget.JVM_1_8)
     }
 }

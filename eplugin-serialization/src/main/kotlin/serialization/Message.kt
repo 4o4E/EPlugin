@@ -4,6 +4,8 @@ package top.e404.eplugin.config.serialization
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import net.md_5.bungee.api.ChatMessageType
+import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import top.e404.eplugin.EPlugin.Companion.placeholder
@@ -18,8 +20,9 @@ data class Message(
 ) {
     fun sendTo(p: Player, vararg placeholder: Pair<String, *>) {
         if (chat.isNotBlank()) p.sendMessage(chat.placeholder(*placeholder))
-        @Suppress("DEPRECATION")
-        if (actionBar.isNotBlank()) p.sendActionBar(actionBar.placeholder(*placeholder))
+        if (actionBar.isNotBlank()) p
+            .spigot()
+            .sendMessage(ChatMessageType.ACTION_BAR, *TextComponent.fromLegacyText(actionBar.placeholder(*placeholder)))
         title?.display(p, *placeholder)
         sound?.playTo(p)
     }
@@ -41,8 +44,9 @@ data class Message(
     // with prefix
     fun sendTo(p: Player, prefix: String, vararg placeholder: Pair<String, *>) {
         if (chat.isNotBlank()) p.sendMessage(("&7[&f$prefix&7] $chat").placeholder(*placeholder))
-        @Suppress("DEPRECATION")
-        if (actionBar.isNotBlank()) p.sendActionBar(actionBar.placeholder(*placeholder))
+        if (actionBar.isNotBlank()) p
+            .spigot()
+            .sendMessage(ChatMessageType.ACTION_BAR, *TextComponent.fromLegacyText(actionBar.placeholder(*placeholder)))
         title?.display(p, *placeholder)
         sound?.playTo(p)
     }
