@@ -13,6 +13,7 @@ include(
     ":eplugin-hook-libsdisguises",
     ":eplugin-hook-mmocore",
     ":eplugin-hook-mmoitems",
+    ":eplugin-hook-modelengine",
     ":eplugin-hook-mythiclib",
     ":eplugin-hook-mythicmobs",
     ":eplugin-hook-nova",

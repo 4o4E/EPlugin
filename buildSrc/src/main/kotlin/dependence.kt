@@ -10,6 +10,7 @@ fun DependencyHandler.worldeditCore(configurationName: String = "compileOnly") =
 fun DependencyHandler.worldeditBukkit(configurationName: String = "compileOnly") = add(configurationName, "com.sk89q.worldedit:worldedit-bukkit:${Hooks.worldedit}")
 fun DependencyHandler.worldguard(configurationName: String = "compileOnly") = add(configurationName, "com.sk89q.worldguard:worldguard-bukkit:${Hooks.worldguard}")
 fun DependencyHandler.itemsadder(configurationName: String = "compileOnly") = add(configurationName, "com.github.LoneDev6:api-itemsadder:${Hooks.itemsadder}")
+fun DependencyHandler.modelEngine(configurationName: String = "compileOnly") = add(configurationName, "com.ticxo.modelengine:ModelEngine:${Hooks.modelEngine}")
 
 fun DependencyHandler.bstats(configurationName: String = "implementation", platform: String = "bukkit") = add(configurationName, "org.bstats:bstats-$platform:3.0.0")
 fun DependencyHandler.serializationCore(configurationName: String = "compileOnly") = add(configurationName, kotlinx("serialization-core-jvm", Versions.serialization))
