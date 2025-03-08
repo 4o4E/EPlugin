@@ -37,7 +37,7 @@ open class WorldGuardHook(
 inline fun ProtectedRegion.forEachXZ(block: (x: Int, z: Int) -> Unit) {
     val min = minimumPoint
     val max = maximumPoint
-    for (x in min.x()..max.x()) for (z in min.z()..max.z()) {
+    for (x in min.x..max.x) for (z in min.z..max.z) {
         block(x, z)
     }
 }
@@ -51,9 +51,9 @@ inline fun ProtectedRegion.forEachXZ(block: (x: Int, z: Int) -> Unit) {
 inline fun ProtectedRegion.forEach(inner: Boolean = false, block: (x: Int, y: Int, z: Int) -> Unit) {
     val min = minimumPoint
     val max = maximumPoint
-    for (x in min.x()..max.x()) {
-        for (y in min.y()..max.y()) {
-            for (z in min.z()..max.z()) {
+    for (x in min.x..max.x) {
+        for (y in min.y..max.y) {
+            for (z in min.z..max.z) {
                 if (inner && !contains(x, y, z)) continue
                 block(x, y, z)
             }
