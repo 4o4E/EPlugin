@@ -35,7 +35,7 @@ abstract class StageGamingHandler<Config : GameConfig, GamePlayer : Gamer>(plugi
         val last = stageConfig.duration - tick
         if (last == stageConfig.countdown.duration) {
             instance.inInstancePlayer.forEach {
-                gamingCountdown.add(it, stageConfig.countdown.duration)
+                gamingCountdown.add(it)
             }
         }
     }

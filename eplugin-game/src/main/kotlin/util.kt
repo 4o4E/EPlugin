@@ -3,6 +3,7 @@ package top.e404.eplugin.game
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
+import org.bukkit.plugin.java.JavaPlugin
 import top.e404.eplugin.util.forEachOnline
 
 /**
@@ -19,9 +20,13 @@ fun Player.reset() {
     inventory.clear()
     // 重置玩家计分板
     scoreboard = Bukkit.getScoreboardManager().mainScoreboard
-    // 所有玩家可见
-    @Suppress("DEPRECATION")
+    // 拔掉所有箭
+    setArrowsInBody(0, false)
+}
+
+fun Player.showToAll(plugin: JavaPlugin) {
     forEachOnline {
-        it.showPlayer(this)
+        it.showPlayer(plugin, this)
+        showPlayer(plugin, it)
     }
 }

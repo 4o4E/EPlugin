@@ -44,7 +44,7 @@ abstract class ScoreboardManager(val config: ScoreboardConfig) {
      */
     fun add(player: Player) {
         data[player] = Scoreboard("").also {
-            config.update(it)
+            config.update(it, *placeholders(player))
             it.show(player)
         }
     }
