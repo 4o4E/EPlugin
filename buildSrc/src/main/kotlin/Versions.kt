@@ -19,7 +19,7 @@ object Hooks {
     const val playerPoints = "3.2.4"
     const val itemsadder = "3.0.0"
     const val nova = "0.12.7"
-    const val modelEngine = "R4.0.8"
+    const val modelEngine = "R3.2.0"
 }
 
 fun kotlinx(id: String, version: String) = "org.jetbrains.kotlinx:kotlinx-$id:$version"

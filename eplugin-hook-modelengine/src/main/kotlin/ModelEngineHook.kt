@@ -11,8 +11,6 @@ import top.e404.eplugin.hook.EHook
 open class ModelEngineHook(
     override val plugin: EPlugin,
 ) : EHook(plugin, "ModelEngine") {
-    val pl inline get() = ModelEngineAPI.getAPI()!!
-
     fun getModeledEntity(entity: Entity): ModeledEntity = ModelEngineAPI.createModeledEntity(entity)
     fun getModel(model: String): ActiveModel = ModelEngineAPI.createActiveModel(model)
     fun applyModel(entity: Entity, model: String) {
