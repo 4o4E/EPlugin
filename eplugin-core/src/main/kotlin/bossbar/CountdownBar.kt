@@ -43,7 +43,7 @@ open class CountdownBar(
         bossBar = Bukkit.createBossBar(display(), color, style)
         p.forEach { bossBar.addPlayer(it) }
         if (enableTask) {
-            task = plugin.runTaskTimer(0, 1) {
+            task = plugin.runTaskTimer(1, 1) {
                 if (tick <= 0) {
                     it.cancel()
                     onEnd.invoke()
