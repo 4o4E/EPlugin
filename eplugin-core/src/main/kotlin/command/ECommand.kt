@@ -20,6 +20,9 @@ abstract class ECommand(
     open val mustByPlayer: Boolean,
     open vararg val permission: String,
 ) {
+    @EPluginDsl
+    fun fail(message: String): Nothing = throw FailException(message)
+
     companion object {
         fun MutableList<String>.addOnlinePlayers() = Bukkit.getOnlinePlayers().forEach { add(it.name) }
         fun MutableList<String>.addOnlineOps() = Bukkit.getOnlinePlayers().forEach { if (it.isOp) add(it.name) }

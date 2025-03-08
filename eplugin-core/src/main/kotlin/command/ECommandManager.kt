@@ -69,7 +69,11 @@ abstract class ECommandManager(
         }
         // 此指令只能由玩家执行 && 执行者不是玩家
         if (c.mustByPlayer && !plugin.isPlayer(sender)) return true
-        c.onCommand(sender, args)
+        try {
+            c.onCommand(sender, args)
+        } catch (e: FailException) {
+            plugin.sendMsgWithPrefix(sender, e.message)
+        }
         return true
     }
 
