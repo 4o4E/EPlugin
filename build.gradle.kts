@@ -1,3 +1,5 @@
+import java.util.*
+
 plugins {
     kotlin("jvm") version Versions.kotlin
     kotlin("plugin.serialization") version Versions.kotlin
@@ -17,6 +19,14 @@ allprojects {
         mavenLocal()
     }
 }
+
+val local = Properties().apply {
+    val file = projectDir.resolve("local.properties")
+    if (file.exists()) file.bufferedReader().use { load(it) }
+}
+
+val nexusUsername get() = local.getProperty("nexus.username") ?: ""
+val nexusPassword get() = local.getProperty("nexus.password") ?: ""
 
 subprojects {
     apply(plugin = "org.jetbrains.kotlin.jvm")
@@ -41,6 +51,20 @@ subprojects {
             artifactId = project.name
             groupId = Versions.group
             version = Versions.version
+        }
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name = "snapshot"
+                url = uri("http://e404.top:8081/repository/maven-snapshots/")
+                isAllowInsecureProtocol = true
+                credentials {
+                    username = nexusUsername
+                    password = nexusPassword
+                }
+            }
         }
     }
 }

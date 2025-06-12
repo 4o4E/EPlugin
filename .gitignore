@@ -2,3 +2,4 @@
 .idea
 .kotlin
 build
+local.properties

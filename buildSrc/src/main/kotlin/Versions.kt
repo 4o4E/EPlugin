@@ -1,8 +1,8 @@
 object Versions {
-    const val group = "top.e404"
-    const val version = "1.4.0"
+    const val group = "top.e404.eplugin"
+    const val version = "1.4.0-SNAPSHOT"
     const val spigot = "1.13.2-R0.1-SNAPSHOT"
-    const val kotlin = "2.1.0"
+    const val kotlin = "2.1.21"
     const val serialization = "1.8.0"
     const val kaml = "0.67.0"
 }
