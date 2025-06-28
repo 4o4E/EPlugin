@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import top.e404.eplugin.EPlugin
 import top.e404.eplugin.listener.EListener
 import top.e404.eplugin.update.EUpdater.Ver.Companion.toVer
-import java.net.URL
+import java.net.URI
 
 abstract class EUpdater(
     override val plugin: EPlugin,
@@ -27,7 +27,7 @@ abstract class EUpdater(
 
     // 返回最新的版本
     private fun queryLatest() = try {
-        URL(url).readText()
+        URI(url).toURL().readText()
             .let { jp.parse(it) }
             .asJsonArray[0]
             .asJsonObject["tag_name"]

@@ -6,6 +6,7 @@ open class EHookManager(
     val plugin: EPlugin,
     vararg val hooks: EHook,
 ) : HashMap<String, EHook>() {
+    @Suppress("PROPERTY_HIDES_JAVA_FIELD")
     override val size: Int = hooks.size
 
     open fun register() {

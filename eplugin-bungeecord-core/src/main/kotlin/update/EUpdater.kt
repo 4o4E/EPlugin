@@ -8,7 +8,7 @@ import net.md_5.bungee.event.EventHandler
 import top.e404.eplugin.bungeecord.EPlugin
 import top.e404.eplugin.bungeecord.listener.EListener
 import top.e404.eplugin.bungeecord.update.EUpdater.Ver.Companion.toVer
-import java.net.URL
+import java.net.URI
 import java.util.*
 import kotlin.concurrent.timerTask
 
@@ -30,7 +30,7 @@ abstract class EUpdater(
 
     // 返回最新的版本
     private fun queryLatest() = try {
-        URL(url).readText()
+        URI(url).toURL().readText()
             .let { jp.parse(it) }
             .asJsonArray[0]
             .asJsonObject["tag_name"]
