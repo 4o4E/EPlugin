@@ -17,6 +17,7 @@ open class MmoitemsHook(
     val mi inline get() = MMOItems.plugin!!
 
     fun getMmoItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)
+    fun getMmoItem(typeId: String) = getMmoItem(typeId.substringBefore(":"), typeId.substringAfter(":"))
     fun getItem(type: String, id: String) = mi.getMMOItem(Type.get(type), id)?.newBuilder()?.build()
     fun getNbtItem(itemStack: ItemStack) = NBTItem.get(itemStack)!!
     fun getId(itemStack: ItemStack): String = getNbtItem(itemStack).id
