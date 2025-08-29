@@ -9,9 +9,10 @@ import java.time.format.DateTimeFormatter
 @Suppress("UNUSED")
 object LocalDateTimeSerializer : KSerializer<LocalDateTime> {
     private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    fun serialize(value: LocalDateTime): String = formatter.format(value)
+    fun deserialize(value: String): LocalDateTime = LocalDateTime.parse(value, formatter)
+
     override val descriptor = primitive()
-
-    override fun serialize(encoder: Encoder, value: LocalDateTime) = encoder.encodeString(formatter.format(value))
-
-    override fun deserialize(decoder: Decoder): LocalDateTime = LocalDateTime.parse(decoder.decodeString(), formatter)
+    override fun serialize(encoder: Encoder, value: LocalDateTime) = encoder.encodeString(serialize(value))
+    override fun deserialize(decoder: Decoder): LocalDateTime = deserialize(decoder.decodeString())
 }
