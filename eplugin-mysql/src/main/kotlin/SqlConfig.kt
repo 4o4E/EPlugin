@@ -29,7 +29,7 @@ data class SqlConfig(
             else "?${params.joinToString("&")}"
         }"
 
-    val connection = DriverManager.getConnection(
+    val connection get() = DriverManager.getConnection(
         url,
         username,
         password
