@@ -13,7 +13,7 @@ dependencies {
     spigot()
     eplugin()
     // ProtocolLib
-    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.3.0")
 }
 
 java {
