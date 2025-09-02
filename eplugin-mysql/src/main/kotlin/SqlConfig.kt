@@ -21,7 +21,6 @@ data class SqlConfig(
     val username: String,
     val password: String,
     val database: String,
-    val prefix: String,
     val params: MutableList<String> = mutableListOf()
 ) {
     val url get() = "jdbc:mysql://$address:$port/$database${
@@ -46,7 +45,6 @@ fun ConfigurationSection.getSqlConfig(path: String) = getConfigurationSection(pa
         username = cfg.getString("username") ?: error("username不可为空"),
         password = cfg.getString("password") ?: error("password不可为空"),
         database = cfg.getString("database") ?: error("database不可为空"),
-        prefix = cfg.getString("prefix") ?: error("prefix不可为空"),
         params = cfg.getStringList("params")
     )
 }
