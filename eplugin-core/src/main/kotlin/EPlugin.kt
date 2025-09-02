@@ -10,6 +10,7 @@ import org.bukkit.plugin.PluginDescriptionFile
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.plugin.java.JavaPluginLoader
 import org.bukkit.scheduler.BukkitRunnable
+import top.e404.eplugin.EPlugin.Companion.placeholder
 import top.e404.eplugin.config.ELangManager
 import top.e404.eplugin.util.forEachOnline
 import top.e404.eplugin.util.forEachOp
@@ -119,15 +120,15 @@ abstract class EPlugin : JavaPlugin {
      */
     fun sendOpMsg(message: String) = forEachOp { sendMsgWithPrefix(it, message) }
 
-    fun sendDebugMessage(str: String) {
-        val msg = "$debugPrefix &b${str}".color
+    fun sendDebugMessage(str: String, highlight: Boolean = true) {
+        val msg = if (highlight) "$debugPrefix &b${str}".color else "$debugPrefix &b".color + str
         if (debug) console.sendMessage(msg)
         debuggers.forEach { Bukkit.getPlayer(it)?.sendMessage(msg) }
     }
 
-    inline fun debug(msg: () -> String) {
+    inline fun debug(highlight: Boolean = true, msg: () -> String) {
         if (!debug && debuggers.isEmpty()) return
-        sendDebugMessage(msg())
+        sendDebugMessage(msg(), highlight)
     }
 
     fun debug(path: String, vararg placeholder: Pair<String, Any>) {
