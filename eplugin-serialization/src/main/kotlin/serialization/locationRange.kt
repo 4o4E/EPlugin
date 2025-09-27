@@ -6,6 +6,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.World
 
 @Serializable
 data class LocationRange(
@@ -67,4 +68,31 @@ data class IntLocationRange(
             yield(Location(bkw, x.toDouble(), y.toDouble(), z.toDouble()))
         }
     }
+}
+
+@Serializable
+data class VLocationRange(
+    @SerialName("x")
+    @Serializable(IntRangeSerialization::class)
+    val xRange: IntRange,
+    @SerialName("y")
+    @Serializable(IntRangeSerialization::class)
+    val yRange: IntRange,
+    @SerialName("z")
+    @Serializable(IntRangeSerialization::class)
+    val zRange: IntRange,
+) {
+    operator fun contains(l: Location) = contains(l.x, l.y, l.z)
+    fun contains(x: Int, y: Int, z: Int) = x in xRange && y in yRange && z in zRange
+    fun contains(x: Double, y: Double, z: Double) = contains(x.toInt(), y.toInt(), z.toInt())
+    fun getCenter(world: World) = Location(
+        world,
+        xRange.first + (xRange.last.toDouble() - xRange.first) / 2,
+        yRange.first + (yRange.last.toDouble() - yRange.first) / 2,
+        zRange.first + (zRange.last.toDouble() - zRange.first) / 2
+    )
+
+    val xLength get() = xRange.last - xRange.first
+    val yLength get() = yRange.last - yRange.first
+    val zLength get() = zRange.last - zRange.first
 }
