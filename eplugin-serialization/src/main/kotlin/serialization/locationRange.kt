@@ -95,13 +95,14 @@ data class VLocationRange(
     val xLength get() = xRange.last - xRange.first
     val yLength get() = yRange.last - yRange.first
     val zLength get() = zRange.last - zRange.first
-    inline fun loop(action: (x: Int, y: Int, z: Int) -> Unit) {
+    inline fun <T : Any> loop(action: (x: Int, y: Int, z: Int) -> T?): T? {
         for (y in yRange) {
             for (z in zRange) {
                 for (x in xRange) {
-                    action(x, y, z)
+                    action(x, y, z)?.let { return@loop it }
                 }
             }
         }
+        return null
     }
 }
