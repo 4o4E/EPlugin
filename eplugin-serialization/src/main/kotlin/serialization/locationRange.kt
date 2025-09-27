@@ -99,7 +99,7 @@ data class VLocationRange(
         for (y in yRange) {
             for (z in zRange) {
                 for (x in xRange) {
-                    action(x, y, z)?.let { return@loop it }
+                    action(x, y, z)?.let { return it }
                 }
             }
         }
