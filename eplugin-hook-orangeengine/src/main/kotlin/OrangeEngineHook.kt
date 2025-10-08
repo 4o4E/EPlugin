@@ -18,6 +18,12 @@ open class OrangeEngineHook(
         type: ModelType = ModelType.BLOCKBENCH,
     ) = modelManager.addModelEntity(id, model, type)!!
 
+    @Suppress("DEPRECATION")
+    fun setNewModel(
+        id: UUID,
+        model: String,
+    ) = modelManager.addNewModelEntity(id, model)!!
+
     fun playAnimation(
         id: UUID,
         animation: String
