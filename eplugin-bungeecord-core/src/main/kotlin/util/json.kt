@@ -5,7 +5,6 @@ package top.e404.eplugin.bungeecord.util
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 
-val jsonParser = JsonParser()
 val gson = Gson()
 
 /**
@@ -14,7 +13,7 @@ val gson = Gson()
  * @return JsonElement
  */
 fun String.asJson() =
-    jsonParser.parse(this)!!
+    JsonParser.parseString(this)!!
 
 /**
  * 将对象序列化为Json字符串

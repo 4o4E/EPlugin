@@ -16,7 +16,7 @@ fun DependencyHandler.bstats(configurationName: String = "implementation", platf
 fun DependencyHandler.serializationCore(configurationName: String = "compileOnly") = add(configurationName, kotlinx("serialization-core-jvm", Versions.serialization))
 fun DependencyHandler.serializationJson(configurationName: String = "compileOnly") = add(configurationName, kotlinx("serialization-json", Versions.serialization))
 fun DependencyHandler.kaml(configurationName: String = "compileOnly") = add(configurationName, "com.charleskorn.kaml:kaml:${Versions.kaml}")
-fun DependencyHandler.bungeecord(configurationName: String = "compileOnly") = add(configurationName, "net.md-5:bungeecord-api:1.16-R0.5-SNAPSHOT")
+fun DependencyHandler.bungeecord(configurationName: String = "compileOnly") = add(configurationName, "net.md-5:bungeecord-api:1.21-R0.3")
 
 fun DependencyHandler.eplugin(module: String = "core", configurationName: String = "implementation") = add(configurationName, project(":eplugin-$module"))
 fun DependencyHandler.epluginBungeecordCore(configurationName: String = "implementation") = eplugin("bungeecord-core", configurationName)

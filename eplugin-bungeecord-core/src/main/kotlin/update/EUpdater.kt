@@ -19,10 +19,6 @@ abstract class EUpdater(
     val github: String,
     val perm: String
 ) : EListener(plugin) {
-    companion object {
-        private val jp = JsonParser()
-    }
-
     var latest: Ver? = null
     lateinit var nowVer: Ver
 
@@ -31,7 +27,7 @@ abstract class EUpdater(
     // 返回最新的版本
     private fun queryLatest() = try {
         URI(url).toURL().readText()
-            .let { jp.parse(it) }
+            .let { JsonParser.parseString(it) }
             .asJsonArray[0]
             .asJsonObject["tag_name"]
             .asString!!
