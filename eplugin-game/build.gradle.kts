@@ -17,7 +17,7 @@ dependencies {
     // eplugin
     eplugin()
     eplugin("serialization")
-    compileOnly("top.e404:DynamicMap:1.0.0")
+    compileOnly("top.e404:DynamicMap:1.0.0-SNAPSHOT")
     // coroutine
     compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.20.0")
     compileOnly("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.20.0")
