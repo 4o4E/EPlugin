@@ -15,6 +15,7 @@ allprojects {
         // spigot
         maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
         maven("https://oss.sonatype.org/content/groups/public/")
+        maven("https://nexus.e404.top:3443/repository/maven-snapshots/")
         mavenCentral()
         mavenLocal()
     }
@@ -58,8 +59,7 @@ subprojects {
         repositories {
             maven {
                 name = "snapshot"
-                url = uri("http://e404.top:8081/repository/maven-snapshots/")
-                isAllowInsecureProtocol = true
+                url = uri("https://nexus.e404.top:3443/repository/maven-snapshots/")
                 credentials {
                     username = nexusUsername
                     password = nexusPassword
@@ -67,16 +67,6 @@ subprojects {
             }
         }
     }
-}
-
-tasks.create("eplugin-publish") {
-    dependsOn(tasks.clean)
-    subprojects.forEach { dependsOn(it.tasks.publish) }
-}
-
-tasks.create("eplugin-publish-local") {
-    dependsOn(tasks.clean)
-    subprojects.forEach { dependsOn(it.tasks.publishToMavenLocal) }
 }
 
 tasks.clean {
