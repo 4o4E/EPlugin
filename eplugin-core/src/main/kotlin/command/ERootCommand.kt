@@ -26,9 +26,13 @@ abstract class ERootCommand(
         sender: CommandSender,
         args: Array<out String>,
         complete: MutableList<String>
-    ) = onTabComplete(sender, args.toMutableList().apply {
-        removeAt(0)
-    }, complete)
+    ) {
+        // root command name
+        val args = args.toMutableList().apply {
+            removeAt(0)
+        }
+        super.onTabComplete(sender, args, complete)
+    }
 
 
     override fun onCommand(

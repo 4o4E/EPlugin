@@ -47,6 +47,11 @@ abstract class ESubCommand(
         args: MutableList<String>,
         complete: MutableList<String>
     ) {
+        if (args.size == 1) {
+            complete.addAll(subCommands.map { it.name })
+            return
+        }
+        // this command name
         val arg = args.removeAt(0)
         for (subCommand in subCommands) {
             if (!subCommand.match(arg)) continue
