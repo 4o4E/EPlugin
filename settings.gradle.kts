@@ -38,4 +38,5 @@ include(
     ":eplugin-serialization-particle",
     ":eplugin-serialization-worldedit",
     ":eplugin-serialization-worldguard",
+    ":eplugin-velocity-core",
 )

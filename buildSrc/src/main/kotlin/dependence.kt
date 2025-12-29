@@ -17,6 +17,7 @@ fun DependencyHandler.serializationCore(configurationName: String = "compileOnly
 fun DependencyHandler.serializationJson(configurationName: String = "compileOnly") = add(configurationName, kotlinx("serialization-json", Versions.serialization))
 fun DependencyHandler.kaml(configurationName: String = "compileOnly") = add(configurationName, "com.charleskorn.kaml:kaml:${Versions.kaml}")
 fun DependencyHandler.bungeecord(configurationName: String = "compileOnly") = add(configurationName, "net.md-5:bungeecord-api:1.21-R0.3")
+fun DependencyHandler.velocity(configurationName: String = "compileOnly") = add(configurationName, "com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
 
 fun DependencyHandler.eplugin(module: String = "core", configurationName: String = "implementation") = add(configurationName, project(":eplugin-$module"))
 fun DependencyHandler.epluginBungeecordCore(configurationName: String = "implementation") = eplugin("bungeecord-core", configurationName)
